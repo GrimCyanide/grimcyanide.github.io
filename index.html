@@ -85,7 +85,6 @@
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
             background: #000;
             position: relative;
-            /* Force specific aspect ratio */
             aspect-ratio: 16 / 9;
         }
 
@@ -96,19 +95,27 @@
             border: none;
         }
 
-        .vods-section h3 {
+        .playlists-section h3 {
             border-bottom: 1px solid #00ffff;
             padding-bottom: 10px;
             margin-top: 0;
         }
 
-        .vod-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .playlists-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #004444;
+            border-radius: 8px;
+            padding: 10px;
         }
 
-        .vod-item {
+        .playlist-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .playlist-item {
             background: rgba(0, 255, 255, 0.05);
             border: 1px solid #004444;
             border-radius: 8px;
@@ -119,22 +126,31 @@
             display: block;
         }
 
-        .vod-item:hover {
+        .playlist-item:hover {
             border-color: #00ffff;
             background: rgba(0, 255, 255, 0.1);
             transform: translateY(-2px);
         }
 
-        .vod-title {
+        .playlist-title {
             font-weight: bold;
             margin-bottom: 8px;
             color: #88ffff;
             line-height: 1.3;
         }
 
-        .vod-date {
+        .playlist-meta {
             color: #008888;
             font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .playlist-count {
+            background: rgba(0, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
         }
 
         .social-links {
@@ -194,6 +210,25 @@
             padding-top: 20px;
             text-align: center;
         }
+
+        /* Scrollbar styling */
+        .playlists-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .playlists-container::-webkit-scrollbar-track {
+            background: #001a1a;
+            border-radius: 4px;
+        }
+
+        .playlists-container::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 4px;
+        }
+
+        .playlists-container::-webkit-scrollbar-thumb:hover {
+            background: #00cccc;
+        }
     </style>
 </head>
 <body>
@@ -213,12 +248,13 @@
                 </div>
             </div>
 
-            <div class="vods-section">
-                <h3>RECENT VODS</h3>
-                <div class="vod-list" id="vodList">
-                    <div class="vod-item">
-                        <div class="vod-title">VODs Coming Soon</div>
-                        <div class="vod-date">Working on Twitch API integration</div>
+            <div class="playlists-section">
+                <h3>PLAYTHROUGH VODS</h3>
+                <div class="playlists-container">
+                    <div class="playlist-list" id="playlistList">
+                        <div class="playlist-item">
+                            <div class="playlist-title">Loading playlists...</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -253,8 +289,9 @@
     </div>
 
 <script>
-    // Working VODs with direct Twitch links and manual entries
+    // YouTube Playlists for your playthrough VODs
     const CHANNEL_NAME = 'grim_cyanide';
+    const YOUTUBE_CHANNEL = 'Grim_Cyanide';
     
     async function checkStreamStatus() {
         const statusIndicator = document.getElementById('statusIndicator');
@@ -276,42 +313,92 @@
         }
     }
 
-    function loadRecentVODs() {
-        const vodList = document.getElementById('vodList');
+    async function loadYouTubePlaylists() {
+        const playlistList = document.getElementById('playlistList');
         
-        // Direct links to your Twitch content - ALWAYS useful
-        vodList.innerHTML = `
-            <a href="https://www.twitch.tv/${CHANNEL_NAME}/videos?filter=archives&sort=time" class="vod-item" target="_blank">
-                <div class="vod-title">📹 Recent Stream VODs</div>
-                <div class="vod-date">Watch your latest full streams</div>
-            </a>
-            <a href="https://www.twitch.tv/${CHANNEL_NAME}/videos?filter=highlights&sort=time" class="vod-item" target="_blank">
-                <div class="vod-title">⭐ Stream Highlights</div>
-                <div class="vod-date">Best moments from your streams</div>
-            </a>
-            <a href="https://www.twitch.tv/${CHANNEL_NAME}/clips?filter=clips&sort=popular" class="vod-item" target="_blank">
-                <div class="vod-title">🎬 Popular Clips</div>
-                <div class="vod-date">Your most popular clip moments</div>
-            </a>
-            <a href="https://www.twitch.tv/${CHANNEL_NAME}/videos?filter=upload&sort=time" class="vod-item" target="_blank">
-                <div class="vod-title">📤 Uploaded Videos</div>
-                <div class="vod-date">Your uploaded content</div>
-            </a>
-            <a href="https://www.twitch.tv/${CHANNEL_NAME}/schedule" class="vod-item" target="_blank">
-                <div class="vod-title">📅 Stream Schedule</div>
-                <div class="vod-date">When you stream next</div>
-            </a>
-        `;
+        try {
+            // This would normally use YouTube API, but for now we'll use manual entries
+            // You can add your actual playlists here
+            const playlists = [
+                {
+                    title: "Game Playthrough Series 1",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "8 parts"
+                },
+                {
+                    title: "Game Playthrough Series 2", 
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "12 parts"
+                },
+                {
+                    title: "Game Playthrough Series 3",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "6 parts"
+                },
+                {
+                    title: "Game Playthrough Series 4",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "15 parts"
+                },
+                {
+                    title: "Game Playthrough Series 5",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "10 parts"
+                },
+                {
+                    title: "Game Playthrough Series 6",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "7 parts"
+                },
+                {
+                    title: "Game Playthrough Series 7",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "9 parts"
+                },
+                {
+                    title: "Game Playthrough Series 8",
+                    url: `https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists`,
+                    count: "11 parts"
+                }
+            ].sort((a, b) => a.title.localeCompare(b.title)); // Sort A-Z
+
+            playlistList.innerHTML = '';
+            
+            playlists.forEach(playlist => {
+                const playlistItem = document.createElement('a');
+                playlistItem.href = playlist.url;
+                playlistItem.target = '_blank';
+                playlistItem.className = 'playlist-item';
+                
+                playlistItem.innerHTML = `
+                    <div class="playlist-title">${playlist.title}</div>
+                    <div class="playlist-meta">
+                        <span>YouTube Playlist</span>
+                        <span class="playlist-count">${playlist.count}</span>
+                    </div>
+                `;
+                
+                playlistList.appendChild(playlistItem);
+            });
+            
+        } catch (error) {
+            playlistList.innerHTML = `
+                <a href="https://www.youtube.com/@${YOUTUBE_CHANNEL}/playlists" class="playlist-item" target="_blank">
+                    <div class="playlist-title">View All Playlists on YouTube</div>
+                    <div class="playlist-meta">
+                        <span>Click to see all playthrough VODs</span>
+                    </div>
+                </a>
+            `;
+        }
     }
 
     // Initialize
     checkStreamStatus();
-    loadRecentVODs();
+    loadYouTubePlaylists();
 
     // Refresh status every 2 minutes
     setInterval(checkStreamStatus, 120000);
 </script>
 </body>
 </html>
-
-
