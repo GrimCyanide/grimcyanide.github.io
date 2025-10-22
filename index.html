@@ -243,6 +243,20 @@
         .playlists-container::-webkit-scrollbar-thumb:hover {
             background: #00cccc;
         }
+        @media (max-width: 768px) {
+            .header h1 {
+                text-align: center;
+                margin-left: 0;
+                margin-right: 0;
+                padding-left: 0;
+                padding-right: 0;
+            }
+    
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -302,6 +316,7 @@
         </div>
     </div>
 
+    
 <script>
     // YouTube Playlists via secure serverless function
     const CHANNEL_NAME = 'grim_cyanide';
@@ -389,6 +404,7 @@
 </script>
 </body>
 </html>
+
 
 
 
