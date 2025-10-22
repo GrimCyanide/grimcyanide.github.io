@@ -13,26 +13,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get channel ID from username
-    const channelResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/channels?part=id&forUsername=${channel}&key=${YOUTUBE_API_KEY}`
-    );
-    const channelData = await channelResponse.json();
-    
-    if (!channelData.items || channelData.items.length === 0) {
-      return res.status(404).json({ error: 'Channel not found' });
-    }
-    
-    const channelId = channelData.items[0].id;
-    
-    // Get all playlists
+    // Get all playlists directly by channel ID (no need to look up channel)
     const playlistsResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channelId}&maxResults=50&key=${YOUTUBE_API_KEY}`
+      `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channel}&maxResults=50&key=${YOUTUBE_API_KEY}`
     );
     const playlistsData = await playlistsResponse.json();
     
     if (!playlistsData.items || playlistsData.items.length === 0) {
-      return res.status(404).json({ error: 'No playlists found' });
+      return res.status(404).json({ error: 'No playlists found for this channel' });
     }
     
     const playlists = playlistsData.items.map(playlist => ({
