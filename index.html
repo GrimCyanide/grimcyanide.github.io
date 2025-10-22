@@ -45,6 +45,7 @@
             grid-template-columns: 2fr 1fr;
             gap: 30px;
             align-items: stretch;
+            order: 1;
         }
 
         @media (max-width: 968px) {
@@ -172,6 +173,7 @@
             grid-template-columns: repeat(5, 1fr);
             gap: 15px;
             margin: 40px 0;
+            order: 2;
         }
 
         @media (max-width: 768px) {
@@ -222,6 +224,7 @@
             font-size: 0.9em;
             padding-top: 20px;
             text-align: center;
+            order: 3;
         }
 
         /* Scrollbar styling */
@@ -247,13 +250,28 @@
             .container {
                 padding-left: 15px;
                 padding-right: 15px;
+                display: flex;
+                flex-direction: column;
             }
-    
+            
             .header h1 {
-                font-size: 2.5em; /* Smaller font for mobile */
+                font-size: 2.5em;
                 text-align: center;
                 margin: 0;
                 word-wrap: break-word;
+            }
+            
+            .social-links {
+                order: 1;
+                margin-bottom: 30px;
+            }
+            
+            .content {
+                order: 2;
+            }
+            
+            .footer {
+                order: 3;
             }
         }
     </style>
@@ -298,7 +316,7 @@
             </a>
             <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank">
                 <span class="platform">YouTube</span>
-                <span class="username">Grim_Cyanide</span>
+                <span class="username">Grim_CYANIDE</span>
             </a>
             <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank">
                 <span class="platform">TikTok</span>
@@ -402,5 +420,3 @@
 </script>
 </body>
 </html>
-
-
