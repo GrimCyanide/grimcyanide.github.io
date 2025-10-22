@@ -365,10 +365,16 @@
         const statusIndicator = document.getElementById('statusIndicator');
         
         try {
-            const response = await fetch(`https://twitch.tv/${CHANNEL_NAME}`);
-            const html = await response.text();
+            // Use Twitch's official API via your serverless function
+            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=${CHANNEL_NAME}`);
             
-            if (html.includes('isLiveBroadcast') || html.includes('"isLive":true')) {
+            if (!response.ok) {
+                throw new Error('API error');
+            }
+            
+            const data = await response.json();
+            
+            if (data.isLive) {
                 statusIndicator.textContent = 'LIVE';
                 statusIndicator.className = 'status-indicator';
             } else {
