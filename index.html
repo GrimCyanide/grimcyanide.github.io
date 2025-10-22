@@ -253,18 +253,16 @@
     </div>
 
 <script>
-    // Simple live status check without complex API
+    // Working VODs implementation using Twitch's public data
     const CHANNEL_NAME = 'grim_cyanide';
     
     async function checkStreamStatus() {
         const statusIndicator = document.getElementById('statusIndicator');
         
         try {
-            // Simple check by fetching the channel page
             const response = await fetch(`https://twitch.tv/${CHANNEL_NAME}`);
             const html = await response.text();
             
-            // Basic check - if page contains "isLiveBroadcast", you're probably live
             if (html.includes('isLiveBroadcast') || html.includes('"isLive":true')) {
                 statusIndicator.textContent = 'LIVE';
                 statusIndicator.className = 'status-indicator';
@@ -273,16 +271,86 @@
                 statusIndicator.className = 'status-indicator offline';
             }
         } catch (error) {
-            console.log('Stream check failed:', error);
             statusIndicator.textContent = 'OFFLINE';
             statusIndicator.className = 'status-indicator offline';
         }
     }
 
-    // VODs placeholder for now
-    function loadRecentVODs() {
-        // We'll implement this properly later
-        console.log('VODs feature coming soon');
+    async function loadRecentVODs() {
+        const vodList = document.getElementById('vodList');
+        
+        try {
+            // Fetch the videos page which contains recent VODs
+            const response = await fetch(`https://www.twitch.tv/${CHANNEL_NAME}/videos`);
+            const html = await response.text();
+            
+            // Simple parsing to extract VOD data
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Look for VOD links and titles
+            const vodElements = doc.querySelectorAll('[data-a-target="video-preview-title"], a[href*="/video/"]');
+            const vods = [];
+            
+            vodElements.forEach(element => {
+                const title = element.textContent.trim();
+                const href = element.href;
+                
+                if (title && href && title.length > 10 && !vods.find(v => v.title === title)) {
+                    vods.push({
+                        title: title,
+                        url: href.includes('http') ? href : `https://twitch.tv${href}`,
+                        date: 'Recent stream'
+                    });
+                }
+            });
+            
+            // Display found VODs or fallback message
+            if (vods.length > 0) {
+                vodList.innerHTML = '';
+                
+                vods.slice(0, 5).forEach(vod => {
+                    const vodItem = document.createElement('a');
+                    vodItem.href = vod.url;
+                    vodItem.target = '_blank';
+                    vodItem.className = 'vod-item';
+                    
+                    const shortTitle = vod.title.length > 60 ? vod.title.substring(0, 60) + '...' : vod.title;
+                    
+                    vodItem.innerHTML = `
+                        <div class="vod-title">${shortTitle}</div>
+                        <div class="vod-date">${vod.date}</div>
+                    `;
+                    
+                    vodList.appendChild(vodItem);
+                });
+            } else {
+                // Fallback: Show direct links to your videos page
+                vodList.innerHTML = `
+                    <a href="https://www.twitch.tv/${CHANNEL_NAME}/videos" class="vod-item" target="_blank">
+                        <div class="vod-title">View All VODs on Twitch</div>
+                        <div class="vod-date">Click to see your recent streams</div>
+                    </a>
+                    <a href="https://www.twitch.tv/${CHANNEL_NAME}/clips" class="vod-item" target="_blank">
+                        <div class="vod-title">View Clips on Twitch</div>
+                        <div class="vod-date">See your best moments</div>
+                    </a>
+                `;
+            }
+            
+        } catch (error) {
+            // Fallback if scraping fails
+            vodList.innerHTML = `
+                <a href="https://www.twitch.tv/${CHANNEL_NAME}/videos" class="vod-item" target="_blank">
+                    <div class="vod-title">View VODs on Twitch</div>
+                    <div class="vod-date">See your recent streams</div>
+                </a>
+                <a href="https://www.twitch.tv/${CHANNEL_NAME}/clips" class="vod-item" target="_blank">
+                    <div class="vod-title">View Clips on Twitch</div>
+                    <div class="vod-date">See your best moments</div>
+                </a>
+            `;
+        }
     }
 
     // Initialize
@@ -294,3 +362,4 @@
 </script>
 </body>
 </html>
+
