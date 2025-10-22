@@ -1,2 +1,2 @@
-# grimcyanide.github.io
-My personal website
+# GRIM_CYANIDE Website
+My personal streaming website built with HTML, CSS, and JavaScript.
