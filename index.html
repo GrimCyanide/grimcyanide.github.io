@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grimcyanide</title>
+    <style>
+        /* DARK GRIM THEME */
+        body {
+            background: #0a0a0a;
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.03) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin: 0;
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+            letter-spacing: 3px;
+            font-weight: normal;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .twitch-section {
+            position: relative;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff0000;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.offline {
+            background: #666;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .twitch-embed {
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            background: #000;
+            position: relative;
+            /* Force specific aspect ratio */
+            aspect-ratio: 16 / 9;
+        }
+
+        .twitch-embed iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .vods-section h3 {
+            border-bottom: 1px solid #00ffff;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .vod-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .vod-item {
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid #004444;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .vod-item:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .vod-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #88ffff;
+            line-height: 1.3;
+        }
+
+        .vod-date {
+            color: #008888;
+            font-size: 0.9em;
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .social-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-links {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .social-link {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 20px;
+            text-decoration: none;
+            color: #00ffff;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .social-link:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .social-link .platform {
+            font-weight: bold;
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .social-link .username {
+            color: #88ffff;
+            font-size: 0.9em;
+        }
+
+        .footer {
+            margin-top: 50px;
+            color: #008888;
+            font-size: 0.9em;
+            border-top: 1px solid #004444;
+            padding-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>GRIMCYANIDE</h1>
+        </div>
+
+        <div class="content">
+            <div class="twitch-section">
+                <div class="status-indicator offline" id="statusIndicator">OFFLINE</div>
+                <div class="twitch-embed">
+                    <iframe 
+                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=localhost" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="vods-section">
+                <h3>RECENT VODS</h3>
+                <div class="vod-list" id="vodList">
+                    <div class="vod-item">
+                        <div class="vod-title">VODs require Twitch API setup</div>
+                        <div class="vod-date">We'll set this up after GitHub deployment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-links">
+            <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank">
+                <span class="platform">Twitch</span>
+                <span class="username">grim_cyanide</span>
+            </a>
+            <a href="https://x.com/GrimCyanide" class="social-link" target="_blank">
+                <span class="platform">Twitter / X</span>
+                <span class="username">GrimCyanide</span>
+            </a>
+            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank">
+                <span class="platform">YouTube</span>
+                <span class="username">Grim_Cyanide</span>
+            </a>
+            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank">
+                <span class="platform">TikTok</span>
+                <span class="username">grim_cyanide</span>
+            </a>
+            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank">
+                <span class="platform">Steam</span>
+                <span class="username">GrimCyanide</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            © 2025 grimcyanide.com
+        </div>
+    </div>
+
+    <script>
+        // Simple stream status check (no VODs for now)
+        async function checkStreamStatus() {
+            try {
+                // Simple fetch to see if channel exists
+                const response = await fetch(`https://twitch.tv/${'grim_cyanide'}`);
+                const statusIndicator = document.getElementById('statusIndicator');
+                
+                // This is a basic check - we'll do proper API when deployed
+                statusIndicator.textContent = 'OFFLINE';
+                statusIndicator.className = 'status-indicator offline';
+                
+            } catch (error) {
+                console.log('Stream status check:', error);
+            }
+        }
+
+        // Initialize
+        checkStreamStatus();
+    </script>
+</body>
+</html>
