@@ -25,7 +25,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
-
         }
 
         .header {
@@ -243,7 +242,13 @@
         .playlists-container::-webkit-scrollbar-thumb:hover {
             background: #00cccc;
         }
+
         @media (max-width: 768px) {
+            .header {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
             .header h1 {
                 text-align: center;
                 margin: 0 auto;
@@ -252,7 +257,7 @@
             
             .container {
                 padding-left: 0;
-                        padding-right: 0;
+                padding-right: 0;
             }
             
             .content, .social-links, .footer {
@@ -319,7 +324,6 @@
         </div>
     </div>
 
-    
 <script>
     // YouTube Playlists via secure serverless function
     const CHANNEL_NAME = 'grim_cyanide';
@@ -407,20 +411,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
