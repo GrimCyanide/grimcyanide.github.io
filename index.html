@@ -305,58 +305,78 @@
     const CHANNEL_NAME = 'grim_cyanide';
     const YOUTUBE_CHANNEL_ID = 'UCbKFfRl4ktuMWb4GvCXx_rg';
     
-async function loadYouTubePlaylists() {
-    const playlistList = document.getElementById('playlistList');
-    
-    try {
-        // Use our secure serverless function
-        const response = await fetch(`/api/youtube-playlists?channel=${YOUTUBE_CHANNEL_ID}`);
+    async function checkStreamStatus() {
+        const statusIndicator = document.getElementById('statusIndicator');
         
-        if (!response.ok) {
-            throw new Error(`API returned ${response.status}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.error) {
-            throw new Error(`API Error: ${data.error}`);
-        }
-        
-        if (!data.playlists || data.playlists.length === 0) {
-            throw new Error('No playlists found in response');
-        }
-        
-        playlistList.innerHTML = '';
-        
-        // Sort playlists A-Z by title
-        data.playlists.sort((a, b) => a.title.localeCompare(b.title));
-        
-        data.playlists.forEach(playlist => {
-            const playlistItem = document.createElement('a');
-            playlistItem.href = playlist.url;
-            playlistItem.target = '_blank';
-            playlistItem.className = 'playlist-item';
+        try {
+            const response = await fetch(`https://twitch.tv/${CHANNEL_NAME}`);
+            const html = await response.text();
             
-            playlistItem.innerHTML = `
-                <div class="playlist-title">${playlist.title}</div>
-                <div class="playlist-meta">
-                    <span class="playlist-count">${playlist.count} ${playlist.count === 1 ? 'video' : 'videos'}</span>
+            if (html.includes('isLiveBroadcast') || html.includes('"isLive":true')) {
+                statusIndicator.textContent = 'LIVE';
+                statusIndicator.className = 'status-indicator';
+            } else {
+                statusIndicator.textContent = 'OFFLINE';
+                statusIndicator.className = 'status-indicator offline';
+            }
+        } catch (error) {
+            statusIndicator.textContent = 'OFFLINE';
+            statusIndicator.className = 'status-indicator offline';
+        }
+    }
+
+    async function loadYouTubePlaylists() {
+        const playlistList = document.getElementById('playlistList');
+        
+        try {
+            // Use our secure serverless function
+            const response = await fetch(`/api/youtube-playlists?channel=${YOUTUBE_CHANNEL_ID}`);
+            
+            if (!response.ok) {
+                throw new Error(`API returned ${response.status}: ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(`API Error: ${data.error}`);
+            }
+            
+            if (!data.playlists || data.playlists.length === 0) {
+                throw new Error('No playlists found in response');
+            }
+            
+            playlistList.innerHTML = '';
+            
+            // Sort playlists A-Z by title
+            data.playlists.sort((a, b) => a.title.localeCompare(b.title));
+            
+            data.playlists.forEach(playlist => {
+                const playlistItem = document.createElement('a');
+                playlistItem.href = playlist.url;
+                playlistItem.target = '_blank';
+                playlistItem.className = 'playlist-item';
+                
+                playlistItem.innerHTML = `
+                    <div class="playlist-title">${playlist.title}</div>
+                    <div class="playlist-meta">
+                        <span class="playlist-count">${playlist.count} ${playlist.count === 1 ? 'video' : 'videos'}</span>
+                    </div>
+                `;
+                
+                playlistList.appendChild(playlistItem);
+            });
+            
+        } catch (error) {
+            console.error('Playlist Error:', error);
+            playlistList.innerHTML = `
+                <div class="playlist-item">
+                    <div class="playlist-title">Error: ${error.message}</div>
+                    <div class="playlist-meta">Check browser console for details</div>
                 </div>
             `;
-            
-            playlistList.appendChild(playlistItem);
-        });
-        
-    } catch (error) {
-        console.error('Playlist Error:', error);
-        playlistList.innerHTML = `
-            <div class="playlist-item">
-                <div class="playlist-title">Error: ${error.message}</div>
-                <div class="playlist-meta">Check browser console for details</div>
-            </div>
-        `;
+        }
     }
-}
 
     // Initialize
     checkStreamStatus();
@@ -367,5 +387,6 @@ async function loadYouTubePlaylists() {
 </script>
 </body>
 </html>
+
 
 
