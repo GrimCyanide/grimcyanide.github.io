@@ -207,7 +207,7 @@
                 <div class="status-indicator offline" id="statusIndicator">OFFLINE</div>
                 <div class="twitch-embed">
                     <iframe 
-                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=localhost" 
+                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.github.io" 
                         allowfullscreen>
                     </iframe>
                 </div>
@@ -252,25 +252,70 @@
         </div>
     </div>
 
-    <script>
-        // Simple stream status check (no VODs for now)
-        async function checkStreamStatus() {
-            try {
-                // Simple fetch to see if channel exists
-                const response = await fetch(`https://twitch.tv/${'grim_cyanide'}`);
-                const statusIndicator = document.getElementById('statusIndicator');
-                
-                // This is a basic check - we'll do proper API when deployed
-                statusIndicator.textContent = 'OFFLINE';
-                statusIndicator.className = 'status-indicator offline';
-                
-            } catch (error) {
-                console.log('Stream status check:', error);
-            }
+<script>
+    // Twitch API integration via serverless function
+    const CHANNEL_NAME = 'grim_cyanide';
+    
+    async function fetchWithTwitchAPI(endpoint) {
+        try {
+            // We'll set up this serverless function next
+            const response = await fetch(`https://your-serverless-function.vercel.app/api/twitch?endpoint=${endpoint}&channel=${CHANNEL_NAME}`);
+            return await response.json();
+        } catch (error) {
+            console.log('API Error:', error);
+            return null;
         }
+    }
 
-        // Initialize
-        checkStreamStatus();
-    </script>
+    async function checkStreamStatus() {
+        const statusIndicator = document.getElementById('statusIndicator');
+        const data = await fetchWithTwitchAPI('streams');
+        
+        if (data && data.data && data.data.length > 0) {
+            statusIndicator.textContent = 'LIVE';
+            statusIndicator.className = 'status-indicator';
+        } else {
+            statusIndicator.textContent = 'OFFLINE';
+            statusIndicator.className = 'status-indicator offline';
+        }
+    }
+
+    async function loadRecentVODs() {
+        const vodList = document.getElementById('vodList');
+        const data = await fetchWithTwitchAPI('videos');
+        
+        if (data && data.data && data.data.length > 0) {
+            vodList.innerHTML = '';
+            
+            data.data.forEach(vod => {
+                const vodDate = new Date(vod.created_at).toLocaleDateString();
+                const vodItem = document.createElement('a');
+                vodItem.href = vod.url;
+                vodItem.target = '_blank';
+                vodItem.className = 'vod-item';
+                
+                // Shorten long titles
+                const shortTitle = vod.title.length > 60 ? vod.title.substring(0, 60) + '...' : vod.title;
+                
+                vodItem.innerHTML = `
+                    <div class="vod-title">${shortTitle}</div>
+                    <div class="vod-date">${vodDate} • ${vod.duration}</div>
+                `;
+                
+                vodList.appendChild(vodItem);
+            });
+        } else {
+            vodList.innerHTML = '<div class="vod-item"><div class="vod-title">No recent VODs found</div></div>';
+        }
+    }
+
+    // Initialize
+    checkStreamStatus();
+    loadRecentVODs();
+
+    // Refresh status every 2 minutes
+    setInterval(checkStreamStatus, 120000);
+</script>
 </body>
+
 </html>
