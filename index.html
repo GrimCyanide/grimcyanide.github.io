@@ -329,8 +329,8 @@
         const playlistList = document.getElementById('playlistList');
         
         try {
-            // Use our secure serverless function
-            const response = await fetch(`/api/youtube-playlists?channel=${YOUTUBE_CHANNEL_ID}`);
+            // Use our secure serverless function with full Vercel URL
+            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/youtube-playlists?channel=${YOUTUBE_CHANNEL_ID}`);
             
             if (!response.ok) {
                 throw new Error(`API returned ${response.status}: ${response.statusText}`);
@@ -387,6 +387,7 @@
 </script>
 </body>
 </html>
+
 
 
 
