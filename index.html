@@ -259,7 +259,7 @@
     async function fetchWithTwitchAPI(endpoint) {
         try {
             // We'll set up this serverless function next
-            const response = await fetch(`https://your-serverless-function.vercel.app/api/twitch?endpoint=${endpoint}&channel=${CHANNEL_NAME}`);
+            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/twitch?endpoint=${endpoint}&channel=${CHANNEL_NAME}`);
             return await response.json();
         } catch (error) {
             console.log('API Error:', error);
@@ -319,3 +319,4 @@
 </body>
 
 </html>
+
