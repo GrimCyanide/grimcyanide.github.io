@@ -11,7 +11,6 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     <link rel="manifest" href="/site.webmanifest">
     <style>
-        /* DARK GRIM THEME */
         body {
             background: #0a0a0a;
             color: #00ffff;
@@ -58,7 +57,6 @@
             transform: translateY(-2px);
         }
 
-        /* Slot Machine Styles */
         .slot-machine {
             display: flex;
             justify-content: center;
@@ -103,7 +101,7 @@
             font-weight: bold;
             color: #88ffff;
             font-size: 1.1em;
-            height: 40px; /* Fixed height */
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -194,7 +192,7 @@
         <div class="slot-machine">
             <div class="slot" id="slot1">
                 <div class="character-display" id="display1">
-                    <img src="/The_Cohabitants.avif" alt="The Cohabitants" class="character-image">
+                    <img src="/the_cohabitants.avif" alt="The Cohabitants" class="character-image">
                     <div class="character-name">The Cohabitants</div>
                 </div>
             </div>
@@ -203,7 +201,7 @@
             
             <div class="slot" id="slot2">
                 <div class="character-display" id="display2">
-                    <img src="/The_Shade.avif" alt="The Shade" class="character-image">
+                    <img src="/the_shade.avif" alt="The Shade" class="character-image">
                     <div class="character-name">The Shade</div>
                 </div>
             </div>
@@ -220,49 +218,39 @@
     </div>
 
     <script>
-        // =============================================
-        // CHARACTER DATA - EDIT THIS SECTION AS NEEDED
-        // =============================================
         const characters = [
-            { id: 1, name: "The Warrior", image: "/The_Warrior.avif" },
-            { id: 2, name: "The Itchy Finger", image: "/The_Itchy_Finger.avif" },
-            { id: 3, name: "The Repentant", image: "/The_Repentant.avif" },
-            { id: 4, name: "The Cohabitants", image: "/The_Cohabitants.avif" },
-            { id: 5, name: "The Cogitator", image: "/The_Cogitator.avif" },
-            { id: 6, name: "The Embedded", image: "/The_Embedded.avif" },
-            { id: 7, name: "The Empty Nester", image: "/The_Empty_Nester.avif" },
-            { id: 8, name: "The Shade", image: "/The_Shade.avif" },
-            { id: 9, name: "The Shieldbearer", image: "/The_Shieldbearer.avif" },
-            { id: 10, name: "The Spendthrift", image: "/The_Spendthrift.avif" },
-            { id: 11, name: "The Flagellant", image: "/The_Flagellant.avif" },
-            { id: 12, name: "The Juggler", image: "/The_Juggler.avif" },
-            { id: 13, name: "The Tactician", image: "/The_Tactician.avif" },
-            { id: 14, name: "The Radical", image: "/The_Radical.avif" },
-            { id: 15, name: "The Physicist", image: "/The_Physicist.avif" },
-            { id: 16, name: "The Makeshift Sisyphus", image: "/The_Makeshift_Sisyphus.avif" }
+            { id: 1, name: "The Warrior", image: "/the_warrior.avif" },
+            { id: 2, name: "The Itchy Finger", image: "/the_itchy_finger.avif" },
+            { id: 3, name: "The Repentant", image: "/the_repentant.avif" },
+            { id: 4, name: "The Cohabitants", image: "/the_cohabitants.avif" },
+            { id: 5, name: "The Cogitator", image: "/the_cogitator.avif" },
+            { id: 6, name: "The Embedded", image: "/the_embedded.avif" },
+            { id: 7, name: "The Empty Nester", image: "/the_empty_nester.avif" },
+            { id: 8, name: "The Shade", image: "/the_shade.avif" },
+            { id: 9, name: "The Shieldbearer", image: "/the_shieldbearer.avif" },
+            { id: 10, name: "The Spendthrift", image: "/the_spendthrift.avif" },
+            { id: 11, name: "The Flagellant", image: "/the_flagellant.avif" },
+            { id: 12, name: "The Juggler", image: "/the_juggler.avif" },
+            { id: 13, name: "The Tactician", image: "/the_tactician.avif" },
+            { id: 14, name: "The Radical", image: "/the_radical.avif" },
+            { id: 15, name: "The Physicist", image: "/the_physicist.avif" },
+            { id: 16, name: "The Makeshift Sisyphus", image: "/the_makeshift_sisyphus.avif" }
         ];
 
-        // =============================================
-        // INVALID COMBINATIONS - EDIT THIS SECTION
-        // Format: [character1_id, character2_id]
-        // =============================================
         const invalidCombinations = [
-            [3, 9],   // Repentant + Shieldbearer
-            [3, 11],  // Repentant + Flagellant
-            [4, 16],  // Cohabitants + Makeshift Sisyphus
-            [4, 10],  // Cohabitants + Spendthrift
-            [4, 12],  // Cohabitants + Juggler
-            [8, 16],  // Shade + Makeshift Sisyphus
-            [9, 11],  // Shieldbearer + Flagellant
-            [16, 10]  // Makeshift Sisyphus + Spendthrift
-            // ADD MORE RESTRICTIONS HERE AS:
-            // [id1, id2], // Character1 + Character2
+            [3, 9],
+            [3, 11],
+            [4, 16],
+            [4, 10],
+            [4, 12],
+            [8, 16],
+            [9, 11],
+            [16, 10]
         ];
-        // =============================================
 
         let isSpinning = false;
-        let currentChar1 = characters[3]; // Start with Cohabitants
-        let currentChar2 = characters[7]; // Start with Shade
+        let currentChar1 = characters[3];
+        let currentChar2 = characters[7];
 
         function updateDisplay(displayElement, character) {
             displayElement.innerHTML = `
@@ -286,26 +274,22 @@
             invalidMessage.textContent = '';
 
             const startTime = Date.now();
-            const totalDuration = 3000; // 3 seconds total
+            const totalDuration = 3000;
             let fastPhase = true;
-            let interval = 80; // Start fast (80ms between changes)
+            let interval = 80;
 
             function cycleCharacters() {
                 const elapsed = Date.now() - startTime;
                 const progress = elapsed / totalDuration;
 
                 if (progress < 1) {
-                    // Switch between fast and slow phases
                     if (progress > 0.7 && fastPhase) {
-                        // Switch to slow phase
                         fastPhase = false;
-                        interval = 200; // Slow down to 200ms between changes
+                        interval = 200;
                     } else if (progress > 0.9 && !fastPhase) {
-                        // Switch to very slow phase
-                        interval = 400; // Very slow before stopping
+                        interval = 400;
                     }
 
-                    // Show random characters for flashing effect
                     const randomChar1 = characters[Math.floor(Math.random() * characters.length)];
                     const randomChar2 = characters[Math.floor(Math.random() * characters.length)];
                     
@@ -314,7 +298,6 @@
                     
                     setTimeout(cycleCharacters, interval);
                 } else {
-                    // Final selection
                     let char1, char2;
                     let isValid = false;
                     let attempts = 0;
@@ -335,7 +318,6 @@
                         } while (char1.id === char2.id);
                     }
                     
-                    // Update displays with final characters
                     updateDisplay(display1, char1);
                     updateDisplay(display2, char2);
                     
@@ -359,7 +341,6 @@
             );
         }
 
-        // Set up event listener
         document.getElementById('spinButton').addEventListener('click', spinReels);
     </script>
 </body>
