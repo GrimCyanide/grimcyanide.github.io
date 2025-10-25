@@ -165,7 +165,7 @@
 
         .social-links {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin: 40px 0;
             order: 2;
@@ -173,13 +173,13 @@
 
         @media (max-width: 768px) {
             .social-links {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
         }
 
         @media (max-width: 480px) {
             .social-links {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             }
         }
 
@@ -397,4 +397,3 @@
 </script>
 </body>
 </html>
-
