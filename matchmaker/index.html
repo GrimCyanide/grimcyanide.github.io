@@ -220,130 +220,168 @@
     </div>
 
     <script>
-        const characters = [
-            { id: 1, name: "The Warrior", image: "/the_warrior.avif" },
-            { id: 2, name: "The Itchy Finger", image: "/the_itchy_finger.avif" },
-            { id: 3, name: "The Repentant", image: "/the_repentant.avif" },
-            { id: 4, name: "The Cohabitants", image: "/the_cohabitants.avif" },
-            { id: 5, name: "The Cogitator", image: "/the_cogitator.avif" },
-            { id: 6, name: "The Embedded", image: "/the_embedded.avif" },
-            { id: 7, name: "The Empty Nester", image: "/The_Empty_Nester.avif" },
-            { id: 8, name: "The Shade", image: "/the_shade.avif" },
-            { id: 9, name: "The Shieldbearer", image: "/the_shieldbearer.avif" },
-            { id: 10, name: "The Spendthrift", image: "/The_Spendthrift.avif" },
-            { id: 11, name: "The Flagellant", image: "/the_flagellant.avif" },
-            { id: 12, name: "The Juggler", image: "/the_juggler.avif" },
-            { id: 13, name: "The Tactician", image: "/the_tactician.avif" },
-            { id: 14, name: "The Radical", image: "/the_radical.avif" },
-            { id: 15, name: "The Physicist", image: "/the_physicist.avif" },
-            { id: 16, name: "The Makeshift Sisyphus", image: "/the_Makeshift_Sisyphus.avif" }
-        ];
+    const characters = [
+        { id: 1, name: "The Warrior", image: "/the_warrior.avif" },
+        { id: 2, name: "The Itchy Finger", image: "/the_itchy_finger.avif" },
+        { id: 3, name: "The Repentant", image: "/the_repentant.avif" },
+        { id: 4, name: "The Cohabitants", image: "/the_cohabitants.avif" },
+        { id: 5, name: "The Cogitator", image: "/the_cogitator.avif" },
+        { id: 6, name: "The Embedded", image: "/the_embedded.avif" },
+        { id: 7, name: "The Empty Nester", image: "/The_Empty_Nester.avif" },
+        { id: 8, name: "The Shade", image: "/the_shade.avif" },
+        { id: 9, name: "The Shieldbearer", image: "/the_shieldbearer.avif" },
+        { id: 10, name: "The Spendthrift", image: "/The_Spendthrift.avif" },
+        { id: 11, name: "The Flagellant", image: "/the_flagellant.avif" },
+        { id: 12, name: "The Juggler", image: "/the_juggler.avif" },
+        { id: 13, name: "The Tactician", image: "/the_tactician.avif" },
+        { id: 14, name: "The Radical", image: "/the_radical.avif" },
+        { id: 15, name: "The Physicist", image: "/the_physicist.avif" },
+        { id: 16, name: "The Makeshift Sisyphus", image: "/the_Makeshift_Sisyphus.avif" }
+    ];
 
-        const invalidCombinations = [
-            [3, 9],
-            [3, 11],
-            [4, 16],
-            [4, 10],
-            [4, 12],
-            [8, 16],
-            [9, 11],
-            [16, 10]
-        ];
+    const invalidCombinations = [
+        [3, 9],
+        [3, 11],
+        [4, 16],
+        [4, 10],
+        [4, 12],
+        [8, 16],
+        [9, 11],
+        [16, 10]
+    ];
 
-        let isSpinning = false;
-        let currentChar1 = characters[3];
-        let currentChar2 = characters[7];
+    let isSpinning = false;
+    let currentChar1 = characters[3];
+    let currentChar2 = characters[7];
 
-        function updateDisplay(displayElement, character) {
-            displayElement.innerHTML = `
-                <img src="${character.image}" alt="${character.name}" class="character-image" onerror="this.style.display='none'">
-                <div class="character-name">${character.name}</div>
-            `;
-        }
+    function updateDisplay(displayElement, character) {
+        displayElement.innerHTML = `
+            <img src="${character.image}" alt="${character.name}" class="character-image" onerror="this.style.display='none'">
+            <div class="character-name">${character.name}</div>
+        `;
+    }
 
-        function spinReels() {
-            if (isSpinning) return;
-            
-            isSpinning = true;
-            const spinButton = document.getElementById('spinButton');
-            const resultDiv = document.getElementById('result');
-            const invalidMessage = document.getElementById('invalidMessage');
-            const display1 = document.getElementById('display1');
-            const display2 = document.getElementById('display2');
-            
-            spinButton.disabled = true;
-            resultDiv.textContent = '';
-            invalidMessage.textContent = '';
+    function spinReels() {
+        if (isSpinning) return;
+        
+        isSpinning = true;
+        const spinButton = document.getElementById('spinButton');
+        const resultDiv = document.getElementById('result');
+        const invalidMessage = document.getElementById('invalidMessage');
+        const display1 = document.getElementById('display1');
+        const display2 = document.getElementById('display2');
+        
+        spinButton.disabled = true;
+        resultDiv.textContent = '';
+        invalidMessage.textContent = '';
 
-            const startTime = Date.now();
-            const totalDuration = 3000;
-            let fastPhase = true;
-            let interval = 80;
+        const startTime = Date.now();
+        const totalDuration = 3000;
+        let fastPhase = true;
+        let interval = 80;
 
-            function cycleCharacters() {
-                const elapsed = Date.now() - startTime;
-                const progress = elapsed / totalDuration;
+        function cycleCharacters() {
+            const elapsed = Date.now() - startTime;
+            const progress = elapsed / totalDuration;
 
-                if (progress < 1) {
-                    if (progress > 0.7 && fastPhase) {
-                        fastPhase = false;
-                        interval = 200;
-                    } else if (progress > 0.9 && !fastPhase) {
-                        interval = 400;
-                    }
-
-                    const randomChar1 = characters[Math.floor(Math.random() * characters.length)];
-                    const randomChar2 = characters[Math.floor(Math.random() * characters.length)];
-                    
-                    updateDisplay(display1, randomChar1);
-                    updateDisplay(display2, randomChar2);
-                    
-                    setTimeout(cycleCharacters, interval);
-                } else {
-                    let char1, char2;
-                    let isValid = false;
-                    let attempts = 0;
-                    
-                    while (!isValid && attempts < 100) {
-                        char1 = characters[Math.floor(Math.random() * characters.length)];
-                        char2 = characters[Math.floor(Math.random() * characters.length)];
-                        if (char1.id !== char2.id && !isInvalidCombination(char1.id, char2.id)) {
-                            isValid = true;
-                        }
-                        attempts++;
-                    }
-                    
-                    if (!isValid) {
-                        char1 = characters[Math.floor(Math.random() * characters.length)];
-                        do {
-                            char2 = characters[Math.floor(Math.random() * characters.length)];
-                        } while (char1.id === char2.id);
-                    }
-                    
-                    updateDisplay(display1, char1);
-                    updateDisplay(display2, char2);
-                    
-                    resultDiv.textContent = `${char1.name} × ${char2.name}`;
-                    if (isInvalidCombination(char1.id, char2.id)) {
-                        invalidMessage.textContent = "⚠️ These characters cannot be paired together!";
-                    }
-                    
-                    isSpinning = false;
-                    spinButton.disabled = false;
+            if (progress < 1) {
+                if (progress > 0.7 && fastPhase) {
+                    fastPhase = false;
+                    interval = 200;
+                } else if (progress > 0.9 && !fastPhase) {
+                    interval = 400;
                 }
+
+                const randomChar1 = characters[Math.floor(Math.random() * characters.length)];
+                const randomChar2 = characters[Math.floor(Math.random() * characters.length)];
+                
+                updateDisplay(display1, randomChar1);
+                updateDisplay(display2, randomChar2);
+                
+                setTimeout(cycleCharacters, interval);
+            } else {
+                let char1, char2;
+                let isValid = false;
+                let attempts = 0;
+                
+                while (!isValid && attempts < 100) {
+                    char1 = characters[Math.floor(Math.random() * characters.length)];
+                    char2 = characters[Math.floor(Math.random() * characters.length)];
+                    if (char1.id !== char2.id && !isInvalidCombination(char1.id, char2.id)) {
+                        isValid = true;
+                    }
+                    attempts++;
+                }
+                
+                if (!isValid) {
+                    char1 = characters[Math.floor(Math.random() * characters.length)];
+                    do {
+                        char2 = characters[Math.floor(Math.random() * characters.length)];
+                    } while (char1.id === char2.id);
+                }
+                
+                updateDisplay(display1, char1);
+                updateDisplay(display2, char2);
+                
+                resultDiv.textContent = `${char1.name} × ${char2.name}`;
+                if (isInvalidCombination(char1.id, char2.id)) {
+                    invalidMessage.textContent = "⚠️ These characters cannot be paired together!";
+                }
+                
+                isSpinning = false;
+                spinButton.disabled = false;
             }
-
-            cycleCharacters();
         }
 
-        function isInvalidCombination(id1, id2) {
-            return invalidCombinations.some(pair => 
-                (pair[0] === id1 && pair[1] === id2) || 
-                (pair[0] === id2 && pair[1] === id1)
-            );
-        }
+        cycleCharacters();
+    }
 
-        document.getElementById('spinButton').addEventListener('click', spinReels);
-    </script>
+    function isInvalidCombination(id1, id2) {
+        return invalidCombinations.some(pair => 
+            (pair[0] === id1 && pair[1] === id2) || 
+            (pair[0] === id2 && pair[1] === id1)
+        );
+    }
+
+    // Reroll on page load
+    window.addEventListener('load', function() {
+        const display1 = document.getElementById('display1');
+        const display2 = document.getElementById('display2');
+        const resultDiv = document.getElementById('result');
+        const invalidMessage = document.getElementById('invalidMessage');
+        
+        let char1, char2;
+        let isValid = false;
+        let attempts = 0;
+        
+        while (!isValid && attempts < 100) {
+            char1 = characters[Math.floor(Math.random() * characters.length)];
+            char2 = characters[Math.floor(Math.random() * characters.length)];
+            if (char1.id !== char2.id && !isInvalidCombination(char1.id, char2.id)) {
+                isValid = true;
+            }
+            attempts++;
+        }
+        
+        if (!isValid) {
+            char1 = characters[Math.floor(Math.random() * characters.length)];
+            do {
+                char2 = characters[Math.floor(Math.random() * characters.length)];
+            } while (char1.id === char2.id);
+        }
+        
+        updateDisplay(display1, char1);
+        updateDisplay(display2, char2);
+        
+        resultDiv.textContent = `${char1.name} × ${char2.name}`;
+        if (isInvalidCombination(char1.id, char2.id)) {
+            invalidMessage.textContent = "⚠️ These characters cannot be paired together!";
+        } else {
+            invalidMessage.textContent = "";
+        }
+    });
+
+    document.getElementById('spinButton').addEventListener('click', spinReels);
+</script>
 </body>
 </html>
