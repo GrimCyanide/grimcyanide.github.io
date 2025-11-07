@@ -472,8 +472,8 @@
             
             <div class="info-box">
                 <h3>Recent Games</h3>
-                <div class="placeholder-content">
-                    Coming soon...
+                <div class="activities-container" id="recentGames">
+                    <div class="loading">Loading recent games...</div>
                 </div>
             </div>
         </div>
@@ -674,10 +674,6 @@
             
             const data = await response.json();
             
-            if (data.error) {
-                throw new Error(`Steam API Error: ${data.error}`);
-            }
-            
             if (!data.games || data.games.length === 0) {
                 gamesContainer.innerHTML = '<div class="no-activity">No recent Steam games</div>';
                 return;
@@ -705,6 +701,7 @@
 </script>
 </body>
 </html>
+
 
 
 
