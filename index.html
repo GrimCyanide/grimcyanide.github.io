@@ -222,6 +222,123 @@
             order: 3;
         }
 
+        /* NEW: Three Box Section Styles */
+        .three-box-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+            order: 2;
+        }
+
+        @media (max-width: 968px) {
+            .three-box-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-box {
+            background: rgba(0, 255, 255, 0.05);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-box h3 {
+            border-bottom: 1px solid #00ffff;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #88ffff;
+            text-align: center;
+        }
+
+        .activities-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        .activity-item {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #004444;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 5px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .trending-item {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #004444;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trending-item:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .activity-name {
+            flex: 1;
+            text-align: left;
+            color: #88ffff;
+        }
+
+        .playtime {
+            background: rgba(0, 100, 100, 0.3);
+            color: #00cccc;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            border: 1px solid #008888;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .no-activity {
+            text-align: center;
+            color: #008888;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #008888;
+            padding: 20px;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            color: #008888;
+            font-style: italic;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Scrollbar styling */
         .playlists-container::-webkit-scrollbar {
             width: 8px;
@@ -241,6 +358,24 @@
             background: #00cccc;
         }
 
+        .trending-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .trending-container::-webkit-scrollbar-track {
+            background: #001a1a;
+            border-radius: 3px;
+        }
+
+        .trending-container::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 3px;
+        }
+
+        .trending-container::-webkit-scrollbar-thumb:hover {
+            background: #00cccc;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding-left: 15px;
@@ -257,16 +392,20 @@
             }
             
             .social-links {
-                order: 1;
+                order: 3;
                 margin-bottom: 30px;
             }
             
             .content {
+                order: 1;
+            }
+
+            .three-box-section {
                 order: 2;
             }
             
             .footer {
-                order: 3;
+                order: 4;
             }
         }
     </style>
@@ -299,6 +438,30 @@
             </div>
         </div>
 
+        <!-- NEW: Three Box Section -->
+        <div class="three-box-section">
+            <div class="info-box">
+                <h3>What I'm up to right now</h3>
+                <div class="activities-container" id="currentActivities">
+                    <div class="loading">Checking activities...</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>Today's Activities</h3>
+                <div class="activities-container trending-container" id="trendingActivities">
+                    <div class="loading">Loading today's activities...</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>Recent Games</h3>
+                <div class="placeholder-content">
+                    Coming soon...
+                </div>
+            </div>
+        </div>
+
         <div class="social-links">
             <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank">
                 <span class="platform">Twitch</span>
@@ -306,7 +469,7 @@
             </a>
             <a href="https://x.com/GrimCyanide" class="social-link" target="_blank">
                 <span class="platform">Twitter / X</span>
-                <span class="username">GrimCyanide</span>
+                <span class="username">@GrimCyanide</span>
             </a>
             <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank">
                 <span class="platform">YouTube</span>
@@ -314,11 +477,11 @@
             </a>
             <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank">
                 <span class="platform">Discord</span>
-                <span class="username">Join Community</span>
+                <span class="username">Join Server</span>
             </a>
             <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank">
                 <span class="platform">TikTok</span>
-                <span class="username">grim_cyanide</span>
+                <span class="username">@Grim_Cyanide</span>
             </a>
             <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank">
                 <span class="platform">Steam</span>
@@ -392,9 +555,104 @@
         }
     }
 
-    // Initialize
+    // NEW: PresenceDB Current Activities
+    async function loadCurrentActivities() {
+        const activitiesContainer = document.getElementById('currentActivities');
+        const PRESENCEDB_API_URL = 'https://www.presencedb.com/api/user/170880054547578880';
+        
+        try {
+            const response = await fetch(PRESENCEDB_API_URL);
+            
+            if (!response.ok) {
+                throw new Error(`PresenceDB API returned ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (!data.success) {
+                throw new Error('PresenceDB API request failed');
+            }
+            
+            // Check if user has any current activities
+            if (!data.data.tracker || !data.data.tracker.activities || data.data.tracker.activities.length === 0) {
+                activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
+                return;
+            }
+            
+            // Display current activities
+            activitiesContainer.innerHTML = '';
+            data.data.tracker.activities.forEach(activity => {
+                const activityElement = document.createElement('div');
+                activityElement.className = 'activity-item';
+                activityElement.textContent = activity.name;
+                activitiesContainer.appendChild(activityElement);
+            });
+            
+        } catch (error) {
+            console.error('PresenceDB Error:', error);
+            activitiesContainer.innerHTML = '<div class="no-activity">Unable to load activities</div>';
+        }
+    }
+
+    // NEW: PresenceDB Trending Activities
+    async function loadTrendingActivities() {
+        const trendingContainer = document.getElementById('trendingActivities');
+        const PRESENCEDB_TRENDING_URL = 'https://www.presencedb.com/api/user/170880054547578880/trending-activities';
+        
+        try {
+            const response = await fetch(PRESENCEDB_TRENDING_URL);
+            
+            if (!response.ok) {
+                throw new Error(`PresenceDB API returned ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (!data.success) {
+                throw new Error('PresenceDB API request failed');
+            }
+            
+            // Check if there are any trending activities
+            if (!data.data || data.data.length === 0) {
+                trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
+                return;
+            }
+            
+            // Display trending activities with formatted playtime
+            trendingContainer.innerHTML = '';
+            data.data.forEach(activity => {
+                const trendingElement = document.createElement('div');
+                trendingElement.className = 'trending-item';
+                
+                // Format playtime
+                const minutes = activity.duration / 60;
+                let playtime;
+                
+                if (minutes < 60) {
+                    playtime = `${Math.round(minutes)}m`;
+                } else {
+                    const hours = minutes / 60;
+                    playtime = `${hours.toFixed(1)}h`;
+                }
+                
+                trendingElement.innerHTML = `
+                    <span class="activity-name">${activity.name}</span>
+                    <span class="playtime">${playtime}</span>
+                `;
+                
+                trendingContainer.appendChild(trendingElement);
+            });
+            
+        } catch (error) {
+            console.error('PresenceDB Trending Error:', error);
+            trendingContainer.innerHTML = '<div class="no-activity">Unable to load activities</div>';
+        }
+    }
+
+    // Initialize all functions
     loadYouTubePlaylists();
+    loadCurrentActivities();
+    loadTrendingActivities();
 </script>
 </body>
 </html>
-
