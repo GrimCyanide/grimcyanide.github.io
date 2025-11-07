@@ -555,29 +555,36 @@
         }
     }
 
-    // NEW: PresenceDB Current Activities
+    // Debug version - PresenceDB Current Activities
     async function loadCurrentActivities() {
         const activitiesContainer = document.getElementById('currentActivities');
         const PRESENCEDB_API_URL = 'https://www.presencedb.com/api/user/170880054547578880';
         
+        console.log('🔍 Starting PresenceDB fetch...');
+        
         try {
             const response = await fetch(PRESENCEDB_API_URL);
+            console.log('📡 Response status:', response.status);
             
             if (!response.ok) {
                 throw new Error(`PresenceDB API returned ${response.status}`);
             }
             
             const data = await response.json();
+            console.log('📊 Full API response:', data);
             
             if (!data.success) {
-                throw new Error('PresenceDB API request failed');
+                throw new Error('PresenceDB API request failed: ' + (data.message || 'Unknown error'));
             }
             
             // Check if user has any current activities
             if (!data.data.tracker || !data.data.tracker.activities || data.data.tracker.activities.length === 0) {
+                console.log('ℹ️ No current activities found');
                 activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
                 return;
             }
+            
+            console.log('🎯 Activities found:', data.data.tracker.activities);
             
             // Display current activities
             activitiesContainer.innerHTML = '';
@@ -589,34 +596,46 @@
             });
             
         } catch (error) {
-            console.error('PresenceDB Error:', error);
+            console.error('❌ PresenceDB Error:', error);
+            console.log('🔍 Error details:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
             activitiesContainer.innerHTML = '<div class="no-activity">Unable to load activities</div>';
         }
     }
 
-    // NEW: PresenceDB Trending Activities
+    // Debug version - PresenceDB Trending Activities
     async function loadTrendingActivities() {
         const trendingContainer = document.getElementById('trendingActivities');
         const PRESENCEDB_TRENDING_URL = 'https://www.presencedb.com/api/user/170880054547578880/trending-activities';
         
+        console.log('🔍 Starting Trending Activities fetch...');
+        
         try {
             const response = await fetch(PRESENCEDB_TRENDING_URL);
+            console.log('📡 Trending Response status:', response.status);
             
             if (!response.ok) {
                 throw new Error(`PresenceDB API returned ${response.status}`);
             }
             
             const data = await response.json();
+            console.log('📊 Trending API response:', data);
             
             if (!data.success) {
-                throw new Error('PresenceDB API request failed');
+                throw new Error('PresenceDB API request failed: ' + (data.message || 'Unknown error'));
             }
             
             // Check if there are any trending activities
             if (!data.data || data.data.length === 0) {
+                console.log('ℹ️ No trending activities found');
                 trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
                 return;
             }
+            
+            console.log('🎯 Trending activities found:', data.data);
             
             // Display trending activities with formatted playtime
             trendingContainer.innerHTML = '';
@@ -644,7 +663,12 @@
             });
             
         } catch (error) {
-            console.error('PresenceDB Trending Error:', error);
+            console.error('❌ PresenceDB Trending Error:', error);
+            console.log('🔍 Trending Error details:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
             trendingContainer.innerHTML = '<div class="no-activity">Unable to load activities</div>';
         }
     }
@@ -656,3 +680,4 @@
 </script>
 </body>
 </html>
+
