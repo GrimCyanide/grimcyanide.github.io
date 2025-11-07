@@ -660,7 +660,7 @@
         }
     }
 
-    // Steam Recent Games
+    // Steam Recent Games with playtime
     async function loadSteamRecentGames() {
         const gamesContainer = document.getElementById('recentGames');
         const STEAM_ID = '76561198066010654';
@@ -682,8 +682,16 @@
             gamesContainer.innerHTML = '';
             data.games.forEach(game => {
                 const gameElement = document.createElement('div');
-                gameElement.className = 'activity-item';
-                gameElement.textContent = game.name;
+                gameElement.className = 'trending-item';
+                
+                const recentHours = (game.playtime_2weeks / 60).toFixed(1);
+                const totalHours = (game.playtime_forever / 60).toFixed(1);
+                
+                gameElement.innerHTML = `
+                    <span class="activity-name">${game.name}</span>
+                    <span class="playtime">${recentHours}h (${totalHours}h)</span>
+                `;
+                
                 gamesContainer.appendChild(gameElement);
             });
             
@@ -701,6 +709,7 @@
 </script>
 </body>
 </html>
+
 
 
 
