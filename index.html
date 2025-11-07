@@ -569,95 +569,113 @@
         }
     }
 
-    // PresenceDB Current Activities
+    // Updated: PresenceDB Current Activities with multiple proxy fallbacks
     async function loadCurrentActivities() {
         const activitiesContainer = document.getElementById('currentActivities');
         const PRESENCEDB_API_URL = 'https://www.presencedb.com/api/user/170880054547578880';
-        const PROXY_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRESENCEDB_API_URL);
         
-        try {
-            const response = await fetch(PROXY_URL);
-            
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
+        // Try multiple CORS proxies
+        const proxies = [
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest='
+        ];
+        
+        for (const proxy of proxies) {
+            try {
+                const PROXY_URL = proxy + encodeURIComponent(PRESENCEDB_API_URL);
+                const response = await fetch(PROXY_URL, { timeout: 5000 });
+                
+                if (!response.ok) continue;
+                
+                const data = await response.json();
+                
+                if (!data.success) continue;
+                
+                if (!data.data.tracker || !data.data.tracker.activities || data.data.tracker.activities.length === 0) {
+                    activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
+                    return;
+                }
+                
+                activitiesContainer.innerHTML = '';
+                data.data.tracker.activities.forEach(activity => {
+                    const activityElement = document.createElement('div');
+                    activityElement.className = 'activity-item';
+                    activityElement.textContent = activity.name;
+                    activitiesContainer.appendChild(activityElement);
+                });
+                return; // Success
+                
+            } catch (error) {
+                console.log(`Proxy ${proxy} failed, trying next...`);
+                continue;
             }
-            
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error('PresenceDB API request failed');
-            }
-            
-            if (!data.data.tracker || !data.data.tracker.activities || data.data.tracker.activities.length === 0) {
-                activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
-                return;
-            }
-            
-            activitiesContainer.innerHTML = '';
-            data.data.tracker.activities.forEach(activity => {
-                const activityElement = document.createElement('div');
-                activityElement.className = 'activity-item';
-                activityElement.textContent = activity.name;
-                activitiesContainer.appendChild(activityElement);
-            });
-            
-        } catch (error) {
-            console.error('PresenceDB Error:', error);
-            activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
         }
+        
+        // All proxies failed
+        activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
     }
 
-    // PresenceDB Trending Activities
+    // Updated: PresenceDB Trending Activities with multiple proxy fallbacks
     async function loadTrendingActivities() {
         const trendingContainer = document.getElementById('trendingActivities');
         const PRESENCEDB_TRENDING_URL = 'https://www.presencedb.com/api/user/170880054547578880/trending-activities';
-        const PROXY_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRESENCEDB_TRENDING_URL);
         
-        try {
-            const response = await fetch(PROXY_URL);
-            
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
-            }
-            
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error('PresenceDB API request failed');
-            }
-            
-            if (!data.data || data.data.length === 0) {
-                trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
-                return;
-            }
-            
-            trendingContainer.innerHTML = '';
-            data.data.forEach(activity => {
-                const trendingElement = document.createElement('div');
-                trendingElement.className = 'trending-item';
+        // Try multiple CORS proxies
+        const proxies = [
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest='
+        ];
+        
+        for (const proxy of proxies) {
+            try {
+                const PROXY_URL = proxy + encodeURIComponent(PRESENCEDB_TRENDING_URL);
+                const response = await fetch(PROXY_URL, { timeout: 5000 });
                 
-                const minutes = activity.duration / 60;
-                let playtime;
+                if (!response.ok) continue;
                 
-                if (minutes < 60) {
-                    playtime = `${Math.round(minutes)}m`;
-                } else {
-                    const hours = minutes / 60;
-                    playtime = `${hours.toFixed(1)}h`;
+                const data = await response.json();
+                
+                if (!data.success) continue;
+                
+                if (!data.data || data.data.length === 0) {
+                    trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
+                    return;
                 }
                 
-                trendingElement.innerHTML = `
-                    <span class="activity-name">${activity.name}</span>
-                    <span class="playtime">${playtime}</span>
-                `;
+                trendingContainer.innerHTML = '';
+                data.data.forEach(activity => {
+                    const trendingElement = document.createElement('div');
+                    trendingElement.className = 'trending-item';
+                    
+                    const minutes = activity.duration / 60;
+                    let playtime;
+                    
+                    if (minutes < 60) {
+                        playtime = `${Math.round(minutes)}m`;
+                    } else {
+                        const hours = minutes / 60;
+                        playtime = `${hours.toFixed(1)}h`;
+                    }
+                    
+                    trendingElement.innerHTML = `
+                        <span class="activity-name">${activity.name}</span>
+                        <span class="playtime">${playtime}</span>
+                    `;
+                    
+                    trendingContainer.appendChild(trendingElement);
+                });
+                return; // Success
                 
-                trendingContainer.appendChild(trendingElement);
-            });
-            
-        } catch (error) {
-            console.error('PresenceDB Trending Error:', error);
-            trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
+            } catch (error) {
+                console.log(`Proxy ${proxy} failed, trying next...`);
+                continue;
+            }
         }
+        
+        // All proxies failed
+        trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
     }
 
     // Steam Recent Games with playtime
@@ -709,6 +727,7 @@
 </script>
 </body>
 </html>
+
 
 
 
