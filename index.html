@@ -29,7 +29,7 @@
     <meta name="twitter:description" content="UK gamer streaming for fun and company. Drop by and say hello on Twitch">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     
-    <style>
+<style>
         /* DARK GRIM THEME */
         body {
             background: #0a0a0a;
@@ -256,12 +256,19 @@
             text-align: center;
         }
 
+        /* UPDATED: Activities containers with height limits */
         .activities-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             min-height: 80px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .trending-container {
+            max-height: 200px;
+            overflow-y: auto;
         }
 
         .activity-item {
@@ -272,6 +279,10 @@
             margin: 5px 0;
             text-align: center;
             transition: all 0.3s ease;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .activity-item:hover {
@@ -290,6 +301,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            min-height: 20px;
         }
 
         .trending-item:hover {
@@ -358,20 +370,24 @@
             background: #00cccc;
         }
 
+        .activities-container::-webkit-scrollbar,
         .trending-container::-webkit-scrollbar {
             width: 6px;
         }
 
+        .activities-container::-webkit-scrollbar-track,
         .trending-container::-webkit-scrollbar-track {
             background: #001a1a;
             border-radius: 3px;
         }
 
+        .activities-container::-webkit-scrollbar-thumb,
         .trending-container::-webkit-scrollbar-thumb {
             background: #00ffff;
             border-radius: 3px;
         }
 
+        .activities-container::-webkit-scrollbar-thumb:hover,
         .trending-container::-webkit-scrollbar-thumb:hover {
             background: #00cccc;
         }
@@ -700,4 +716,5 @@
 </script>
 </body>
 </html>
+
 
