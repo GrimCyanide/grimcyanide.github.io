@@ -64,7 +64,7 @@
             grid-template-columns: 2fr 1fr;
             gap: 30px;
             align-items: stretch;
-            order: 1;
+            order: 2;
         }
 
         @media (max-width: 968px) {
@@ -167,8 +167,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
-            margin: 15px 0;
-            order: 2;
+            margin: 0 0 40px 0;
+            order: 1;
         }
 
         @media (max-width: 768px) {
@@ -219,7 +219,7 @@
             font-size: 0.9em;
             padding-top: 20px;
             text-align: center;
-            order: 3;
+            order: 4;
         }
 
         /* NEW: Three Box Section Styles */
@@ -227,8 +227,8 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-            margin: 15px 0;
-            order: 2;
+            margin: 40px 0;
+            order: 3;
         }
 
         @media (max-width: 968px) {
@@ -408,16 +408,16 @@
             }
             
             .social-links {
-                order: 3;
+                order: 1;
                 margin-bottom: 30px;
             }
             
             .content {
-                order: 1;
+                order: 2;
             }
 
             .three-box-section {
-                order: 2;
+                order: 3;
             }
             
             .footer {
@@ -432,52 +432,7 @@
             <h1>GRIM_CYANIDE</h1>
         </div>
 
-        <div class="content">
-            <div class="twitch-section">
-                <div class="twitch-embed">
-                    <iframe 
-                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
-
-            <div class="playlists-section">
-                <h3>PLAYTHROUGH VODS</h3>
-                <div class="playlists-container">
-                    <div class="playlist-list" id="playlistList">
-                        <div class="playlist-item">
-                            <div class="playlist-title">Loading playlists...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- NEW: Three Box Section -->
-        <div class="three-box-section">
-            <div class="info-box">
-                <h3>What I'm up to right now</h3>
-                <div class="activities-container" id="currentActivities">
-                    <div class="loading">Checking activities...</div>
-                </div>
-            </div>
-            
-            <div class="info-box">
-                <h3>Today's Activities</h3>
-                <div class="activities-container trending-container" id="trendingActivities">
-                    <div class="loading">Loading today's activities...</div>
-                </div>
-            </div>
-            
-            <div class="info-box">
-                <h3>Recent Games</h3>
-                <div class="activities-container" id="recentGames">
-                    <div class="loading">Loading recent games...</div>
-                </div>
-            </div>
-        </div>
-
+        <!-- MOVED: Social Links above stream/VODs -->
         <div class="social-links">
             <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank">
                 <span class="platform">Twitch</span>
@@ -507,6 +462,52 @@
                 <span class="platform">BALL x PIT</span>
                 <span class="username">Matchmaker</span>
             </a>
+        </div>
+
+        <div class="content">
+            <div class="twitch-section">
+                <div class="twitch-embed">
+                    <iframe 
+                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="playlists-section">
+                <h3>PLAYTHROUGH VODS</h3>
+                <div class="playlists-container">
+                    <div class="playlist-list" id="playlistList">
+                        <div class="playlist-item">
+                            <div class="playlist-title">Loading playlists...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Three Box Section -->
+        <div class="three-box-section">
+            <div class="info-box">
+                <h3>What I'm up to right now</h3>
+                <div class="activities-container" id="currentActivities">
+                    <div class="loading">Checking activities...</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>Today's Activities</h3>
+                <div class="activities-container trending-container" id="trendingActivities">
+                    <div class="loading">Loading today's activities...</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>Recent Games</h3>
+                <div class="activities-container" id="recentGames">
+                    <div class="loading">Loading recent games...</div>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
@@ -707,14 +708,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
