@@ -38,6 +38,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -222,7 +223,7 @@
             order: 4;
         }
 
-        /* NEW: Three Box Section Styles */
+        /* Three Box Section Styles */
         .three-box-section {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -256,7 +257,7 @@
             text-align: center;
         }
 
-        /* UPDATED: Activities containers with height limits */
+        /* Activities containers with height limits */
         .activities-container {
             flex: 1;
             display: flex;
@@ -392,6 +393,203 @@
             background: #00cccc;
         }
 
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+            border-radius: 15px;
+            transition: .4s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "🌙";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 3px;
+            background: #00ffff;
+            border-radius: 50%;
+            transition: .4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        input:checked + .toggle-slider {
+            background: rgba(0, 136, 136, 0.2);
+            border: 1px solid #008888;
+        }
+
+        input:checked + .toggle-slider:before {
+            content: "☀️";
+            transform: translateX(30px);
+            background: #008888;
+        }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            background: #e6f2f2 !important;
+            color: #004444 !important;
+        }
+
+        body.light-mode .header h1 {
+            text-shadow: 0 0 10px #000000, 0 0 20px #000000 !important;
+            color: #002222 !important;
+            font-weight: bold !important;
+        }
+
+        body.light-mode .social-link .username {
+            color: #002222 !important;
+            font-weight: 600 !important;
+            font-size: 0.95em !important;
+        }
+
+        body.light-mode .playlist-meta,
+        body.light-mode .playlist-count {
+            font-weight: 600 !important;
+            font-size: 0.85em !important;
+        }
+
+        body.light-mode .social-link .platform {
+            font-weight: 700 !important;
+        }
+
+        body.light-mode .no-activity,
+        body.light-mode .loading,
+        body.light-mode .placeholder-content {
+            color: #556666 !important;
+            font-weight: 500 !important;
+        }
+
+        body.light-mode .activity-name {
+            color: #001111 !important;
+            font-weight: 500 !important;
+        }
+
+        body.light-mode .playtime {
+            font-weight: 600 !important;
+        }
+
+        body.light-mode .twitch-embed {
+            border: 2px solid #000000 !important;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        body.light-mode .playlists-container {
+            border: 1px solid #000000 !important;
+            background: rgba(220, 220, 220, 0.8) !important;
+        }
+
+        body.light-mode .info-box {
+            background: rgba(220, 220, 220, 0.8) !important;
+            border: 2px solid #000000 !important;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        body.light-mode .playlists-section h3,
+        body.light-mode .info-box h3 {
+            border-bottom: 1px solid #000000 !important;
+            color: #001111 !important;
+        }
+
+        body.light-mode .playlist-item {
+            background: rgba(200, 200, 200, 0.9) !important;
+            border: 1px solid #000000 !important;
+            color: #001111 !important;
+        }
+
+        body.light-mode .playlist-item:hover {
+            border-color: #000000 !important;
+            background: rgba(180, 180, 180, 0.9) !important;
+        }
+
+        body.light-mode .social-link {
+            background: rgba(200, 200, 200, 0.9) !important;
+            border: 1px solid #000000 !important;
+            color: #001111 !important;
+        }
+
+        body.light-mode .social-link:hover {
+            background: rgba(180, 180, 180, 0.9) !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        body.light-mode .activity-item,
+        body.light-mode .trending-item {
+            background: rgba(200, 200, 200, 0.9) !important;
+            border: 1px solid #000000 !important;
+            color: #001111 !important;
+        }
+
+        body.light-mode .activity-item:hover,
+        body.light-mode .trending-item:hover {
+            border-color: #000000 !important;
+            background: rgba(180, 180, 180, 0.9) !important;
+        }
+
+        body.light-mode .playlist-count,
+        body.light-mode .playtime {
+            background: rgba(100, 100, 100, 0.3) !important;
+            color: #001111 !important;
+            border: 1px solid #666666 !important;
+        }
+
+        body.light-mode .playlist-title {
+            color: #001111 !important;
+        }
+
+        body.light-mode .footer {
+            color: #556666 !important;
+        }
+
+        body.light-mode .playlists-container::-webkit-scrollbar-track,
+        body.light-mode .activities-container::-webkit-scrollbar-track,
+        body.light-mode .trending-container::-webkit-scrollbar-track {
+            background: #b8d8d8 !important;
+            border-radius: 4px !important;
+        }
+
+        body.light-mode .playlists-container::-webkit-scrollbar-thumb,
+        body.light-mode .activities-container::-webkit-scrollbar-thumb,
+        body.light-mode .trending-container::-webkit-scrollbar-thumb {
+            background: #000000 !important;
+            border-radius: 4px !important;
+        }
+
+        body.light-mode .playlists-container::-webkit-scrollbar-thumb:hover,
+        body.light-mode .activities-container::-webkit-scrollbar-thumb:hover,
+        body.light-mode .trending-container::-webkit-scrollbar-thumb:hover {
+            background: #333333 !important;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding-left: 15px;
@@ -423,16 +621,27 @@
             .footer {
                 order: 4;
             }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="theme-toggle">
+        <label class="toggle-switch">
+            <input type="checkbox" id="themeToggle">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>GRIM_CYANIDE</h1>
         </div>
 
-        <!-- MOVED: Social Links above stream/VODs -->
         <div class="social-links">
             <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank">
                 <span class="platform">Twitch</span>
@@ -486,7 +695,6 @@
             </div>
         </div>
 
-        <!-- Three Box Section -->
         <div class="three-box-section">
             <div class="info-box">
                 <h3>What I'm up to right now</h3>
@@ -570,7 +778,7 @@
         }
     }
 
-    // FIXED: PresenceDB Current Activities via Vercel function
+    // PresenceDB Current Activities via Vercel function
     async function loadCurrentActivities() {
         const activitiesContainer = document.getElementById('currentActivities');
         const USER_ID = '170880054547578880';
@@ -607,7 +815,7 @@
         }
     }
 
-    // FIXED: PresenceDB Trending Activities via Vercel function
+    // PresenceDB Trending Activities via Vercel function
     async function loadTrendingActivities() {
         const trendingContainer = document.getElementById('trendingActivities');
         const USER_ID = '170880054547578880';
@@ -699,6 +907,25 @@
             gamesContainer.innerHTML = '<div class="no-activity">No recent Steam games</div>';
         }
     }
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggle.checked = true;
+    }
+
+    themeToggle.addEventListener('change', function() {
+        if (this.checked) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
 
     // Initialize all functions
     loadYouTubePlaylists();
