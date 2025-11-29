@@ -166,21 +166,27 @@
 
         .social-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
             margin: 0 0 40px 0;
             order: 1;
         }
 
+        @media (max-width: 1200px) {
+            .social-links {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .social-links {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         @media (max-width: 480px) {
             .social-links {
-                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -188,12 +194,13 @@
             background: rgba(0, 255, 255, 0.1);
             border: 1px solid #00ffff;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px 10px;
             text-decoration: none;
             color: #00ffff;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             text-align: center;
+            min-height: auto;
         }
 
         .social-link:hover {
@@ -655,6 +662,10 @@
                 <span class="platform">YouTube</span>
                 <span class="username">Grim_CYANIDE</span>
             </a>
+            <a href="https://vods.grimcyanide.com" class="social-link" target="_blank">
+                <span class="platform">Full VODs List</span>
+                <span class="username">And My Ratings</span>
+            </a>
             <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank">
                 <span class="platform">Discord</span>
                 <span class="username">Join Server</span>
@@ -666,10 +677,6 @@
             <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank">
                 <span class="platform">Steam</span>
                 <span class="username">GrimCyanide</span>
-            </a>
-            <a href="/matchmaker" class="social-link">
-                <span class="platform">BALL x PIT</span>
-                <span class="username">Matchmaker</span>
             </a>
         </div>
 
