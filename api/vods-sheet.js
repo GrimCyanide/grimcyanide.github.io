@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     // Google Sheets public CSV export URL
     // Your sheet ID: 1kihHj41UtODjzqmAZwScCha_9kjBPe2XJPx87_mWXFA
     // GID 1738388228 is the specific tab
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1kihHj41UtODjzqmAZwScCha_9kjBPe2XJPx87_mWXFA/export?format=csv&gid=1738388228';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQuZqj6SawJ3Ul1PAmptF9mWehQeQ_fNSEwJ4MfdiFCdovs6-DATiRCbzspS1f0AX7SWArn9gp5jGRW/pub?gid=1738388228&single=true&output=csv';
     
     const response = await fetch(sheetUrl);
     
