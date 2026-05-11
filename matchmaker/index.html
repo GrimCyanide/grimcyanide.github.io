@@ -7,14 +7,12 @@
     <meta name="description" content="Randomly pairs two compatible BALL x PIT characters to play together. Spin the matchmaker to get random character combinations with proper game restrictions.">
     <meta name="keywords" content="BALL x PIT, ball x pit matchmaker, character randomizer, roguelike, roguelite, Kenny Sun, Devolver Digital, The Warrior, The Itchy Finger, The Repentant, The Cohabitants, The Cogitator, The Embedded, The Empty Nester, The Shade, The Shieldbearer, The Spendthrift, The Flagellant, The Juggler, The Tactician, The Radical, The Physicist, The Makeshift Sisyphus, character pairs, randomizer">
     
-    <!-- Open Graph -->
     <meta property="og:title" content="BALL x PIT Character Matchmaker - Random Pair Generator">
     <meta property="og:description" content="Spin to get random character pairs for BALL x PIT with proper game compatibility restrictions">
     <meta property="og:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <meta property="og:url" content="https://grimcyanide.com/matchmaker">
     <meta property="og:type" content="website">
     
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="BALL x PIT Character Matchmaker">
     <meta name="twitter:description" content="Randomly pairs two compatible BALL x PIT characters to play together">
@@ -181,7 +179,6 @@
             line-height: 1.4;
         }
 
-        /* Theme Toggle */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -242,7 +239,6 @@
             background: #008888;
         }
 
-        /* Light Mode Styles for Matchmaker */
         body.light-mode {
             background: #e6f2f2 !important;
             color: #004444 !important;
@@ -519,7 +515,6 @@
         );
     }
 
-    // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
     const currentTheme = localStorage.getItem('theme');
 
@@ -538,7 +533,6 @@
         }
     });
 
-    // Reroll on page load
     window.addEventListener('load', function() {
         const display1 = document.getElementById('display1');
         const display2 = document.getElementById('display2');
