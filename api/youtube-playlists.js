@@ -1,11 +1,8 @@
 export default async function handler(req, res) {
   const { channel } = req.query;
-  
-  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   
-  // Your secret YouTube API key - safe in serverless environment
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
   
   if (!YOUTUBE_API_KEY) {
@@ -13,7 +10,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get all playlists directly by channel ID (no need to look up channel)
     const playlistsResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channel}&maxResults=50&key=${YOUTUBE_API_KEY}`
     );
@@ -22,7 +18,6 @@ export default async function handler(req, res) {
     if (!playlistsData.items || playlistsData.items.length === 0) {
       return res.status(404).json({ error: 'No playlists found for this channel' });
     }
-    
     const playlists = playlistsData.items.map(playlist => ({
       title: playlist.snippet.title,
       url: `https://www.youtube.com/playlist?list=${playlist.id}`,
