@@ -22,8 +22,8 @@
     <meta name="twitter:title" content="GRIM_CYANIDE - UK Gamer">
     <meta name="twitter:description" content="UK gamer streaming for fun and company. Drop by and say hello on Twitch">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
-    
-<style>
+
+    <style>
         body {
             background: #0a0a0a;
             color: #00ffff;
@@ -88,6 +88,8 @@
             border-bottom: 1px solid #00ffff;
             padding-bottom: 10px;
             margin-top: 0;
+            font-size: 1em;
+            text-align: center;
         }
         .playlists-container {
             flex: 1;
@@ -100,44 +102,105 @@
         .playlist-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
         .playlist-item {
             background: rgba(0, 255, 255, 0.05);
             border: 1px solid #004444;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             transition: all 0.3s ease;
             text-decoration: none;
             color: inherit;
             display: block;
-            text-align: center;
         }
         .playlist-item:hover {
             border-color: #00ffff;
             background: rgba(0, 255, 255, 0.1);
             transform: translateY(-2px);
         }
-        .playlist-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #88ffff;
-            line-height: 1.3;
-            text-align: center;
-        }
-        .playlist-meta {
-            color: #008888;
-            font-size: 0.9em;
+        .vod-header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            gap: 8px;
         }
-        .playlist-count {
+        .vod-title {
+            font-weight: bold;
+            color: #88ffff;
+            font-size: 0.9em;
+            line-height: 1.2;
+            flex: 1;
+        }
+        .vod-status {
+            font-size: 0.65em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .status-finished {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid #00ff64;
+            color: #00ff64;
+            box-shadow: 0 0 6px rgba(0, 255, 100, 0.3);
+        }
+        .status-unfinished {
+            background: rgba(255, 180, 0, 0.1);
+            border: 1px solid #ffb400;
+            color: #ffb400;
+            box-shadow: 0 0 6px rgba(255, 180, 0, 0.3);
+        }
+        .vod-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.7em;
+            color: #008888;
+            margin-bottom: 4px;
+        }
+        .vod-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .vod-rating {
+            color: #ffcc00;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+            text-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
+        }
+        .vod-parts {
             background: rgba(0, 100, 100, 0.3);
             color: #00cccc;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
             border: 1px solid #008888;
+        }
+        .vod-link {
+            display: block;
+            text-align: center;
+            background: rgba(0, 100, 100, 0.3);
+            color: #00cccc;
+            border: 1px solid #008888;
+            border-radius: 6px;
+            padding: 4px 0;
+            text-decoration: none;
+            font-size: 0.7em;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+        }
+        .vod-link:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
         }
         .social-links {
             display: grid;
@@ -196,118 +259,6 @@
             text-align: center;
             order: 4;
         }
-        .three-box-section {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin: 40px 0;
-            order: 3;
-        }
-        @media (max-width: 968px) {
-            .three-box-section {
-                grid-template-columns: 1fr;
-            }
-        }
-        .info-box {
-            background: rgba(0, 255, 255, 0.05);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-            display: flex;
-            flex-direction: column;
-        }
-        .info-box h3 {
-            border-bottom: 1px solid #00ffff;
-            padding-bottom: 10px;
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #88ffff;
-            text-align: center;
-        }
-        .activities-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 80px;
-            max-height: 160px;
-            overflow-y: auto;
-        }
-        .trending-container {
-            max-height: 160px;
-            overflow-y: auto;
-        }
-        .activity-item {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #004444;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 5px 0;
-            text-align: center;
-            transition: all 0.3s ease;
-            min-height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .activity-item:hover {
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-        .trending-item {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #004444;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 20px;
-        }
-        .trending-item:hover {
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-        .activity-name {
-            flex: 1;
-            text-align: left;
-            color: #88ffff;
-        }
-        .playtime {
-            background: rgba(0, 100, 100, 0.3);
-            color: #00cccc;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 0.8em;
-            border: 1px solid #008888;
-            min-width: 50px;
-            text-align: center;
-        }
-        .no-activity {
-            text-align: center;
-            color: #008888;
-            font-style: italic;
-            padding: 20px;
-        }
-        .loading {
-            text-align: center;
-            color: #008888;
-            padding: 20px;
-        }
-        .placeholder-content {
-            text-align: center;
-            color: #008888;
-            font-style: italic;
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
         .playlists-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -320,24 +271,6 @@
             border-radius: 4px;
         }
         .playlists-container::-webkit-scrollbar-thumb:hover {
-            background: #00cccc;
-        }
-        .activities-container::-webkit-scrollbar,
-        .trending-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .activities-container::-webkit-scrollbar-track,
-        .trending-container::-webkit-scrollbar-track {
-            background: #001a1a;
-            border-radius: 3px;
-        }
-        .activities-container::-webkit-scrollbar-thumb,
-        .trending-container::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 3px;
-        }
-        .activities-container::-webkit-scrollbar-thumb:hover,
-        .trending-container::-webkit-scrollbar-thumb:hover {
             background: #00cccc;
         }
         .theme-toggle {
@@ -407,26 +340,8 @@
             font-weight: 600 !important;
             font-size: 0.95em !important;
         }
-        body.light-mode .playlist-meta,
-        body.light-mode .playlist-count {
-            font-weight: 600 !important;
-            font-size: 0.85em !important;
-        }
         body.light-mode .social-link .platform {
             font-weight: 700 !important;
-        }
-        body.light-mode .no-activity,
-        body.light-mode .loading,
-        body.light-mode .placeholder-content {
-            color: #556666 !important;
-            font-weight: 500 !important;
-        }
-        body.light-mode .activity-name {
-            color: #001111 !important;
-            font-weight: 500 !important;
-        }
-        body.light-mode .playtime {
-            font-weight: 600 !important;
         }
         body.light-mode .twitch-embed {
             border: 2px solid #000000 !important;
@@ -436,13 +351,7 @@
             border: 1px solid #000000 !important;
             background: rgba(220, 220, 220, 0.8) !important;
         }
-        body.light-mode .info-box {
-            background: rgba(220, 220, 220, 0.8) !important;
-            border: 2px solid #000000 !important;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2) !important;
-        }
-        body.light-mode .playlists-section h3,
-        body.light-mode .info-box h3 {
+        body.light-mode .playlists-section h3 {
             border-bottom: 1px solid #000000 !important;
             color: #001111 !important;
         }
@@ -464,44 +373,39 @@
             background: rgba(180, 180, 180, 0.9) !important;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
         }
-        body.light-mode .activity-item,
-        body.light-mode .trending-item {
-            background: rgba(200, 200, 200, 0.9) !important;
-            border: 1px solid #000000 !important;
-            color: #001111 !important;
-        }
-        body.light-mode .activity-item:hover,
-        body.light-mode .trending-item:hover {
-            border-color: #000000 !important;
-            background: rgba(180, 180, 180, 0.9) !important;
-        }
-        body.light-mode .playlist-count,
-        body.light-mode .playtime {
+        body.light-mode .vod-parts {
             background: rgba(100, 100, 100, 0.3) !important;
             color: #001111 !important;
             border: 1px solid #666666 !important;
         }
-        body.light-mode .playlist-title {
+        body.light-mode .vod-title {
             color: #001111 !important;
+        }
+        body.light-mode .vod-meta {
+            color: #556666 !important;
+        }
+        body.light-mode .vod-link {
+            background: rgba(100, 100, 100, 0.3) !important;
+            color: #001111 !important;
+            border: 1px solid #666666 !important;
+        }
+        body.light-mode .vod-link:hover {
+            background: rgba(180, 180, 180, 0.9) !important;
+            border-color: #000000 !important;
+            color: #000000 !important;
         }
         body.light-mode .footer {
             color: #556666 !important;
         }
-        body.light-mode .playlists-container::-webkit-scrollbar-track,
-        body.light-mode .activities-container::-webkit-scrollbar-track,
-        body.light-mode .trending-container::-webkit-scrollbar-track {
+        body.light-mode .playlists-container::-webkit-scrollbar-track {
             background: #b8d8d8 !important;
             border-radius: 4px !important;
         }
-        body.light-mode .playlists-container::-webkit-scrollbar-thumb,
-        body.light-mode .activities-container::-webkit-scrollbar-thumb,
-        body.light-mode .trending-container::-webkit-scrollbar-thumb {
+        body.light-mode .playlists-container::-webkit-scrollbar-thumb {
             background: #000000 !important;
             border-radius: 4px !important;
         }
-        body.light-mode .playlists-container::-webkit-scrollbar-thumb:hover,
-        body.light-mode .activities-container::-webkit-scrollbar-thumb:hover,
-        body.light-mode .trending-container::-webkit-scrollbar-thumb:hover {
+        body.light-mode .playlists-container::-webkit-scrollbar-thumb:hover {
             background: #333333 !important;
         }
         @media (max-width: 768px) {
@@ -523,9 +427,6 @@
             }
             .content {
                 order: 2;
-            }
-            .three-box-section {
-                order: 3;
             }
             .footer {
                 order: 4;
@@ -584,8 +485,8 @@
         <div class="content">
             <div class="twitch-section">
                 <div class="twitch-embed">
-                    <iframe 
-                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" 
+                    <iframe
+                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com"
                         allowfullscreen>
                     </iframe>
                 </div>
@@ -596,32 +497,9 @@
                 <div class="playlists-container">
                     <div class="playlist-list" id="playlistList">
                         <div class="playlist-item">
-                            <div class="playlist-title">Loading playlists...</div>
+                            <div class="vod-title" style="text-align:center;">Loading playthroughs...</div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="three-box-section">
-            <div class="info-box">
-                <h3>What I'm up to right now</h3>
-                <div class="activities-container" id="currentActivities">
-                    <div class="loading">Checking activities...</div>
-                </div>
-            </div>
-            
-            <div class="info-box">
-                <h3>Today's Activities</h3>
-                <div class="activities-container trending-container" id="trendingActivities">
-                    <div class="loading">Loading today's activities...</div>
-                </div>
-            </div>
-            
-            <div class="info-box">
-                <h3>Recent Games</h3>
-                <div class="activities-container" id="recentGames">
-                    <div class="loading">Loading recent games...</div>
                 </div>
             </div>
         </div>
@@ -631,202 +509,92 @@
         </div>
     </div>
 
-<script>
-    const YOUTUBE_CHANNEL_ID = 'UCbKFfRl4ktuMWb4GvCXx_rg';
-
-    async function loadYouTubePlaylists() {
-        const playlistList = document.getElementById('playlistList');
-        
-        try {
-            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/youtube-playlists?channel=${YOUTUBE_CHANNEL_ID}`);
-            
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}: ${response.statusText}`);
-            }
-            
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(`API Error: ${data.error}`);
-            }
-            
-            if (!data.playlists || data.playlists.length === 0) {
-                throw new Error('No playlists found in response');
-            }
-            
-            playlistList.innerHTML = '';
-            
-            data.playlists.sort((a, b) => a.title.localeCompare(b.title));
-            
-            data.playlists.forEach(playlist => {
-                const playlistItem = document.createElement('a');
-                playlistItem.href = playlist.url;
-                playlistItem.target = '_blank';
-                playlistItem.className = 'playlist-item';
-                
-                playlistItem.innerHTML = `
-                    <div class="playlist-title">${playlist.title}</div>
-                    <div class="playlist-meta">
-                        <span class="playlist-count">${playlist.count} ${playlist.count === 1 ? 'video' : 'videos'}</span>
-                    </div>
-                `;
-                
-                playlistList.appendChild(playlistItem);
-            });
-            
-        } catch (error) {
-            console.error('Playlist Error:', error);
-            playlistList.innerHTML = `
-                <div class="playlist-item">
-                    <div class="playlist-title">Error: ${error.message}</div>
-                    <div class="playlist-meta">Check browser console for details</div>
-                </div>
-            `;
-        }
-    }
-    async function loadCurrentActivities() {
-        const activitiesContainer = document.getElementById('currentActivities');
-        const USER_ID = '170880054547578880';
-        
-        try {
-            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/presencedb?userid=${USER_ID}`);
-            
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
-            }
-            
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error('PresenceDB API request failed');
-            }
-            
-            if (!data.data.tracker || !data.data.tracker.activities || data.data.tracker.activities.length === 0) {
-                activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
-                return;
-            }
-            
-            activitiesContainer.innerHTML = '';
-            data.data.tracker.activities.forEach(activity => {
-                const activityElement = document.createElement('div');
-                activityElement.className = 'activity-item';
-                activityElement.textContent = activity.name;
-                activitiesContainer.appendChild(activityElement);
-            });
-            
-        } catch (error) {
-            console.error('PresenceDB Error:', error);
-            activitiesContainer.innerHTML = '<div class="no-activity">Not currently doing anything</div>';
-        }
-    }
-    async function loadTrendingActivities() {
-        const trendingContainer = document.getElementById('trendingActivities');
-        const USER_ID = '170880054547578880';
-        
-        try {
-            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/presencedb?userid=${USER_ID}&type=trending`);
-            
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
-            }
-            
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error('PresenceDB API request failed');
-            }
-            
-            if (!data.data || data.data.length === 0) {
-                trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
-                return;
-            }
-            
-            trendingContainer.innerHTML = '';
-            data.data.forEach(activity => {
-                const trendingElement = document.createElement('div');
-                trendingElement.className = 'trending-item';
-                
-                const minutes = activity.duration / 60;
-                let playtime;
-                
-                if (minutes < 60) {
-                    playtime = `${Math.round(minutes)}m`;
-                } else {
-                    const hours = minutes / 60;
-                    playtime = `${hours.toFixed(1)}h`;
+    <script>
+        async function loadVODsData() {
+            const playlistList = document.getElementById('playlistList');
+            try {
+                const response = await fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet');
+                if (!response.ok) throw new Error(`API returned ${response.status}`);
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                if (!data.games || data.games.length === 0) {
+                    playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">No playthroughs found yet.</div></div>';
+                    return;
                 }
-                
-                trendingElement.innerHTML = `
-                    <span class="activity-name">${activity.name}</span>
-                    <span class="playtime">${playtime}</span>
-                `;
-                
-                trendingContainer.appendChild(trendingElement);
-            });
-            
-        } catch (error) {
-            console.error('PresenceDB Trending Error:', error);
-            trendingContainer.innerHTML = '<div class="no-activity">No activities today</div>';
-        }
-    }
-    async function loadSteamRecentGames() {
-        const gamesContainer = document.getElementById('recentGames');
-        const STEAM_ID = '76561198066010654';
-        
-        try {
-            const response = await fetch(`https://grimcyanide-github-io.vercel.app/api/steam-games?steamid=${STEAM_ID}`);
-            
-            if (!response.ok) {
-                throw new Error(`Steam API returned ${response.status}`);
+                const games = data.games;
+                games.sort((a, b) => {
+                    const dateA = parseDate(a.dateStarted);
+                    const dateB = parseDate(b.dateStarted);
+                    if (!dateA && !dateB) return 0;
+                    if (!dateA) return 1;
+                    if (!dateB) return -1;
+                    return dateB - dateA;
+                });
+                playlistList.innerHTML = '';
+                games.forEach(game => {
+                    const item = document.createElement('div');
+                    item.className = 'playlist-item';
+                    let starsHtml = '';
+                    if (game.rating && game.rating > 0) {
+                        const fullStars = Math.floor(game.rating);
+                        const halfStar = game.rating % 1 >= 0.5;
+                        let stars = '';
+                        for (let i = 0; i < fullStars; i++) stars += '★';
+                        if (halfStar) stars += '⯪';
+                        starsHtml = `<span class="vod-rating">${stars}</span>`;
+                    }
+                    const linkHtml = game.linkUrl
+                        ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
+                        : '';
+                    item.innerHTML = `
+                        <div class="vod-header">
+                            <span class="vod-title">${escapeHtml(game.game)}</span>
+                            <span class="vod-status ${game.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished'}">${game.isFinished === 'Finished' ? '✓' : '◌'}</span>
+                        </div>
+                        <div class="vod-meta">
+                            ${starsHtml ? starsHtml : ''}
+                            <span>📅 ${escapeHtml(game.dateStarted || '?')}</span>
+                            ${game.dateFinished ? `<span>🏁 ${escapeHtml(game.dateFinished)}</span>` : ''}
+                        </div>
+                        <span class="vod-parts">${game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '')}</span>
+                        ${linkHtml}
+                    `;
+                    playlistList.appendChild(item);
+                });
+            } catch (error) {
+                console.error('VODs Error:', error);
+                playlistList.innerHTML = `<div class="playlist-item"><div class="vod-title" style="text-align:center;">Error loading VODs</div></div>`;
             }
-            
-            const data = await response.json();
-            
-            if (!data.games || data.games.length === 0) {
-                gamesContainer.innerHTML = '<div class="no-activity">No recent Steam games</div>';
-                return;
-            }
-            gamesContainer.innerHTML = '';
-            data.games.forEach(game => {
-                const gameElement = document.createElement('div');
-                gameElement.className = 'trending-item';
-                
-                const recentHours = (game.playtime_2weeks / 60).toFixed(1);
-                const totalHours = (game.playtime_forever / 60).toFixed(1);
-                
-                gameElement.innerHTML = `
-                    <span class="activity-name">${game.name}</span>
-                    <span class="playtime">${recentHours}h (${totalHours}h)</span>
-                `;
-                gamesContainer.appendChild(gameElement);
-            });
-            
-        } catch (error) {
-            console.error('Steam Games Error:', error);
-            gamesContainer.innerHTML = '<div class="no-activity">No recent Steam games</div>';
         }
-    }
-    const themeToggle = document.getElementById('themeToggle');
-    const currentTheme = localStorage.getItem('theme');
-
-    if (currentTheme === 'light') {
-        document.body.classList.add('light-mode');
-        themeToggle.checked = true;
-    }
-
-    themeToggle.addEventListener('change', function() {
-        if (this.checked) {
+        function parseDate(dateStr) {
+            if (!dateStr) return null;
+            const dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            if (dmyMatch) return new Date(dmyMatch[3], dmyMatch[2] - 1, dmyMatch[1]);
+            const parsed = new Date(dateStr);
+            if (!isNaN(parsed.getTime())) return parsed;
+            return null;
+        }
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'light') {
             document.body.classList.add('light-mode');
-            localStorage.setItem('theme', 'light');
-        } else {
-            document.body.classList.remove('light-mode');
-            localStorage.setItem('theme', 'dark');
+            themeToggle.checked = true;
         }
-    });
-    loadYouTubePlaylists();
-    loadCurrentActivities();
-    loadTrendingActivities();
-    loadSteamRecentGames();
-</script>
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        loadVODsData();
+    </script>
 </body>
 </html>
