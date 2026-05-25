@@ -88,12 +88,43 @@
             border-bottom: 1px solid #00ffff;
             padding-bottom: 10px;
             margin-top: 0;
+            margin-bottom: 10px;
             font-size: 1em;
             text-align: center;
         }
+        .vod-controls {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .vod-control-btn {
+            flex: 1;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid #004444;
+            border-radius: 6px;
+            color: #00cccc;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7em;
+            padding: 6px 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .vod-control-btn:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.15);
+            color: #00ffff;
+        }
+        .vod-control-btn.active {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+        }
         .playlists-container {
             flex: 1;
-            max-height: 365px;
+            max-height: 315px;
             overflow-y: auto;
             border: 1px solid #004444;
             border-radius: 8px;
@@ -102,7 +133,7 @@
         .playlist-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .playlist-item {
             background: rgba(0, 255, 255, 0.05);
@@ -129,12 +160,12 @@
         .vod-title {
             font-weight: bold;
             color: #88ffff;
-            font-size: 0.9em;
+            font-size: 0.85em;
             line-height: 1.2;
             flex: 1;
         }
         .vod-status {
-            font-size: 0.65em;
+            font-size: 0.6em;
             padding: 2px 8px;
             border-radius: 10px;
             white-space: nowrap;
@@ -153,32 +184,29 @@
             color: #ffb400;
             box-shadow: 0 0 6px rgba(255, 180, 0, 0.3);
         }
-        .vod-meta {
+        .vod-details {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px 12px;
             align-items: center;
-            font-size: 0.7em;
+            font-size: 0.68em;
             color: #008888;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            line-height: 1.4;
         }
-        .vod-meta span {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
+        .vod-details span {
+            white-space: nowrap;
         }
         .vod-rating {
             color: #ffcc00;
-            font-size: 0.75em;
-            letter-spacing: 1px;
-            text-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
+            font-weight: bold;
         }
         .vod-parts {
             background: rgba(0, 100, 100, 0.3);
             color: #00cccc;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75em;
+            padding: 1px 7px;
+            border-radius: 8px;
+            font-size: 0.9em;
             border: 1px solid #008888;
         }
         .vod-link {
@@ -190,11 +218,10 @@
             border-radius: 6px;
             padding: 4px 0;
             text-decoration: none;
-            font-size: 0.7em;
+            font-size: 0.68em;
             font-weight: bold;
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
-            margin-top: 6px;
         }
         .vod-link:hover {
             background: rgba(0, 255, 255, 0.15);
@@ -381,8 +408,11 @@
         body.light-mode .vod-title {
             color: #001111 !important;
         }
-        body.light-mode .vod-meta {
+        body.light-mode .vod-details {
             color: #556666 !important;
+        }
+        body.light-mode .vod-rating {
+            color: #996600 !important;
         }
         body.light-mode .vod-link {
             background: rgba(100, 100, 100, 0.3) !important;
@@ -391,6 +421,21 @@
         }
         body.light-mode .vod-link:hover {
             background: rgba(180, 180, 180, 0.9) !important;
+            border-color: #000000 !important;
+            color: #000000 !important;
+        }
+        body.light-mode .vod-control-btn {
+            background: rgba(200, 200, 200, 0.9) !important;
+            border: 1px solid #000000 !important;
+            color: #001111 !important;
+        }
+        body.light-mode .vod-control-btn:hover {
+            background: rgba(180, 180, 180, 0.9) !important;
+            border-color: #000000 !important;
+            color: #000000 !important;
+        }
+        body.light-mode .vod-control-btn.active {
+            background: rgba(160, 160, 160, 0.9) !important;
             border-color: #000000 !important;
             color: #000000 !important;
         }
@@ -494,6 +539,14 @@
 
             <div class="playlists-section">
                 <h3>PLAYTHROUGH VODS</h3>
+                <div class="vod-controls">
+                    <button class="vod-control-btn" id="btnSortAZ" onclick="setSort('az')">A → Z</button>
+                    <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">Z → A</button>
+                    <button class="vod-control-btn" id="btnFilterAll" onclick="setFilter('all')">All</button>
+                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">Finished</button>
+                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">Unfinished</button>
+                    <a href="/vods" class="vod-control-btn">Full List →</a>
+                </div>
                 <div class="playlists-container">
                     <div class="playlist-list" id="playlistList">
                         <div class="playlist-item">
@@ -510,6 +563,10 @@
     </div>
 
     <script>
+        let allVODs = [];
+        let currentSort = 'az';
+        let currentFilter = 'all';
+
         async function loadVODsData() {
             const playlistList = document.getElementById('playlistList');
             try {
@@ -521,51 +578,15 @@
                     playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">No playthroughs found yet.</div></div>';
                     return;
                 }
-                const games = data.games;
-                games.sort((a, b) => {
-                    const dateA = parseDate(a.dateStarted);
-                    const dateB = parseDate(b.dateStarted);
-                    if (!dateA && !dateB) return 0;
-                    if (!dateA) return 1;
-                    if (!dateB) return -1;
-                    return dateB - dateA;
-                });
-                playlistList.innerHTML = '';
-                games.forEach(game => {
-                    const item = document.createElement('div');
-                    item.className = 'playlist-item';
-                    let starsHtml = '';
-                    if (game.rating && game.rating > 0) {
-                        const fullStars = Math.floor(game.rating);
-                        const halfStar = game.rating % 1 >= 0.5;
-                        let stars = '';
-                        for (let i = 0; i < fullStars; i++) stars += '★';
-                        if (halfStar) stars += '⯪';
-                        starsHtml = `<span class="vod-rating">${stars}</span>`;
-                    }
-                    const linkHtml = game.linkUrl
-                        ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
-                        : '';
-                    item.innerHTML = `
-                        <div class="vod-header">
-                            <span class="vod-title">${escapeHtml(game.game)}</span>
-                            <span class="vod-status ${game.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished'}">${game.isFinished === 'Finished' ? '✓' : '◌'}</span>
-                        </div>
-                        <div class="vod-meta">
-                            ${starsHtml ? starsHtml : ''}
-                            <span>📅 ${escapeHtml(game.dateStarted || '?')}</span>
-                            ${game.dateFinished ? `<span>🏁 ${escapeHtml(game.dateFinished)}</span>` : ''}
-                        </div>
-                        <span class="vod-parts">${game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '')}</span>
-                        ${linkHtml}
-                    `;
-                    playlistList.appendChild(item);
-                });
+                allVODs = data.games;
+                setSort('az');
+                setFilter('all');
             } catch (error) {
                 console.error('VODs Error:', error);
-                playlistList.innerHTML = `<div class="playlist-item"><div class="vod-title" style="text-align:center;">Error loading VODs</div></div>`;
+                playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">Error loading VODs</div></div>';
             }
         }
+
         function parseDate(dateStr) {
             if (!dateStr) return null;
             const dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -574,11 +595,77 @@
             if (!isNaN(parsed.getTime())) return parsed;
             return null;
         }
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
+
+        function setSort(sort) {
+            currentSort = sort;
+            document.getElementById('btnSortAZ').classList.remove('active');
+            document.getElementById('btnSortZA').classList.remove('active');
+            if (sort === 'az') document.getElementById('btnSortAZ').classList.add('active');
+            if (sort === 'za') document.getElementById('btnSortZA').classList.add('active');
+            renderVODs();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.getElementById('btnFilterAll').classList.remove('active');
+            document.getElementById('btnFilterFinished').classList.remove('active');
+            document.getElementById('btnFilterUnfinished').classList.remove('active');
+            if (filter === 'all') document.getElementById('btnFilterAll').classList.add('active');
+            if (filter === 'Finished') document.getElementById('btnFilterFinished').classList.add('active');
+            if (filter === 'Unfinished') document.getElementById('btnFilterUnfinished').classList.add('active');
+            renderVODs();
+        }
+
+        function renderVODs() {
+            const playlistList = document.getElementById('playlistList');
+            let games = [...allVODs];
+
+            if (currentFilter !== 'all') {
+                games = games.filter(g => g.isFinished === currentFilter);
+            }
+
+            games.sort((a, b) => {
+                if (currentSort === 'az') return a.game.localeCompare(b.game);
+                if (currentSort === 'za') return b.game.localeCompare(a.game);
+                return 0;
+            });
+
+            if (games.length === 0) {
+                playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">No playthroughs match filter.</div></div>';
+                return;
+            }
+
+            playlistList.innerHTML = '';
+            games.forEach(game => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                const ratingText = game.rating && game.rating > 0 ? `Rating: ${game.rating}/10` : 'Rating: N/A';
+                const linkHtml = game.linkUrl
+                    ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
+                    : '';
+                item.innerHTML = `
+                    <div class="vod-header">
+                        <span class="vod-title">${escapeHtml(game.game)}</span>
+                        <span class="vod-status ${game.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished'}">${game.isFinished === 'Finished' ? 'Finished' : 'Unfinished'}</span>
+                    </div>
+                    <div class="vod-details">
+                        <span class="vod-rating">${ratingText}</span>
+                        <span>Started: ${escapeHtml(game.dateStarted || '?')}</span>
+                        ${game.dateFinished ? `<span>Finished: ${escapeHtml(game.dateFinished)}</span>` : '<span>Finished: —</span>'}
+                        <span class="vod-parts">${game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '')}</span>
+                    </div>
+                    ${linkHtml}
+                `;
+                playlistList.appendChild(item);
+            });
+        }
+
         const themeToggle = document.getElementById('themeToggle');
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'light') {
@@ -594,6 +681,7 @@
                 localStorage.setItem('theme', 'dark');
             }
         });
+
         loadVODsData();
     </script>
 </body>
