@@ -127,7 +127,7 @@
         }
         .playlists-container {
             flex: 1;
-            max-height: 328px;
+            max-height: none;
             overflow-y: auto;
             border: 1px solid #004444;
             border-radius: 8px;
@@ -564,8 +564,8 @@
                     <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">A-Z</button>
                     <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">Z-A</button>
                     <button class="vod-control-btn active" id="btnFilterAll" onclick="setFilter('all')">All</button>
-                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">Fin</button>
-                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">Unf</button>
+                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">✓</button>
+                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">✗</button>
                     <a href="/vods" class="vod-control-btn">More →</a>
                 </div>
                 <div class="playlists-container">
@@ -676,13 +676,14 @@
                 item.className = 'playlist-item';
                 const ratingText = game.rating && game.rating > 0 ? `Rating: ${game.rating}/10` : 'Rating: N/A';
                 const partsText = formatParts(game.partsDisplay, game.parts);
+                const statusText = game.isFinished === 'Finished' ? '✓ Finished' : '✗ Unfinished';
                 const linkHtml = game.linkUrl
                     ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
                     : '';
                 item.innerHTML = `
                     <div class="vod-header">
                         <span class="vod-title">${escapeHtml(game.game)}</span>
-                        <span class="vod-status ${game.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished'}">${game.isFinished === 'Finished' ? 'Finished' : 'Unfinished'}</span>
+                        <span class="vod-status ${game.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished'}">${statusText}</span>
                     </div>
                     <div class="vod-details">
                         <span class="vod-rating">${ratingText}</span>
