@@ -96,9 +96,11 @@
             display: flex;
             gap: 6px;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
         .vod-control-btn {
             flex: 1;
+            min-width: 50px;
             background: rgba(0, 255, 255, 0.05);
             border: 1px solid #004444;
             border-radius: 6px;
@@ -154,7 +156,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             gap: 8px;
         }
         .vod-title {
@@ -171,6 +173,7 @@
             white-space: nowrap;
             font-weight: bold;
             letter-spacing: 0.5px;
+            flex-shrink: 0;
         }
         .status-finished {
             background: rgba(0, 255, 100, 0.1);
@@ -187,12 +190,12 @@
         .vod-details {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px 12px;
+            gap: 4px 10px;
             align-items: center;
             font-size: 0.68em;
             color: #008888;
-            margin-bottom: 6px;
-            line-height: 1.4;
+            margin-bottom: 3px;
+            line-height: 1.5;
         }
         .vod-details span {
             white-space: nowrap;
@@ -201,6 +204,19 @@
             color: #ffcc00;
             font-weight: bold;
         }
+        .vod-dates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            align-items: center;
+            font-size: 0.68em;
+            color: #008888;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+        .vod-dates span {
+            white-space: nowrap;
+        }
         .vod-parts {
             background: rgba(0, 100, 100, 0.3);
             color: #00cccc;
@@ -208,6 +224,7 @@
             border-radius: 8px;
             font-size: 0.9em;
             border: 1px solid #008888;
+            display: inline-block;
         }
         .vod-link {
             display: block;
@@ -411,6 +428,9 @@
         body.light-mode .vod-details {
             color: #556666 !important;
         }
+        body.light-mode .vod-dates {
+            color: #556666 !important;
+        }
         body.light-mode .vod-rating {
             color: #996600 !important;
         }
@@ -540,9 +560,9 @@
             <div class="playlists-section">
                 <h3>PLAYTHROUGH VODS</h3>
                 <div class="vod-controls">
-                    <button class="vod-control-btn" id="btnSortAZ" onclick="setSort('az')">A → Z</button>
+                    <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">A → Z</button>
                     <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">Z → A</button>
-                    <button class="vod-control-btn" id="btnFilterAll" onclick="setFilter('all')">All</button>
+                    <button class="vod-control-btn active" id="btnFilterAll" onclick="setFilter('all')">All</button>
                     <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">Finished</button>
                     <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">Unfinished</button>
                     <a href="/vods" class="vod-control-btn">Full List →</a>
@@ -579,8 +599,7 @@
                     return;
                 }
                 allVODs = data.games;
-                setSort('az');
-                setFilter('all');
+                renderVODs();
             } catch (error) {
                 console.error('VODs Error:', error);
                 playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">Error loading VODs</div></div>';
@@ -656,9 +675,11 @@
                     </div>
                     <div class="vod-details">
                         <span class="vod-rating">${ratingText}</span>
+                        <span class="vod-parts">${game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '')}</span>
+                    </div>
+                    <div class="vod-dates">
                         <span>Started: ${escapeHtml(game.dateStarted || '?')}</span>
                         ${game.dateFinished ? `<span>Finished: ${escapeHtml(game.dateFinished)}</span>` : '<span>Finished: —</span>'}
-                        <span class="vod-parts">${game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '')}</span>
                     </div>
                     ${linkHtml}
                 `;
