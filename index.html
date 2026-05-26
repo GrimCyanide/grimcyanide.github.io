@@ -94,25 +94,26 @@
         }
         .vod-controls {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             margin-bottom: 10px;
-            flex-wrap: wrap;
         }
         .vod-control-btn {
             flex: 1;
-            min-width: 50px;
+            min-width: 0;
             background: rgba(0, 255, 255, 0.05);
             border: 1px solid #004444;
             border-radius: 6px;
             color: #00cccc;
             font-family: 'Courier New', monospace;
-            font-size: 0.7em;
-            padding: 6px 8px;
+            font-size: 0.65em;
+            padding: 5px 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
             text-decoration: none;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .vod-control-btn:hover {
             border-color: #00ffff;
@@ -126,7 +127,7 @@
         }
         .playlists-container {
             flex: 1;
-            max-height: 315px;
+            max-height: 328px;
             overflow-y: auto;
             border: 1px solid #004444;
             border-radius: 8px;
@@ -189,20 +190,29 @@
         }
         .vod-details {
             display: flex;
-            flex-wrap: wrap;
-            gap: 4px 10px;
             align-items: center;
+            gap: 0;
             font-size: 0.68em;
             color: #008888;
             margin-bottom: 3px;
             line-height: 1.5;
         }
-        .vod-details span {
-            white-space: nowrap;
-        }
         .vod-rating {
             color: #ffcc00;
             font-weight: bold;
+            white-space: nowrap;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .vod-parts {
+            background: rgba(0, 100, 100, 0.3);
+            color: #00cccc;
+            padding: 1px 7px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            border: 1px solid #008888;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .vod-dates {
             display: flex;
@@ -216,15 +226,6 @@
         }
         .vod-dates span {
             white-space: nowrap;
-        }
-        .vod-parts {
-            background: rgba(0, 100, 100, 0.3);
-            color: #00cccc;
-            padding: 1px 7px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            border: 1px solid #008888;
-            display: inline-block;
         }
         .vod-link {
             display: block;
@@ -560,12 +561,12 @@
             <div class="playlists-section">
                 <h3>PLAYTHROUGH VODS</h3>
                 <div class="vod-controls">
-                    <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">A → Z</button>
-                    <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">Z → A</button>
+                    <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">A-Z</button>
+                    <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">Z-A</button>
                     <button class="vod-control-btn active" id="btnFilterAll" onclick="setFilter('all')">All</button>
-                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">Finished</button>
-                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">Unfinished</button>
-                    <a href="/vods" class="vod-control-btn">Full List →</a>
+                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">Fin</button>
+                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">Unf</button>
+                    <a href="/vods" class="vod-control-btn">More →</a>
                 </div>
                 <div class="playlists-container">
                     <div class="playlist-list" id="playlistList">
@@ -604,15 +605,6 @@
                 console.error('VODs Error:', error);
                 playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">Error loading VODs</div></div>';
             }
-        }
-
-        function parseDate(dateStr) {
-            if (!dateStr) return null;
-            const dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-            if (dmyMatch) return new Date(dmyMatch[3], dmyMatch[2] - 1, dmyMatch[1]);
-            const parsed = new Date(dateStr);
-            if (!isNaN(parsed.getTime())) return parsed;
-            return null;
         }
 
         function escapeHtml(text) {
@@ -665,6 +657,7 @@
                 const item = document.createElement('div');
                 item.className = 'playlist-item';
                 const ratingText = game.rating && game.rating > 0 ? `Rating: ${game.rating}/10` : 'Rating: N/A';
+                const partsText = game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '');
                 const linkHtml = game.linkUrl
                     ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
                     : '';
@@ -675,7 +668,7 @@
                     </div>
                     <div class="vod-details">
                         <span class="vod-rating">${ratingText}</span>
-                        <span class="vod-parts">${game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '')}</span>
+                        <span class="vod-parts">${partsText}</span>
                     </div>
                     <div class="vod-dates">
                         <span>Started: ${escapeHtml(game.dateStarted || '?')}</span>
