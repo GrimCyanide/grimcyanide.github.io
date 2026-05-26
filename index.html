@@ -201,7 +201,7 @@
             color: #ffcc00;
             font-weight: bold;
             white-space: nowrap;
-            width: 80px;
+            width: 90px;
             flex-shrink: 0;
         }
         .vod-parts {
@@ -613,6 +613,24 @@
             return div.innerHTML;
         }
 
+        function formatParts(partsDisplay, parts) {
+            if (partsDisplay) {
+                let text = partsDisplay;
+                if (text.toLowerCase().includes('so far')) {
+                    text = text.replace(/so far/i, '').trim();
+                    if (!text.toLowerCase().includes('part')) {
+                        text = text + (text ? ' parts so far' : 'parts so far');
+                    } else {
+                        text = text + ' so far';
+                    }
+                } else if (!text.toLowerCase().includes('part')) {
+                    text = text + ' part' + (parts !== 1 ? 's' : '');
+                }
+                return text;
+            }
+            return parts + ' part' + (parts !== 1 ? 's' : '');
+        }
+
         function setSort(sort) {
             currentSort = sort;
             document.getElementById('btnSortAZ').classList.remove('active');
@@ -657,7 +675,7 @@
                 const item = document.createElement('div');
                 item.className = 'playlist-item';
                 const ratingText = game.rating && game.rating > 0 ? `Rating: ${game.rating}/10` : 'Rating: N/A';
-                const partsText = game.partsDisplay || game.parts + ' part' + (game.parts !== 1 ? 's' : '');
+                const partsText = formatParts(game.partsDisplay, game.parts);
                 const linkHtml = game.linkUrl
                     ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
                     : '';
