@@ -53,7 +53,7 @@
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
-            align-items: stretch;
+            align-items: start;
             order: 2;
         }
         @media (max-width: 968px) {
@@ -80,9 +80,9 @@
             border: none;
         }
         .playlists-section {
-            height: 100%;
             display: flex;
             flex-direction: column;
+            max-height: 430px;
         }
         .playlists-section h3 {
             border-bottom: 1px solid #00ffff;
@@ -500,6 +500,9 @@
             .theme-toggle {
                 top: 10px;
                 right: 10px;
+            }
+            .playlists-section {
+                max-height: none;
             }
         }
     </style>
