@@ -116,7 +116,7 @@
         }
         .content {
             display: grid;
-            grid-template-columns: 1.8fr 1fr;
+            grid-template-columns: 1fr 380px;
             gap: 24px;
             align-items: start;
         }
@@ -146,9 +146,6 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            display: flex;
-            flex-direction: column;
-            max-height: 460px;
             overflow: hidden;
         }
         .vods-panel-header {
@@ -174,95 +171,52 @@
         .vods-panel-header a:hover {
             text-decoration: underline;
         }
-        .vod-controls {
-            display: flex;
-            gap: 4px;
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .vod-control-btn {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--muted);
-            font-family: var(--font);
-            font-size: 0.7em;
-            padding: 5px 8px;
-            cursor: pointer;
-            transition: all 0.15s;
-            white-space: nowrap;
-            text-decoration: none;
-        }
-        .vod-control-btn:hover {
-            border-color: var(--accent);
-            color: var(--text);
-        }
-        .vod-control-btn.active {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
         .vods-list {
-            flex: 1;
-            overflow-y: auto;
             padding: 8px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
         .vod-row {
-            display: grid;
-            grid-template-columns: 1fr 60px 80px;
+            display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 10px;
+            padding: 9px 10px;
             border-radius: 4px;
-            font-size: 0.82em;
+            font-size: 0.84em;
             transition: background 0.15s;
             text-decoration: none;
             color: inherit;
+            cursor: pointer;
         }
         .vod-row:hover {
             background: var(--accent-soft);
         }
         .vod-name {
             font-weight: 500;
+            flex: 1;
+            min-width: 0;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .vod-meta {
+        .vod-rating {
             color: var(--muted);
             font-size: 0.85em;
-            text-align: right;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .vod-status {
             font-size: 0.7em;
             font-weight: 600;
-            padding: 2px 8px;
+            padding: 3px 10px;
             border-radius: 10px;
-            text-align: center;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .status-finished {
             background: var(--green-bg);
             color: var(--green);
-        }
-        .status-unfinished {
-            background: var(--amber-bg);
-            color: var(--amber);
-        }
-        .vods-list::-webkit-scrollbar {
-            width: 5px;
-        }
-        .vods-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .vods-list::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
         }
         .footer {
             margin-top: 40px;
@@ -287,6 +241,60 @@
             border-color: var(--accent);
             color: var(--text);
         }
+        .game-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-popup.active {
+            display: flex;
+        }
+        .game-popup-inner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 420px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .game-popup-inner h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.1em;
+        }
+        .game-popup-inner p {
+            margin: 4px 0;
+            font-size: 0.88em;
+            color: var(--muted);
+        }
+        .game-popup-inner p strong {
+            color: var(--text);
+        }
+        .game-popup-inner a {
+            color: var(--accent);
+        }
+        .game-popup-close {
+            background: var(--border);
+            border: none;
+            color: var(--text);
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 14px;
+            font-family: var(--font);
+            font-size: 0.85em;
+        }
+        .game-popup-close:hover {
+            background: var(--accent);
+        }
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 2em;
@@ -294,11 +302,6 @@
             .social-link {
                 padding: 8px 12px;
                 font-size: 0.8em;
-            }
-            .vod-row {
-                grid-template-columns: 1fr 50px 65px;
-                gap: 4px;
-                font-size: 0.78em;
             }
         }
     </style>
@@ -326,27 +329,21 @@
             </div>
             <div class="vods-panel">
                 <div class="vods-panel-header">
-                    <span>recent playthroughs</span>
+                    <span>last 10 finished</span>
                     <a href="/vods">see all →</a>
                 </div>
-                <div class="vod-controls">
-                    <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">a-z</button>
-                    <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">z-a</button>
-                    <button class="vod-control-btn active" id="btnFilterAll" onclick="setFilter('all')">all</button>
-                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">done</button>
-                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">wip</button>
-                </div>
                 <div class="vods-list" id="vodsList">
-                    <div class="vod-row"><span class="vod-name">loading...</span><span class="vod-meta"></span><span class="vod-status"></span></div>
+                    <div class="vod-row"><span class="vod-name">loading...</span><span class="vod-rating"></span><span class="vod-status"></span></div>
                 </div>
             </div>
         </div>
         <div class="footer">© 2026 grimcyanide.com</div>
     </div>
+    <div class="game-popup" id="gamePopup">
+        <div class="game-popup-inner" id="gamePopupInner"></div>
+    </div>
     <script>
         var allVODs = [];
-        var currentSort = 'az';
-        var currentFilter = 'all';
         function loadVODsData() {
             var list = document.getElementById('vodsList');
             fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet')
@@ -354,7 +351,7 @@
                 .then(function(data) {
                     if (data.error) throw new Error(data.error);
                     if (!data.games || !data.games.length) {
-                        list.innerHTML = '<div class="vod-row"><span class="vod-name">nothing here yet</span><span class="vod-meta"></span><span class="vod-status"></span></div>';
+                        list.innerHTML = '<div class="vod-row"><span class="vod-name">nothing here yet</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
                         return;
                     }
                     allVODs = data.games;
@@ -362,13 +359,21 @@
                 })
                 .catch(function(e) {
                     console.error(e);
-                    list.innerHTML = '<div class="vod-row"><span class="vod-name">couldn\'t load</span><span class="vod-meta"></span><span class="vod-status"></span></div>';
+                    list.innerHTML = '<div class="vod-row"><span class="vod-name">couldn\'t load</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
                 });
         }
         function esc(t) {
             var d = document.createElement('div');
             d.textContent = t;
             return d.innerHTML;
+        }
+        function parseDate(dateStr) {
+            if (!dateStr) return null;
+            var dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            if (dmyMatch) return new Date(dmyMatch[3], dmyMatch[2] - 1, dmyMatch[1]);
+            var parsed = new Date(dateStr);
+            if (!isNaN(parsed.getTime())) return parsed;
+            return null;
         }
         function fmtParts(pd, p) {
             if (pd) {
@@ -384,44 +389,56 @@
             }
             return p + ' part' + (p !== 1 ? 's' : '');
         }
-        function setSort(s) {
-            currentSort = s;
-            document.getElementById('btnSortAZ').classList.toggle('active', s === 'az');
-            document.getElementById('btnSortZA').classList.toggle('active', s === 'za');
-            renderVODs();
-        }
-        function setFilter(f) {
-            currentFilter = f;
-            document.getElementById('btnFilterAll').classList.toggle('active', f === 'all');
-            document.getElementById('btnFilterFinished').classList.toggle('active', f === 'Finished');
-            document.getElementById('btnFilterUnfinished').classList.toggle('active', f === 'Unfinished');
-            renderVODs();
-        }
         function renderVODs() {
             var list = document.getElementById('vodsList');
-            var games = allVODs.slice();
-            if (currentFilter !== 'all') games = games.filter(function(g) { return g.isFinished === currentFilter; });
-            games.sort(function(a, b) {
-                if (currentSort === 'az') return a.game.localeCompare(b.game);
-                return b.game.localeCompare(a.game);
+            var finished = allVODs.filter(function(g) { return g.isFinished === 'Finished'; });
+            finished.sort(function(a, b) {
+                var dA = parseDate(a.dateFinished);
+                var dB = parseDate(b.dateFinished);
+                if (!dA && !dB) return 0;
+                if (!dA) return 1;
+                if (!dB) return -1;
+                return dB - dA;
             });
-            if (!games.length) {
-                list.innerHTML = '<div class="vod-row"><span class="vod-name">no matches</span><span class="vod-meta"></span><span class="vod-status"></span></div>';
+            var recent = finished.slice(0, 10);
+            if (!recent.length) {
+                list.innerHTML = '<div class="vod-row"><span class="vod-name">no finished games yet</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
                 return;
             }
-            list.innerHTML = games.map(function(g) {
+            list.innerHTML = recent.map(function(g, i) {
                 var rt = g.rating && g.rating > 0 ? g.rating + '/10' : '—';
-                var pt = fmtParts(g.partsDisplay, g.parts);
-                var st = g.isFinished === 'Finished' ? 'done' : 'wip';
-                var sc = g.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished';
-                var lk = g.linkUrl ? '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-size:0.8em;">watch</a>' : '';
-                return '<div class="vod-row">' +
-                    '<span class="vod-name" title="' + esc(g.game) + ' | started ' + (g.dateStarted || '?') + (g.dateFinished ? ' | finished ' + g.dateFinished : '') + '">' + esc(g.game) + '</span>' +
-                    '<span class="vod-meta">' + rt + ' &middot; ' + pt + '</span>' +
-                    '<span class="vod-status ' + sc + '">' + st + '</span>' +
+                return '<div class="vod-row" onclick="showGamePopup(' + i + ')">' +
+                    '<span class="vod-name">' + esc(g.game) + '</span>' +
+                    '<span class="vod-rating">' + rt + '</span>' +
+                    '<span class="vod-status status-finished">finished</span>' +
                 '</div>';
             }).join('');
+            window._recentGames = recent;
         }
+        function showGamePopup(index) {
+            var g = window._recentGames[index];
+            if (!g) return;
+            var popup = document.getElementById('gamePopup');
+            var inner = document.getElementById('gamePopupInner');
+            var partsText = fmtParts(g.partsDisplay, g.parts);
+            var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : 'N/A';
+            var linkHtml = g.linkUrl ? '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">watch playlist</a>' : '';
+            inner.innerHTML = '<h3>' + esc(g.game) + '</h3>' +
+                '<p><strong>rating</strong> ' + ratingText + '</p>' +
+                '<p><strong>started</strong> ' + (g.dateStarted || '?') + '</p>' +
+                '<p><strong>finished</strong> ' + (g.dateFinished || '—') + '</p>' +
+                '<p><strong>parts</strong> ' + partsText + '</p>' +
+                (linkHtml ? '<p>' + linkHtml + '</p>' : '') +
+                '<p><a href="/vods">view all games →</a></p>' +
+                '<button class="game-popup-close" onclick="closePopup()">close</button>';
+            popup.classList.add('active');
+        }
+        function closePopup() {
+            document.getElementById('gamePopup').classList.remove('active');
+        }
+        document.getElementById('gamePopup').addEventListener('click', function(e) {
+            if (e.target === this) closePopup();
+        });
         var themeToggle = document.getElementById('themeToggle');
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
