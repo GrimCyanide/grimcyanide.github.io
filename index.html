@@ -22,702 +22,414 @@
     <meta name="twitter:title" content="GRIM_CYANIDE - UK Gamer">
     <meta name="twitter:description" content="UK gamer streaming for fun and company. Drop by and say hello on Twitch">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
-
     <style>
+        :root {
+            --bg: #0b0e11;
+            --surface: #14181d;
+            --border: #252a30;
+            --text: #c8cdd2;
+            --muted: #6b7280;
+            --accent: #e85d75;
+            --accent-soft: rgba(232, 93, 117, 0.15);
+            --green: #4ade80;
+            --green-bg: rgba(74, 222, 128, 0.12);
+            --amber: #f59e0b;
+            --amber-bg: rgba(245, 158, 11, 0.12);
+            --radius: 6px;
+            --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+        body.light-mode {
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --border: #d1d5db;
+            --text: #1f2937;
+            --muted: #9ca3af;
+            --accent: #dc3545;
+            --accent-soft: rgba(220, 53, 69, 0.1);
+        }
+        * {
+            box-sizing: border-box;
+        }
         body {
-            background: #0a0a0a;
-            color: #00ffff;
-            font-family: 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            transition: all 0.3s ease;
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.4;
+            font-size: 15px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px 40px;
+        }
+        .top-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
         }
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         .header h1 {
-            font-size: 3.5em;
+            font-size: 2.6em;
             margin: 0;
-            text-shadow: 0 0 12px #00ffff, 0 0 24px #00ffff;
-            letter-spacing: 3px;
-            font-weight: normal;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: var(--text);
+        }
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+        .social-link {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 16px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.88em;
+            transition: border 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .social-link:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+        .social-link .platform {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .social-link .username {
+            color: var(--muted);
+            font-size: 0.85em;
         }
         .content {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 24px;
             align-items: start;
-            order: 2;
         }
-        @media (max-width: 968px) {
+        @media (max-width: 900px) {
             .content {
                 grid-template-columns: 1fr;
             }
         }
-        .twitch-section {
-            position: relative;
-        }
         .twitch-embed {
-            border: 2px solid #00ffff;
-            border-radius: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
             background: #000;
-            position: relative;
             aspect-ratio: 16 / 9;
+            position: relative;
         }
         .twitch-embed iframe {
             display: block;
             width: 100%;
             height: 100%;
             border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-        .playlists-section {
+        .vods-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             display: flex;
             flex-direction: column;
-            max-height: 430px;
+            max-height: 460px;
+            overflow: hidden;
         }
-        .playlists-section h3 {
-            border-bottom: 1px solid #00ffff;
-            padding-bottom: 10px;
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1em;
-            text-align: center;
+        .vods-panel-header {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .vods-panel-header a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .vods-panel-header a:hover {
+            text-decoration: underline;
         }
         .vod-controls {
             display: flex;
             gap: 4px;
-            margin-bottom: 10px;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
         }
         .vod-control-btn {
-            flex: 1;
-            min-width: 0;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid #004444;
-            border-radius: 6px;
-            color: #00cccc;
-            font-family: 'Courier New', monospace;
-            font-size: 0.65em;
-            padding: 5px 4px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 0.7em;
+            padding: 5px 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            text-decoration: none;
+            transition: all 0.15s;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            text-decoration: none;
         }
         .vod-control-btn:hover {
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.15);
-            color: #00ffff;
+            border-color: var(--accent);
+            color: var(--text);
         }
         .vod-control-btn.active {
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.2);
-            color: #00ffff;
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent);
         }
-        .playlists-container {
+        .vods-list {
             flex: 1;
-            min-height: 0;
             overflow-y: auto;
-            border: 1px solid #004444;
-            border-radius: 8px;
-            padding: 10px;
-        }
-        .playlist-list {
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
         }
-        .playlist-item {
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid #004444;
-            border-radius: 8px;
-            padding: 10px;
-            transition: all 0.3s ease;
+        .vod-row {
+            display: grid;
+            grid-template-columns: 1fr 60px 80px;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 0.82em;
+            transition: background 0.15s;
             text-decoration: none;
             color: inherit;
-            display: block;
         }
-        .playlist-item:hover {
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.1);
-            transform: translateY(-2px);
+        .vod-row:hover {
+            background: var(--accent-soft);
         }
-        .vod-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            gap: 8px;
+        .vod-name {
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-        .vod-title {
-            font-weight: bold;
-            color: #88ffff;
+        .vod-meta {
+            color: var(--muted);
             font-size: 0.85em;
-            line-height: 1.2;
-            flex: 1;
+            text-align: right;
+            white-space: nowrap;
         }
         .vod-status {
-            font-size: 0.6em;
+            font-size: 0.7em;
+            font-weight: 600;
             padding: 2px 8px;
             border-radius: 10px;
+            text-align: center;
             white-space: nowrap;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            flex-shrink: 0;
         }
         .status-finished {
-            background: rgba(0, 255, 100, 0.1);
-            border: 1px solid #00ff64;
-            color: #00ff64;
-            box-shadow: 0 0 6px rgba(0, 255, 100, 0.3);
+            background: var(--green-bg);
+            color: var(--green);
         }
         .status-unfinished {
-            background: rgba(255, 180, 0, 0.1);
-            border: 1px solid #ffb400;
-            color: #ffb400;
-            box-shadow: 0 0 6px rgba(255, 180, 0, 0.3);
+            background: var(--amber-bg);
+            color: var(--amber);
         }
-        .vod-details {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            font-size: 0.68em;
-            color: #008888;
-            margin-bottom: 3px;
-            line-height: 1.5;
+        .vods-list::-webkit-scrollbar {
+            width: 5px;
         }
-        .vod-rating {
-            color: #ffcc00;
-            font-weight: bold;
-            white-space: nowrap;
-            width: 90px;
-            flex-shrink: 0;
+        .vods-list::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .vod-parts {
-            background: rgba(0, 100, 100, 0.3);
-            color: #00cccc;
-            padding: 1px 7px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            border: 1px solid #008888;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .vod-dates {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 10px;
-            align-items: center;
-            font-size: 0.68em;
-            color: #008888;
-            margin-bottom: 5px;
-            line-height: 1.5;
-        }
-        .vod-dates span {
-            white-space: nowrap;
-        }
-        .vod-link {
-            display: block;
-            text-align: center;
-            background: rgba(0, 100, 100, 0.3);
-            color: #00cccc;
-            border: 1px solid #008888;
-            border-radius: 6px;
-            padding: 4px 0;
-            text-decoration: none;
-            font-size: 0.68em;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-        }
-        .vod-link:hover {
-            background: rgba(0, 255, 255, 0.15);
-            border-color: #00ffff;
-            color: #00ffff;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-        }
-        .social-links {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            margin: 0 0 40px 0;
-            order: 1;
-        }
-        @media (max-width: 1200px) {
-            .social-links {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        @media (max-width: 768px) {
-            .social-links {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        @media (max-width: 480px) {
-            .social-links {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .social-link {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #00ffff;
-            border-radius: 8px;
-            padding: 15px 10px;
-            text-decoration: none;
-            color: #00ffff;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            text-align: center;
-            min-height: auto;
-        }
-        .social-link:hover {
-            background: rgba(0, 255, 255, 0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
-        }
-        .social-link .platform {
-            font-weight: bold;
-            display: block;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
-        .social-link .username {
-            color: #88ffff;
-            font-size: 0.9em;
+        .vods-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
         }
         .footer {
-            margin-top: 50px;
-            color: #008888;
-            font-size: 0.9em;
-            padding-top: 20px;
+            margin-top: 40px;
             text-align: center;
-            order: 4;
-        }
-        .playlists-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        .playlists-container::-webkit-scrollbar-track {
-            background: #001a1a;
-            border-radius: 4px;
-        }
-        .playlists-container::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 4px;
-        }
-        .playlists-container::-webkit-scrollbar-thumb:hover {
-            background: #00cccc;
+            color: var(--muted);
+            font-size: 0.8em;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
         }
         .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle-slider {
-            position: absolute;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 0.75em;
+            padding: 5px 10px;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 255, 255, 0.2);
-            border: 1px solid #00ffff;
-            border-radius: 15px;
-            transition: .4s;
+            transition: all 0.15s;
         }
-        .toggle-slider:before {
-            position: absolute;
-            content: "🌙";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 3px;
-            background: #00ffff;
-            border-radius: 50%;
-            transition: .4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--text);
         }
-        input:checked + .toggle-slider {
-            background: rgba(0, 136, 136, 0.2);
-            border: 1px solid #008888;
-        }
-        input:checked + .toggle-slider:before {
-            content: "☀️";
-            transform: translateX(30px);
-            background: #008888;
-        }
-        body.light-mode {
-            background: #e6f2f2 !important;
-            color: #004444 !important;
-        }
-        body.light-mode .header h1 {
-            text-shadow: 0 0 10px #000000, 0 0 20px #000000 !important;
-            color: #002222 !important;
-            font-weight: bold !important;
-        }
-        body.light-mode .social-link .username {
-            color: #002222 !important;
-            font-weight: 600 !important;
-            font-size: 0.95em !important;
-        }
-        body.light-mode .social-link .platform {
-            font-weight: 700 !important;
-        }
-        body.light-mode .twitch-embed {
-            border: 2px solid #000000 !important;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3) !important;
-        }
-        body.light-mode .playlists-container {
-            border: 1px solid #000000 !important;
-            background: rgba(220, 220, 220, 0.8) !important;
-        }
-        body.light-mode .playlists-section h3 {
-            border-bottom: 1px solid #000000 !important;
-            color: #001111 !important;
-        }
-        body.light-mode .playlist-item {
-            background: rgba(200, 200, 200, 0.9) !important;
-            border: 1px solid #000000 !important;
-            color: #001111 !important;
-        }
-        body.light-mode .playlist-item:hover {
-            border-color: #000000 !important;
-            background: rgba(180, 180, 180, 0.9) !important;
-        }
-        body.light-mode .social-link {
-            background: rgba(200, 200, 200, 0.9) !important;
-            border: 1px solid #000000 !important;
-            color: #001111 !important;
-        }
-        body.light-mode .social-link:hover {
-            background: rgba(180, 180, 180, 0.9) !important;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
-        }
-        body.light-mode .vod-parts {
-            background: rgba(100, 100, 100, 0.3) !important;
-            color: #001111 !important;
-            border: 1px solid #666666 !important;
-        }
-        body.light-mode .vod-title {
-            color: #001111 !important;
-        }
-        body.light-mode .vod-details {
-            color: #556666 !important;
-        }
-        body.light-mode .vod-dates {
-            color: #556666 !important;
-        }
-        body.light-mode .vod-rating {
-            color: #996600 !important;
-        }
-        body.light-mode .vod-link {
-            background: rgba(100, 100, 100, 0.3) !important;
-            color: #001111 !important;
-            border: 1px solid #666666 !important;
-        }
-        body.light-mode .vod-link:hover {
-            background: rgba(180, 180, 180, 0.9) !important;
-            border-color: #000000 !important;
-            color: #000000 !important;
-        }
-        body.light-mode .vod-control-btn {
-            background: rgba(200, 200, 200, 0.9) !important;
-            border: 1px solid #000000 !important;
-            color: #001111 !important;
-        }
-        body.light-mode .vod-control-btn:hover {
-            background: rgba(180, 180, 180, 0.9) !important;
-            border-color: #000000 !important;
-            color: #000000 !important;
-        }
-        body.light-mode .vod-control-btn.active {
-            background: rgba(160, 160, 160, 0.9) !important;
-            border-color: #000000 !important;
-            color: #000000 !important;
-        }
-        body.light-mode .footer {
-            color: #556666 !important;
-        }
-        body.light-mode .playlists-container::-webkit-scrollbar-track {
-            background: #b8d8d8 !important;
-            border-radius: 4px !important;
-        }
-        body.light-mode .playlists-container::-webkit-scrollbar-thumb {
-            background: #000000 !important;
-            border-radius: 4px !important;
-        }
-        body.light-mode .playlists-container::-webkit-scrollbar-thumb:hover {
-            background: #333333 !important;
-        }
-        @media (max-width: 768px) {
-            .container {
-                padding-left: 15px;
-                padding-right: 15px;
-                display: flex;
-                flex-direction: column;
-            }
+        @media (max-width: 600px) {
             .header h1 {
-                font-size: 2.5em;
-                text-align: center;
-                margin: 0;
-                word-wrap: break-word;
+                font-size: 2em;
             }
-            .social-links {
-                order: 1;
-                margin-bottom: 30px;
+            .social-link {
+                padding: 8px 12px;
+                font-size: 0.8em;
             }
-            .content {
-                order: 2;
-            }
-            .footer {
-                order: 4;
-            }
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-            }
-            .playlists-section {
-                max-height: none;
+            .vod-row {
+                grid-template-columns: 1fr 50px 65px;
+                gap: 4px;
+                font-size: 0.78em;
             }
         }
     </style>
 </head>
 <body>
-    <div class="theme-toggle">
-        <label class="toggle-switch">
-            <input type="checkbox" id="themeToggle">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
-
     <div class="container">
+        <div class="top-row">
+            <button class="theme-toggle" id="themeToggle">light/dark</button>
+        </div>
         <div class="header">
             <h1>GRIM_CYANIDE</h1>
         </div>
-
         <div class="social-links">
-            <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank">
-                <span class="platform">Twitch</span>
-                <span class="username">GRIM_CYANIDE</span>
-            </a>
-            <a href="https://x.com/GrimCyanide" class="social-link" target="_blank">
-                <span class="platform">Twitter / X</span>
-                <span class="username">@GrimCyanide</span>
-            </a>
-            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank">
-                <span class="platform">YouTube</span>
-                <span class="username">Grim_Cyanide</span>
-            </a>
-            <a href="/vods" class="social-link">
-                <span class="platform">Full VODs List</span>
-                <span class="username">And My Ratings</span>
-            </a>
-            <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank">
-                <span class="platform">Discord</span>
-                <span class="username">Join Server</span>
-            </a>
-            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank">
-                <span class="platform">TikTok</span>
-                <span class="username">@Grim_Cyanide</span>
-            </a>
-            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank">
-                <span class="platform">Steam</span>
-                <span class="username">GrimCyanide</span>
-            </a>
+            <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank"><span class="platform">Twitch</span><span class="username">GRIM_CYANIDE</span></a>
+            <a href="https://x.com/GrimCyanide" class="social-link" target="_blank"><span class="platform">X</span><span class="username">@GrimCyanide</span></a>
+            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank"><span class="platform">YouTube</span><span class="username">Grim_Cyanide</span></a>
+            <a href="/vods" class="social-link"><span class="platform">VODs</span><span class="username">full list + ratings</span></a>
+            <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank"><span class="platform">Discord</span><span class="username">join</span></a>
+            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span><span class="username">@grim_cyanide</span></a>
+            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank"><span class="platform">Steam</span><span class="username">GrimCyanide</span></a>
         </div>
-
         <div class="content">
-            <div class="twitch-section">
-                <div class="twitch-embed">
-                    <iframe
-                        src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com"
-                        allowfullscreen>
-                    </iframe>
-                </div>
+            <div class="twitch-embed">
+                <iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe>
             </div>
-
-            <div class="playlists-section">
-                <h3>PLAYTHROUGH VODS</h3>
+            <div class="vods-panel">
+                <div class="vods-panel-header">
+                    <span>recent playthroughs</span>
+                    <a href="/vods">see all →</a>
+                </div>
                 <div class="vod-controls">
-                    <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">A-Z</button>
-                    <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">Z-A</button>
-                    <button class="vod-control-btn active" id="btnFilterAll" onclick="setFilter('all')">All</button>
-                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">✓</button>
-                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">✗</button>
-                    <a href="/vods" class="vod-control-btn">More →</a>
+                    <button class="vod-control-btn active" id="btnSortAZ" onclick="setSort('az')">a-z</button>
+                    <button class="vod-control-btn" id="btnSortZA" onclick="setSort('za')">z-a</button>
+                    <button class="vod-control-btn active" id="btnFilterAll" onclick="setFilter('all')">all</button>
+                    <button class="vod-control-btn" id="btnFilterFinished" onclick="setFilter('Finished')">done</button>
+                    <button class="vod-control-btn" id="btnFilterUnfinished" onclick="setFilter('Unfinished')">wip</button>
                 </div>
-                <div class="playlists-container">
-                    <div class="playlist-list" id="playlistList">
-                        <div class="playlist-item">
-                            <div class="vod-title" style="text-align:center;">Loading playthroughs...</div>
-                        </div>
-                    </div>
+                <div class="vods-list" id="vodsList">
+                    <div class="vod-row"><span class="vod-name">loading...</span><span class="vod-meta"></span><span class="vod-status"></span></div>
                 </div>
             </div>
         </div>
-
-        <div class="footer">
-            © 2026 grimcyanide.com
-        </div>
+        <div class="footer">© 2026 grimcyanide.com</div>
     </div>
-
     <script>
-        let allVODs = [];
-        let currentSort = 'az';
-        let currentFilter = 'all';
-
-        async function loadVODsData() {
-            const playlistList = document.getElementById('playlistList');
-            try {
-                const response = await fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet');
-                if (!response.ok) throw new Error(`API returned ${response.status}`);
-                const data = await response.json();
-                if (data.error) throw new Error(data.error);
-                if (!data.games || data.games.length === 0) {
-                    playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">No playthroughs found yet.</div></div>';
-                    return;
-                }
-                allVODs = data.games;
-                renderVODs();
-            } catch (error) {
-                console.error('VODs Error:', error);
-                playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">Error loading VODs</div></div>';
-            }
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function formatParts(partsDisplay, parts) {
-            if (partsDisplay) {
-                let text = partsDisplay;
-                if (text.toLowerCase().includes('so far')) {
-                    text = text.replace(/so far/i, '').trim();
-                    if (!text.toLowerCase().includes('part')) {
-                        text = text + (text ? ' parts so far' : 'parts so far');
-                    } else {
-                        text = text + ' so far';
+        var allVODs = [];
+        var currentSort = 'az';
+        var currentFilter = 'all';
+        function loadVODsData() {
+            var list = document.getElementById('vodsList');
+            fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet')
+                .then(function(r) { if (!r.ok) throw new Error('API ' + r.status); return r.json(); })
+                .then(function(data) {
+                    if (data.error) throw new Error(data.error);
+                    if (!data.games || !data.games.length) {
+                        list.innerHTML = '<div class="vod-row"><span class="vod-name">nothing here yet</span><span class="vod-meta"></span><span class="vod-status"></span></div>';
+                        return;
                     }
-                } else if (!text.toLowerCase().includes('part')) {
-                    text = text + ' part' + (parts !== 1 ? 's' : '');
+                    allVODs = data.games;
+                    renderVODs();
+                })
+                .catch(function(e) {
+                    console.error(e);
+                    list.innerHTML = '<div class="vod-row"><span class="vod-name">couldn\'t load</span><span class="vod-meta"></span><span class="vod-status"></span></div>';
+                });
+        }
+        function esc(t) {
+            var d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+        function fmtParts(pd, p) {
+            if (pd) {
+                var t = pd;
+                if (t.toLowerCase().indexOf('so far') > -1) {
+                    t = t.replace(/so far/i, '').trim();
+                    if (t.toLowerCase().indexOf('part') === -1) t = t + (t ? ' parts so far' : 'parts so far');
+                    else t = t + ' so far';
+                } else if (t.toLowerCase().indexOf('part') === -1) {
+                    t = t + ' part' + (p !== 1 ? 's' : '');
                 }
-                return text;
+                return t;
             }
-            return parts + ' part' + (parts !== 1 ? 's' : '');
+            return p + ' part' + (p !== 1 ? 's' : '');
         }
-
-        function setSort(sort) {
-            currentSort = sort;
-            document.getElementById('btnSortAZ').classList.remove('active');
-            document.getElementById('btnSortZA').classList.remove('active');
-            if (sort === 'az') document.getElementById('btnSortAZ').classList.add('active');
-            if (sort === 'za') document.getElementById('btnSortZA').classList.add('active');
+        function setSort(s) {
+            currentSort = s;
+            document.getElementById('btnSortAZ').classList.toggle('active', s === 'az');
+            document.getElementById('btnSortZA').classList.toggle('active', s === 'za');
             renderVODs();
         }
-
-        function setFilter(filter) {
-            currentFilter = filter;
-            document.getElementById('btnFilterAll').classList.remove('active');
-            document.getElementById('btnFilterFinished').classList.remove('active');
-            document.getElementById('btnFilterUnfinished').classList.remove('active');
-            if (filter === 'all') document.getElementById('btnFilterAll').classList.add('active');
-            if (filter === 'Finished') document.getElementById('btnFilterFinished').classList.add('active');
-            if (filter === 'Unfinished') document.getElementById('btnFilterUnfinished').classList.add('active');
+        function setFilter(f) {
+            currentFilter = f;
+            document.getElementById('btnFilterAll').classList.toggle('active', f === 'all');
+            document.getElementById('btnFilterFinished').classList.toggle('active', f === 'Finished');
+            document.getElementById('btnFilterUnfinished').classList.toggle('active', f === 'Unfinished');
             renderVODs();
         }
-
         function renderVODs() {
-            const playlistList = document.getElementById('playlistList');
-            let games = [...allVODs];
-
-            if (currentFilter !== 'all') {
-                games = games.filter(g => g.isFinished === currentFilter);
-            }
-
-            games.sort((a, b) => {
+            var list = document.getElementById('vodsList');
+            var games = allVODs.slice();
+            if (currentFilter !== 'all') games = games.filter(function(g) { return g.isFinished === currentFilter; });
+            games.sort(function(a, b) {
                 if (currentSort === 'az') return a.game.localeCompare(b.game);
-                if (currentSort === 'za') return b.game.localeCompare(a.game);
-                return 0;
+                return b.game.localeCompare(a.game);
             });
-
-            if (games.length === 0) {
-                playlistList.innerHTML = '<div class="playlist-item"><div class="vod-title" style="text-align:center;">No playthroughs match filter.</div></div>';
+            if (!games.length) {
+                list.innerHTML = '<div class="vod-row"><span class="vod-name">no matches</span><span class="vod-meta"></span><span class="vod-status"></span></div>';
                 return;
             }
-
-            playlistList.innerHTML = '';
-            games.forEach(game => {
-                const item = document.createElement('div');
-                item.className = 'playlist-item';
-                const ratingText = game.rating && game.rating > 0 ? `Rating: ${game.rating}/10` : 'Rating: N/A';
-                const partsText = formatParts(game.partsDisplay, game.parts);
-                const statusText = game.isFinished === 'Finished' ? '✓ Finished' : '✗ Unfinished';
-                const linkHtml = game.linkUrl
-                    ? `<a href="${escapeHtml(game.linkUrl)}" target="_blank" rel="noopener" class="vod-link">▶ ${escapeHtml(game.linkText || 'Watch')}</a>`
-                    : '';
-                item.innerHTML = `
-                    <div class="vod-header">
-                        <span class="vod-title">${escapeHtml(game.game)}</span>
-                        <span class="vod-status ${game.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished'}">${statusText}</span>
-                    </div>
-                    <div class="vod-details">
-                        <span class="vod-rating">${ratingText}</span>
-                        <span class="vod-parts">${partsText}</span>
-                    </div>
-                    <div class="vod-dates">
-                        <span>Started: ${escapeHtml(game.dateStarted || '?')}</span>
-                        ${game.dateFinished ? `<span>Finished: ${escapeHtml(game.dateFinished)}</span>` : '<span>Finished: —</span>'}
-                    </div>
-                    ${linkHtml}
-                `;
-                playlistList.appendChild(item);
-            });
+            list.innerHTML = games.map(function(g) {
+                var rt = g.rating && g.rating > 0 ? g.rating + '/10' : '—';
+                var pt = fmtParts(g.partsDisplay, g.parts);
+                var st = g.isFinished === 'Finished' ? 'done' : 'wip';
+                var sc = g.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished';
+                var lk = g.linkUrl ? '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-size:0.8em;">watch</a>' : '';
+                return '<div class="vod-row">' +
+                    '<span class="vod-name" title="' + esc(g.game) + ' | started ' + (g.dateStarted || '?') + (g.dateFinished ? ' | finished ' + g.dateFinished : '') + '">' + esc(g.game) + '</span>' +
+                    '<span class="vod-meta">' + rt + ' &middot; ' + pt + '</span>' +
+                    '<span class="vod-status ' + sc + '">' + st + '</span>' +
+                '</div>';
+            }).join('');
         }
-
-        const themeToggle = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'light') {
+        var themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
-            themeToggle.checked = true;
         }
-        themeToggle.addEventListener('change', function() {
-            if (this.checked) {
-                document.body.classList.add('light-mode');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.body.classList.remove('light-mode');
-                localStorage.setItem('theme', 'dark');
-            }
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
         });
-
         loadVODsData();
     </script>
 </body>
