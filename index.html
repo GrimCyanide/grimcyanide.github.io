@@ -125,8 +125,6 @@
         }
         .twitch-col {
             min-width: 0;
-            display: flex;
-            flex-direction: column;
         }
         .twitch-embed {
             border: 1px solid var(--border);
@@ -152,7 +150,7 @@
             border-radius: var(--radius);
             display: flex;
             flex-direction: column;
-            height: 100%;
+            overflow: hidden;
         }
         .vods-panel-header {
             padding: 12px 14px;
@@ -206,9 +204,7 @@
             font-weight: 500;
             flex: 1;
             min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            text-align: center;
         }
         .vod-rating {
             color: var(--muted);
@@ -345,13 +341,13 @@
         </div>
         <div class="content">
             <div class="twitch-col">
-                <div class="twitch-embed">
+                <div class="twitch-embed" id="twitchEmbed">
                     <iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="vods-panel">
+            <div class="vods-panel" id="vodsPanel">
                 <div class="vods-panel-header">
-                    <span>recently finished</span>
+                    <span>games i've recently finished</span>
                     <a href="/vods">see all →</a>
                 </div>
                 <div class="vods-list" id="vodsList">
@@ -377,6 +373,7 @@
                         return;
                     }
                     allVODs = data.games;
+                    matchPanelHeight();
                     renderVODs();
                 })
                 .catch(function(e) {
@@ -384,6 +381,15 @@
                     list.innerHTML = '<div class="vod-row"><span class="vod-name">couldn\'t load</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
                 });
         }
+        function matchPanelHeight() {
+            var twitch = document.getElementById('twitchEmbed');
+            var panel = document.getElementById('vodsPanel');
+            if (twitch && panel) {
+                var h = twitch.offsetHeight;
+                panel.style.maxHeight = h + 'px';
+            }
+        }
+        window.addEventListener('resize', matchPanelHeight);
         function esc(t) {
             var d = document.createElement('div');
             d.textContent = t;
