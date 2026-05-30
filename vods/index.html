@@ -247,22 +247,6 @@
             font-size: 0.85em;
             white-space: nowrap;
         }
-        .game-status {
-            font-size: 0.78em;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 12px;
-            white-space: nowrap;
-            display: inline-block;
-        }
-        .status-finished {
-            background: var(--green-bg);
-            color: var(--green);
-        }
-        .status-unfinished {
-            background: var(--amber-bg);
-            color: var(--amber);
-        }
         .game-link {
             color: var(--accent);
             text-decoration: none;
@@ -435,11 +419,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="col-game sorted" data-sort="az" id="thGame">Game <span class="arrow">▼</span></th>
-                        <th class="col-rating" data-sort="rating-high" id="thRating">Rating <span class="arrow"></span></th>
-                        <th class="col-started" data-sort="recent-started" id="thStarted">Started <span class="arrow"></span></th>
-                        <th class="col-finished" data-sort="recent-finished" id="thFinished">Finished <span class="arrow"></span></th>
-                        <th class="col-parts" data-sort="parts-high" id="thParts">Parts <span class="arrow"></span></th>
+                        <th class="col-game sorted" data-col="game" id="thGame">Game <span class="arrow">▼</span></th>
+                        <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
+                        <th class="col-started" data-col="started" id="thStarted">Started <span class="arrow"></span></th>
+                        <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
+                        <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
                         <th class="col-link" id="thLink">Link</th>
                     </tr>
                 </thead>
@@ -462,26 +446,15 @@
     <script>
         let allGames = [];
         let currentSort = 'az';
-        let sortDirection = {};
-        const sortDefaults = {
-            game: 'az',
-            rating: 'rating-high',
-            started: 'recent-started',
-            finished: 'recent-finished',
-            parts: 'parts-high'
-        };
+        let sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
         const sortToggles = {
-            'az': 'za',
-            'za': 'az',
-            'rating-high': 'rating-low',
-            'rating-low': 'rating-high',
-            'recent-started': 'oldest-started',
-            'oldest-started': 'recent-started',
-            'recent-finished': 'oldest-finished',
-            'oldest-finished': 'recent-finished',
-            'parts-high': 'parts-low',
-            'parts-low': 'parts-high'
+            'az': 'za', 'za': 'az',
+            'rating-high': 'rating-low', 'rating-low': 'rating-high',
+            'recent-started': 'oldest-started', 'oldest-started': 'recent-started',
+            'recent-finished': 'oldest-finished', 'oldest-finished': 'recent-finished',
+            'parts-high': 'parts-low', 'parts-low': 'parts-high'
         };
+        const columnIds = ['game', 'rating', 'started', 'finished', 'parts'];
         async function loadGamesData() {
             const body = document.getElementById('gamesBody');
             try {
@@ -495,8 +468,8 @@
                 }
                 allGames = data.games;
                 currentSort = 'az';
-                sortDirection = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
-                updateSortIndicator('game');
+                sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
+                updateAllArrows();
                 renderGames();
                 updateResultCount();
             } catch (error) {
@@ -551,49 +524,48 @@
             }
             return parts + ' part' + (parts !== 1 ? 's' : '');
         }
-        function updateSortIndicator(column) {
-            document.querySelectorAll('thead th').forEach(th => {
+        function updateAllArrows() {
+            columnIds.forEach(function(col) {
+                var th = document.getElementById('th' + col.charAt(0).toUpperCase() + col.slice(1));
+                if (!th) return;
+                var arrow = th.querySelector('.arrow');
+                if (!arrow) return;
                 th.classList.remove('sorted');
-                th.querySelector('.arrow').textContent = '';
-            });
-            const th = document.getElementById('th' + column.charAt(0).toUpperCase() + column.slice(1));
-            if (th) {
-                th.classList.add('sorted');
-                const dir = sortDirection[column];
-                if (dir && (dir.includes('high') || dir.includes('za') || dir.includes('recent') || dir.includes('az') || dir.includes('oldest'))) {
-                    const arrow = th.querySelector('.arrow');
-                    if (dir.includes('low') || dir.includes('za') || dir.includes('oldest')) arrow.textContent = '▲';
-                    else arrow.textContent = '▼';
+                arrow.textContent = '';
+                var dir = sortDirections[col];
+                if (dir === currentSort) {
+                    th.classList.add('sorted');
+                    if (dir.includes('low') || dir === 'za' || dir.includes('oldest')) {
+                        arrow.textContent = '▲';
+                    } else {
+                        arrow.textContent = '▼';
+                    }
                 }
-            }
+            });
         }
-        function setSort(column) {
-            const current = sortDirection[column];
-            const next = sortToggles[current] || sortDefaults[column];
-            sortDirection[column] = next;
-            for (const key in sortDirection) {
-                if (key !== column) sortDirection[key] = sortDefaults[key];
-            }
+        function setSort(col) {
+            var current = sortDirections[col];
+            var next = sortToggles[current];
+            sortDirections[col] = next;
             currentSort = next;
-            updateSortIndicator(column);
+            updateAllArrows();
             renderGames();
         }
         function renderGames() {
-            const body = document.getElementById('gamesBody');
-            const statusFilter = document.getElementById('statusFilter').value;
-            const searchQuery = document.getElementById('searchInput').value;
-            let sorted = sortGames(allGames, currentSort);
-            let filtered = filterGames(sorted, statusFilter, searchQuery);
+            var body = document.getElementById('gamesBody');
+            var statusFilter = document.getElementById('statusFilter').value;
+            var searchQuery = document.getElementById('searchInput').value;
+            var sorted = sortGames(allGames, currentSort);
+            var filtered = filterGames(sorted, statusFilter, searchQuery);
             updateResultCount(filtered.length);
             if (filtered.length === 0) {
                 body.innerHTML = '<tr><td colspan="6"><div class="no-results">No games match.</div></td></tr>';
                 return;
             }
-            body.innerHTML = filtered.map(g => {
-                const statusClass = g.isFinished === 'Finished' ? 'status-finished' : 'status-unfinished';
-                const partsText = formatParts(g.partsDisplay, g.parts);
-                const ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '—';
-                const linkHtml = g.linkUrl ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>' : '<span style="color:var(--muted);font-size:0.85em;">—</span>';
+            body.innerHTML = filtered.map(function(g) {
+                var partsText = formatParts(g.partsDisplay, g.parts);
+                var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '—';
+                var linkHtml = g.linkUrl ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>' : '<span style="color:var(--muted);font-size:0.85em;">—</span>';
                 return '<tr>' +
                     '<td><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
                     '<td><span class="game-rating">' + ratingText + '</span></td>' +
@@ -605,12 +577,12 @@
             }).join('');
         }
         function escapeHtml(text) {
-            const div = document.createElement('div');
+            var div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         function updateResultCount(filteredCount) {
-            const el = document.getElementById('resultCount');
+            var el = document.getElementById('resultCount');
             if (!allGames.length) return;
             if (filteredCount !== undefined) el.textContent = filteredCount + ' of ' + allGames.length + ' games';
             else el.textContent = allGames.length + ' games';
@@ -621,13 +593,13 @@
         document.getElementById('thFinished').addEventListener('click', function() { setSort('finished'); });
         document.getElementById('thParts').addEventListener('click', function() { setSort('parts'); });
         document.getElementById('statusFilter').addEventListener('change', renderGames);
-        let searchTimeout;
+        var searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(renderGames, 200);
         });
-        const themeToggle = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme');
+        var themeToggle = document.getElementById('themeToggle');
+        var currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'light') {
             document.body.classList.add('light-mode');
             themeToggle.checked = true;
