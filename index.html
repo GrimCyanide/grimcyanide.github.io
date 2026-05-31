@@ -425,17 +425,26 @@
             if (!isNaN(parsed.getTime())) return parsed;
             return null;
         }
-        function fmtParts(pd, p) {
+        function cleanPartsText(pd, p) {
             if (pd && pd.trim()) {
                 var t = pd.trim();
                 if (t.toLowerCase().indexOf('so far') > -1) {
                     t = t.replace(/so far/i, '').trim();
                     if (t.toLowerCase().indexOf('part') === -1) t = t + (t ? ' parts so far' : 'parts so far');
                     else t = t + ' so far';
-                } else if (t.toLowerCase().indexOf('part') === -1) {
-                    t = t + ' part' + ((p && p !== 1) ? 's' : '');
+                    return t;
+                }
+                if (t.toLowerCase().indexOf('part') === -1) {
+                    var num = parseInt(t, 10);
+                    if (!isNaN(num)) {
+                        return num + ' part' + (num !== 1 ? 's' : '');
+                    }
+                    return t;
                 }
                 return t;
+            }
+            if (p && p > 0) {
+                return p + ' part' + (p !== 1 ? 's' : '');
             }
             return '';
         }
@@ -470,12 +479,16 @@
             if (!g) return;
             var popup = document.getElementById('gamePopup');
             var inner = document.getElementById('gamePopupInner');
-            var partsText = fmtParts(g.partsDisplay, g.parts);
+            var partsText = cleanPartsText(g.partsDisplay, g.parts);
             var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : 'N/A';
             var startedText = g.dateStarted || 'TBD';
             var finishedText = g.dateFinished || 'TBD';
             var partsDisplay = partsText || '—';
-            var linkHtml = g.linkUrl ? '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">watch playlist</a>' : '';
+            var linkHtml = '';
+            if (g.linkUrl) {
+                var linkLabel = g.linkText || 'watch';
+                linkHtml = '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">' + esc(linkLabel) + '</a>';
+            }
             inner.innerHTML = '<h3>' + esc(g.game) + '</h3>' +
                 '<p><strong>rating</strong> ' + ratingText + '</p>' +
                 '<p><strong>started</strong> ' + startedText + '</p>' +
