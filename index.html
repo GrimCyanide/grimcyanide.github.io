@@ -431,26 +431,32 @@
                 var lower = t.toLowerCase();
                 if (lower.indexOf('so far') > -1) {
                     t = t.replace(/so far/i, '').trim();
-                    if (t.toLowerCase().indexOf('part') === -1) t = t + (t ? ' parts so far' : 'parts so far');
-                    else t = t + ' so far';
-                    return t;
+                    var num = parseInt(t, 10);
+                    if (!isNaN(num)) return num + ' part' + (num !== 1 ? 's' : '') + ' so far';
+                    return t + ' so far';
                 }
                 if (lower === 'full playthrough' || lower === 'full') {
                     return 'full playthrough';
                 }
                 if (lower.indexOf('part') === -1) {
-                    var num = parseInt(t, 10);
-                    if (!isNaN(num)) {
-                        return num + ' part' + (num !== 1 ? 's' : '');
-                    }
+                    var num2 = parseInt(t, 10);
+                    if (!isNaN(num2)) return num2 + ' part' + (num2 !== 1 ? 's' : '');
                     return t;
                 }
                 return t;
             }
-            if (p && p > 0) {
-                return p + ' part' + (p !== 1 ? 's' : '');
-            }
+            if (p && p > 0) return p + ' part' + (p !== 1 ? 's' : '');
             return '';
+        }
+        function getPartCount(pd, p) {
+            if (pd && pd.trim()) {
+                var t = pd.trim();
+                var num = parseInt(t, 10);
+                if (!isNaN(num)) return num;
+                var match = t.match(/(\d+)\s*part/);
+                if (match) return parseInt(match[1], 10);
+            }
+            return p || 0;
         }
         function renderVODs() {
             var list = document.getElementById('vodsList');
@@ -484,6 +490,7 @@
             var popup = document.getElementById('gamePopup');
             var inner = document.getElementById('gamePopupInner');
             var partsText = cleanPartsText(g.partsDisplay, g.parts);
+            var partCount = getPartCount(g.partsDisplay, g.parts);
             var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : 'N/A';
             var startedText = g.dateStarted || 'TBD';
             var finishedText = g.dateFinished || 'TBD';
@@ -491,12 +498,10 @@
             var linkHtml = '';
             if (g.linkUrl) {
                 var lowerParts = partsText.toLowerCase();
-                var isFullPlaythrough = lowerParts === 'full playthrough' || lowerParts === 'full';
-                var isPlaylist = lowerParts.indexOf('part') > -1 && lowerParts.indexOf('so far') === -1;
                 var linkLabel;
-                if (isFullPlaythrough) {
+                if (lowerParts === 'full playthrough' || lowerParts === 'full') {
                     linkLabel = 'click here to watch the full playthrough';
-                } else if (isPlaylist) {
+                } else if (partCount > 1) {
                     linkLabel = 'click here to watch the playlist';
                 } else {
                     linkLabel = 'click here to watch';
