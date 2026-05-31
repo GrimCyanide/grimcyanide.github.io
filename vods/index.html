@@ -246,12 +246,6 @@
             font-size: 0.9em;
             white-space: nowrap;
         }
-        .game-parts {
-            font-family: var(--mono);
-            color: var(--muted);
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
         .game-link {
             color: var(--accent);
             text-decoration: none;
@@ -263,6 +257,13 @@
         .game-link:hover {
             opacity: 0.7;
             text-decoration: underline;
+        }
+        .game-parts-sub {
+            font-family: var(--mono);
+            color: var(--muted);
+            font-size: 0.75em;
+            display: block;
+            margin-top: 2px;
         }
         .text-coming {
             color: var(--amber);
@@ -323,13 +324,13 @@
                 padding: 24px 6px;
             }
             thead th {
-                font-size: 0.58em;
-                padding: 7px 3px;
-                letter-spacing: 0;
+                font-size: 0.62em;
+                padding: 8px 4px;
+                letter-spacing: 0.2px;
             }
             tbody td {
-                font-size: 0.66em;
-                padding: 9px 3px;
+                font-size: 0.72em;
+                padding: 10px 4px;
             }
         }
         @media (max-width: 600px) {
@@ -349,12 +350,13 @@
                 padding: 12px 2px;
             }
             thead th {
-                font-size: 0.5em;
-                padding: 5px 2px;
+                font-size: 0.55em;
+                padding: 6px 2px;
+                letter-spacing: 0;
             }
             tbody td {
-                font-size: 0.6em;
-                padding: 7px 2px;
+                font-size: 0.65em;
+                padding: 8px 2px;
             }
         }
     </style>
@@ -388,17 +390,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width:30%" data-col="game" id="thGame">Game <span class="arrow"></span></th>
-                        <th style="width:12%" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-                        <th style="width:14%" class="sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
-                        <th style="width:14%" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
-                        <th style="width:14%" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
-                        <th style="width:16%" id="thLink">Link</th>
+                        <th style="width:32%" data-col="game" id="thGame">Game <span class="arrow"></span></th>
+                        <th style="width:13%" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
+                        <th style="width:16%" class="sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
+                        <th style="width:16%" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
+                        <th style="width:23%" id="thLink">Link</th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
                     <tr>
-                        <td colspan="6">
+                        <td colspan="5">
                             <div class="loading-container">
                                 <div class="loading-spinner"></div>
                                 <p class="loading-text">Loading...</p>
@@ -415,15 +416,14 @@
     <script>
         var allGames = [];
         var currentSort = 'recent-started';
-        var sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
+        var sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished' };
         var sortToggles = {
             'az': 'za', 'za': 'az',
             'rating-high': 'rating-low', 'rating-low': 'rating-high',
             'recent-started': 'oldest-started', 'oldest-started': 'recent-started',
-            'recent-finished': 'oldest-finished', 'oldest-finished': 'recent-finished',
-            'parts-high': 'parts-low', 'parts-low': 'parts-high'
+            'recent-finished': 'oldest-finished', 'oldest-finished': 'recent-finished'
         };
-        var columnIds = ['game', 'rating', 'started', 'finished', 'parts'];
+        var columnIds = ['game', 'rating', 'started', 'finished'];
         var apiURL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
         function loadGamesData() {
             var body = document.getElementById('gamesBody');
@@ -433,19 +433,19 @@
                 .then(function(data) {
                     if (data.error) throw new Error(data.error);
                     if (!data.games || !data.games.length) {
-                        body.innerHTML = '<tr><td colspan="6"><div class="no-results">No games found.</div></td></tr>';
+                        body.innerHTML = '<tr><td colspan="5"><div class="no-results">No games found.</div></td></tr>';
                         return;
                     }
                     allGames = data.games;
                     currentSort = 'recent-started';
-                    sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
+                    sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished' };
                     updateAllArrows();
                     renderGames();
                     updateResultCount();
                 })
                 .catch(function(error) {
                     console.error('Error:', error);
-                    body.innerHTML = '<tr><td colspan="6"><div class="error-container">Failed to load data. ' + error.message + '</div></td></tr>';
+                    body.innerHTML = '<tr><td colspan="5"><div class="error-container">Failed to load data. ' + error.message + '</div></td></tr>';
                 });
         }
         function parseDate(dateStr) {
@@ -467,8 +467,6 @@
                 case 'oldest-finished': return sorted.sort(function(a, b) { var dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
                 case 'rating-high': return sorted.sort(function(a, b) { return (b.rating || 0) - (a.rating || 0); });
                 case 'rating-low': return sorted.sort(function(a, b) { return (a.rating || 0) - (b.rating || 0); });
-                case 'parts-high': return sorted.sort(function(a, b) { return (b.parts || 0) - (a.parts || 0); });
-                case 'parts-low': return sorted.sort(function(a, b) { return (a.parts || 0) - (b.parts || 0); });
                 default: return sorted;
             }
         }
@@ -483,6 +481,16 @@
         }
         function hasValue(val) {
             return val !== null && val !== undefined && val.toString().trim().length > 0;
+        }
+        function getPartCount(partsDisplay, parts) {
+            if (hasValue(partsDisplay)) {
+                var t = partsDisplay.toString().trim();
+                var num = parseInt(t, 10);
+                if (!isNaN(num)) return num;
+                var match = t.match(/(\d+)\s*part/);
+                if (match) return parseInt(match[1], 10);
+            }
+            return parts || 0;
         }
         function formatParts(partsDisplay, parts) {
             if (hasValue(partsDisplay)) {
@@ -535,26 +543,30 @@
             var filtered = filterGames(sorted, statusFilter, searchQuery);
             updateResultCount(filtered.length);
             if (filtered.length === 0) {
-                body.innerHTML = '<tr><td colspan="6"><div class="no-results">No games match.</div></td></tr>';
+                body.innerHTML = '<tr><td colspan="5"><div class="no-results">No games match.</div></td></tr>';
                 return;
             }
             body.innerHTML = filtered.map(function(g) {
                 var partsText = formatParts(g.partsDisplay, g.parts);
+                var partCount = getPartCount(g.partsDisplay, g.parts);
                 var ratingText = (g.rating && g.rating > 0) ? g.rating + '/10' : '<span class="text-coming">COMING SOON</span>';
                 var startedText = hasValue(g.dateStarted) ? g.dateStarted : '<span class="text-coming">COMING SOON</span>';
                 var finishedText = hasValue(g.dateFinished) ? g.dateFinished : '<span class="text-coming">COMING SOON</span>';
-                var partsDisplay = partsText ? partsText : '<span class="text-coming">COMING SOON</span>';
                 var hasLink = hasValue(g.linkUrl);
+                var linkLabel = g.linkText || 'Watch';
                 var linkHtml = hasLink
-                    ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>'
+                    ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(linkLabel) + '</a>'
                     : '<span class="text-coming">COMING SOON</span>';
+                var partsSub = '';
+                if (partsText && partCount > 1) {
+                    partsSub = '<span class="game-parts-sub">' + partsText + '</span>';
+                }
                 return '<tr>' +
                     '<td><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
                     '<td><span class="game-rating">' + ratingText + '</span></td>' +
                     '<td><span class="game-date">' + startedText + '</span></td>' +
                     '<td><span class="game-date">' + finishedText + '</span></td>' +
-                    '<td><span class="game-parts">' + partsDisplay + '</span></td>' +
-                    '<td>' + linkHtml + '</td>' +
+                    '<td>' + linkHtml + partsSub + '</td>' +
                 '</tr>';
             }).join('');
         }
@@ -573,7 +585,6 @@
         document.getElementById('thRating').addEventListener('click', function() { setSort('rating'); });
         document.getElementById('thStarted').addEventListener('click', function() { setSort('started'); });
         document.getElementById('thFinished').addEventListener('click', function() { setSort('finished'); });
-        document.getElementById('thParts').addEventListener('click', function() { setSort('parts'); });
         document.getElementById('statusFilter').addEventListener('change', renderGames);
         var searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
