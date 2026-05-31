@@ -31,10 +31,7 @@
             --muted: #6b7280;
             --accent: #e85d75;
             --accent-soft: rgba(232, 93, 117, 0.15);
-            --green: #4ade80;
-            --green-bg: rgba(74, 222, 128, 0.12);
             --amber: #d2991d;
-            --amber-bg: rgba(210, 153, 29, 0.15);
             --badge-bg: rgba(48, 54, 61, 0.8);
             --radius: 6px;
             --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -292,11 +289,6 @@
             font-style: italic;
             font-size: 0.85em;
         }
-        .text-tbd {
-            color: var(--muted);
-            font-style: italic;
-            font-size: 0.82em;
-        }
         .text-coming {
             color: var(--amber);
             font-style: italic;
@@ -508,19 +500,26 @@
             }
             return filtered;
         }
+        function hasValue(val) {
+            return val && val.toString().trim().length > 0;
+        }
         function formatParts(partsDisplay, parts) {
-            if (partsDisplay && partsDisplay.trim()) {
-                var text = partsDisplay.trim();
+            if (hasValue(partsDisplay)) {
+                var text = partsDisplay.toString().trim();
                 if (text.toLowerCase().indexOf('so far') > -1) {
                     text = text.replace(/so far/i, '').trim();
                     if (text.toLowerCase().indexOf('part') === -1) text = text + (text ? ' parts so far' : 'parts so far');
                     else text = text + ' so far';
-                } else if (text.toLowerCase().indexOf('part') === -1) {
+                    return text;
+                }
+                if (text.toLowerCase().indexOf('part') === -1) {
                     text = text + ' part' + ((parts && parts !== 1) ? 's' : '');
                 }
                 return text;
             }
-            if (!parts || parts === 0) return '';
+            if (parts && parts > 0) {
+                return parts + ' part' + (parts !== 1 ? 's' : '');
+            }
             return '';
         }
         function updateAllArrows() {
@@ -564,10 +563,10 @@
             body.innerHTML = filtered.map(function(g) {
                 var partsText = formatParts(g.partsDisplay, g.parts);
                 var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '<span class="text-na">N/A</span>';
-                var startedText = g.dateStarted ? g.dateStarted : '<span class="text-tbd">TBD</span>';
-                var finishedText = g.dateFinished ? g.dateFinished : '<span class="text-tbd">TBD</span>';
-                var partsDisplay = partsText ? partsText : '<span class="text-tbd">—</span>';
-                var hasLink = g.linkUrl && g.linkUrl.trim().length > 0;
+                var startedText = hasValue(g.dateStarted) ? g.dateStarted : '<span class="text-coming">COMING SOON</span>';
+                var finishedText = hasValue(g.dateFinished) ? g.dateFinished : '<span class="text-coming">COMING SOON</span>';
+                var partsDisplay = partsText ? partsText : '<span class="text-coming">COMING SOON</span>';
+                var hasLink = hasValue(g.linkUrl);
                 var linkHtml = hasLink
                     ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>'
                     : '<span class="text-coming">COMING SOON</span>';
