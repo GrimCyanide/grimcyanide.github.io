@@ -26,6 +26,7 @@
         :root {
             --bg: #0b0e11;
             --surface: #14181d;
+            --surface-alt: #181c22;
             --border: #252a30;
             --text: #c8cdd2;
             --muted: #6b7280;
@@ -39,6 +40,7 @@
         body.light-mode {
             --bg: #f3f4f6;
             --surface: #ffffff;
+            --surface-alt: #f9fafb;
             --border: #d1d5db;
             --text: #1f2937;
             --muted: #9ca3af;
@@ -179,10 +181,10 @@
         .vods-list {
             flex: 1;
             overflow-y: auto;
-            padding: 8px;
+            padding: 6px 8px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
         }
         .vod-row {
             display: flex;
@@ -196,6 +198,10 @@
             color: inherit;
             cursor: pointer;
             flex-shrink: 0;
+            background: var(--surface);
+        }
+        .vod-row:nth-child(even) {
+            background: var(--surface-alt);
         }
         .vod-row:hover {
             background: var(--accent-soft);
@@ -311,6 +317,10 @@
         .game-popup-close:hover {
             background: var(--accent);
         }
+        .text-na {
+            color: var(--muted);
+            font-style: italic;
+        }
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 2em;
@@ -347,7 +357,7 @@
             </div>
             <div class="vods-panel" id="vodsPanel">
                 <div class="vods-panel-header">
-                    <span>games i've recently finished</span>
+                    <span>Recently Finished</span>
                     <a href="/vods">see all →</a>
                 </div>
                 <div class="vods-list" id="vodsList">
@@ -362,6 +372,7 @@
     </div>
     <script>
         var allVODs = [];
+        var panelHeightSet = false;
         function loadVODsData() {
             var list = document.getElementById('vodsList');
             fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet')
@@ -384,9 +395,20 @@
         function matchPanelHeight() {
             var twitch = document.getElementById('twitchEmbed');
             var panel = document.getElementById('vodsPanel');
-            if (twitch && panel) {
+            if (!twitch || !panel) return;
+            var iframe = twitch.querySelector('iframe');
+            var setHeight = function() {
                 var h = twitch.offsetHeight;
-                panel.style.maxHeight = h + 'px';
+                if (h > 0) {
+                    panel.style.maxHeight = h + 'px';
+                    panelHeightSet = true;
+                }
+            };
+            setHeight();
+            if (!panelHeightSet && iframe) {
+                iframe.addEventListener('load', function() {
+                    setTimeout(setHeight, 200);
+                });
             }
         }
         window.addEventListener('resize', matchPanelHeight);
@@ -404,18 +426,18 @@
             return null;
         }
         function fmtParts(pd, p) {
-            if (pd) {
-                var t = pd;
+            if (pd && pd.trim()) {
+                var t = pd.trim();
                 if (t.toLowerCase().indexOf('so far') > -1) {
                     t = t.replace(/so far/i, '').trim();
                     if (t.toLowerCase().indexOf('part') === -1) t = t + (t ? ' parts so far' : 'parts so far');
                     else t = t + ' so far';
                 } else if (t.toLowerCase().indexOf('part') === -1) {
-                    t = t + ' part' + (p !== 1 ? 's' : '');
+                    t = t + ' part' + ((p && p !== 1) ? 's' : '');
                 }
                 return t;
             }
-            return p + ' part' + (p !== 1 ? 's' : '');
+            return '';
         }
         function renderVODs() {
             var list = document.getElementById('vodsList');
@@ -434,7 +456,7 @@
                 return;
             }
             list.innerHTML = recent.map(function(g, i) {
-                var rt = g.rating && g.rating > 0 ? g.rating + '/10' : '—';
+                var rt = g.rating && g.rating > 0 ? g.rating + '/10' : '<span class="text-na">N/A</span>';
                 return '<div class="vod-row" onclick="showGamePopup(' + i + ')">' +
                     '<span class="vod-name">' + esc(g.game) + '</span>' +
                     '<span class="vod-rating">' + rt + '</span>' +
@@ -450,12 +472,15 @@
             var inner = document.getElementById('gamePopupInner');
             var partsText = fmtParts(g.partsDisplay, g.parts);
             var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : 'N/A';
+            var startedText = g.dateStarted || 'TBD';
+            var finishedText = g.dateFinished || 'TBD';
+            var partsDisplay = partsText || '—';
             var linkHtml = g.linkUrl ? '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">watch playlist</a>' : '';
             inner.innerHTML = '<h3>' + esc(g.game) + '</h3>' +
                 '<p><strong>rating</strong> ' + ratingText + '</p>' +
-                '<p><strong>started</strong> ' + (g.dateStarted || '?') + '</p>' +
-                '<p><strong>finished</strong> ' + (g.dateFinished || '—') + '</p>' +
-                '<p><strong>parts</strong> ' + partsText + '</p>' +
+                '<p><strong>started</strong> ' + startedText + '</p>' +
+                '<p><strong>finished</strong> ' + finishedText + '</p>' +
+                '<p><strong>parts</strong> ' + partsDisplay + '</p>' +
                 (linkHtml ? '<p>' + linkHtml + '</p>' : '') +
                 '<p><a href="/vods">view all games →</a></p>' +
                 '<button class="game-popup-close" onclick="closePopup()">close</button>';
