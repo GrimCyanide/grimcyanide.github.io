@@ -100,6 +100,7 @@
             color: var(--text);
         }
         .header {
+            text-align: center;
             margin-bottom: 28px;
         }
         .header h1 {
@@ -592,9 +593,6 @@
             searchTimeout = setTimeout(renderGames, 200);
         });
         var themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-        }
         themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('light-mode');
             localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
