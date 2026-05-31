@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       const dateStarted = row[3]?.trim() || '';
       const dateFinished = row[4]?.trim() || '';
       const linkText = row[5]?.trim() || '';
-      const parts = row[6]?.trim() || '1';
+      const parts = row[6]?.trim() || '';
       const linkUrl = row[7]?.trim() || '';
       if (!gameName) return null;
       return {
@@ -32,13 +32,13 @@ export default async function handler(req, res) {
         isFinished: isFinished.includes('Finished') ? 'Finished' : 'Unfinished',
         isFinishedRaw: isFinished,
         rating: parseFloat(rating) || 0,
-        ratingDisplay: rating || 'N/A',
+        ratingDisplay: rating || '',
         dateStarted: dateStarted,
         dateFinished: dateFinished,
         linkUrl: linkUrl,
-        linkText: linkText || (linkUrl.includes('playlist') ? 'PLAYLIST' : 'FULL PLAYTHROUGH'),
-        parts: parseInt(parts) || 1,
-        partsDisplay: parts || '1'
+        linkText: linkText || '',
+        parts: parts ? (parseInt(parts) || 0) : 0,
+        partsDisplay: parts || ''
       };
     }).filter(game => game !== null);
     const result = { 
@@ -96,26 +96,4 @@ function parseCSV(text) {
     rows.push(currentRow);
   }
   return rows;
-}
-function extractUrl(cellContent) {
-  if (!cellContent) return '';
-  
-  const hyperlinkMatch = cellContent.match(/=HYPERLINK\("([^"]+)"/);
-  if (hyperlinkMatch) {
-    return hyperlinkMatch[1];
-  }
-  const urlMatch = cellContent.match(/(https?:\/\/[^\s"]+)/);
-  if (urlMatch) {
-    return urlMatch[0];
-  }
-  return '';
-}
-function extractLinkText(cellContent) {
-  if (!cellContent) return '';
-  
-  const hyperlinkMatch = cellContent.match(/=HYPERLINK\("[^"]+","([^"]+)"\)/);
-  if (hyperlinkMatch) {
-    return hyperlinkMatch[1];
-  }
-  return cellContent;
 }
