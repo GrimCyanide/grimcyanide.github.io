@@ -180,7 +180,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 850px;
         }
         thead th {
             background: var(--surface);
@@ -196,9 +195,6 @@
             white-space: nowrap;
             border-bottom: 1px solid var(--border);
             transition: color 0.15s;
-            position: sticky;
-            top: 0;
-            z-index: 2;
         }
         thead th:hover {
             color: var(--accent);
@@ -223,26 +219,6 @@
             vertical-align: middle;
             word-break: break-word;
             text-align: center;
-            white-space: nowrap;
-        }
-        tbody td.col-game {
-            white-space: normal;
-            min-width: 180px;
-        }
-        tbody td.col-rating {
-            min-width: 90px;
-        }
-        tbody td.col-started {
-            min-width: 100px;
-        }
-        tbody td.col-finished {
-            min-width: 100px;
-        }
-        tbody td.col-parts {
-            min-width: 100px;
-        }
-        tbody td.col-link {
-            min-width: 140px;
         }
         tbody tr td {
             background: var(--surface);
@@ -262,22 +238,26 @@
         }
         .game-rating {
             font-family: var(--mono);
+            white-space: nowrap;
         }
         .game-date {
             font-family: var(--mono);
             color: var(--muted);
             font-size: 0.9em;
+            white-space: nowrap;
         }
         .game-parts {
             font-family: var(--mono);
             color: var(--muted);
             font-size: 0.9em;
+            white-space: nowrap;
         }
         .game-link {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9em;
+            white-space: nowrap;
             transition: opacity 0.2s;
         }
         .game-link:hover {
@@ -339,25 +319,14 @@
             color: var(--accent);
         }
         @media (max-width: 860px) {
-            table {
-                min-width: 600px;
-            }
             thead th {
-                font-size: 0.7em;
-                padding: 10px 8px;
+                font-size: 0.68em;
+                padding: 8px 6px;
             }
             tbody td {
-                font-size: 0.82em;
-                padding: 12px 8px;
+                font-size: 0.78em;
+                padding: 10px 6px;
             }
-            tbody td.col-game {
-                min-width: 130px;
-            }
-            tbody td.col-rating { min-width: 65px; }
-            tbody td.col-started { min-width: 75px; }
-            tbody td.col-finished { min-width: 75px; }
-            tbody td.col-parts { min-width: 75px; }
-            tbody td.col-link { min-width: 110px; }
         }
         @media (max-width: 600px) {
             .filters-section {
@@ -371,6 +340,15 @@
             }
             .search-input {
                 max-width: none !important;
+            }
+            thead th {
+                font-size: 0.62em;
+                padding: 6px 4px;
+                letter-spacing: 0.3px;
+            }
+            tbody td {
+                font-size: 0.72em;
+                padding: 8px 4px;
             }
         }
     </style>
@@ -404,12 +382,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="col-game" data-col="game" id="thGame">Game <span class="arrow"></span></th>
-                        <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-                        <th class="col-started sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
-                        <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
-                        <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
-                        <th class="col-link" id="thLink">Link</th>
+                        <th data-col="game" id="thGame">Game <span class="arrow"></span></th>
+                        <th data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
+                        <th class="sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
+                        <th data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
+                        <th data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
+                        <th id="thLink">Link</th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
@@ -565,12 +543,12 @@
                     ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>'
                     : '<span class="text-coming">COMING SOON</span>';
                 return '<tr>' +
-                    '<td class="col-game"><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
-                    '<td class="col-rating"><span class="game-rating">' + ratingText + '</span></td>' +
-                    '<td class="col-started"><span class="game-date">' + startedText + '</span></td>' +
-                    '<td class="col-finished"><span class="game-date">' + finishedText + '</span></td>' +
-                    '<td class="col-parts"><span class="game-parts">' + partsDisplay + '</span></td>' +
-                    '<td class="col-link">' + linkHtml + '</td>' +
+                    '<td><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
+                    '<td><span class="game-rating">' + ratingText + '</span></td>' +
+                    '<td><span class="game-date">' + startedText + '</span></td>' +
+                    '<td><span class="game-date">' + finishedText + '</span></td>' +
+                    '<td><span class="game-parts">' + partsDisplay + '</span></td>' +
+                    '<td>' + linkHtml + '</td>' +
                 '</tr>';
             }).join('');
         }
