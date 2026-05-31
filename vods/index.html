@@ -23,15 +23,15 @@
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <style>
         :root {
-            --bg: #0d1117;
-            --surface: #161b22;
-            --border: #30363d;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --accent: #58a6ff;
-            --accent-glow: rgba(88, 166, 255, 0.4);
-            --green: #3fb950;
-            --green-bg: rgba(63, 185, 80, 0.15);
+            --bg: #0b0e11;
+            --surface: #14181d;
+            --border: #252a30;
+            --text: #c8cdd2;
+            --muted: #6b7280;
+            --accent: #e85d75;
+            --accent-soft: rgba(232, 93, 117, 0.15);
+            --green: #4ade80;
+            --green-bg: rgba(74, 222, 128, 0.12);
             --amber: #d2991d;
             --amber-bg: rgba(210, 153, 29, 0.15);
             --badge-bg: rgba(48, 54, 61, 0.8);
@@ -40,13 +40,13 @@
             --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
         }
         body.light-mode {
-            --bg: #ffffff;
-            --surface: #f6f8fa;
-            --border: #d0d7de;
-            --text: #1f2328;
-            --muted: #656d76;
-            --accent: #0969da;
-            --accent-glow: rgba(9, 105, 218, 0.3);
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --border: #d1d5db;
+            --text: #1f2937;
+            --muted: #9ca3af;
+            --accent: #dc3545;
+            --accent-soft: rgba(220, 53, 69, 0.1);
             --badge-bg: rgba(208, 215, 222, 0.6);
         }
         * {
@@ -63,7 +63,7 @@
             line-height: 1.5;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 32px 24px;
         }
@@ -78,25 +78,40 @@
         .back-link {
             color: var(--muted);
             text-decoration: none;
-            font-size: 0.9em;
+            font-size: 0.95em;
             font-family: var(--mono);
             transition: color 0.2s;
         }
         .back-link:hover {
             color: var(--accent);
         }
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 0.8em;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
         .header {
             margin-bottom: 28px;
         }
         .header h1 {
-            font-size: 2em;
+            font-size: 2.2em;
             margin: 0 0 6px 0;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: -0.5px;
         }
         .header .subtitle {
             color: var(--muted);
-            font-size: 0.95em;
+            font-size: 1em;
             margin: 0;
         }
         .filters-section {
@@ -113,7 +128,7 @@
         }
         .filter-group label {
             color: var(--muted);
-            font-size: 0.8em;
+            font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: 600;
@@ -125,12 +140,12 @@
             color: var(--text);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 8px 12px;
+            padding: 9px 14px;
             font-family: var(--font);
-            font-size: 0.88em;
+            font-size: 0.92em;
             outline: none;
             transition: border 0.2s, box-shadow 0.2s;
-            min-width: 120px;
+            min-width: 130px;
             cursor: pointer;
         }
         .filter-group select:hover,
@@ -140,20 +155,20 @@
         .filter-group select:focus,
         .filter-group input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
         .filter-group select option {
             background: var(--surface);
             color: var(--text);
         }
         .search-input {
-            min-width: 180px !important;
+            min-width: 200px !important;
             flex: 1;
-            max-width: 260px;
+            max-width: 280px;
         }
         .result-count {
             color: var(--muted);
-            font-size: 0.82em;
+            font-size: 0.88em;
             margin-bottom: 12px;
             font-family: var(--mono);
         }
@@ -166,18 +181,18 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 850px;
             table-layout: fixed;
         }
         thead th {
             background: var(--surface);
             color: var(--muted);
-            font-size: 0.78em;
+            font-size: 0.82em;
             text-transform: uppercase;
             letter-spacing: 0.6px;
             font-weight: 600;
-            padding: 10px 14px;
-            text-align: left;
+            padding: 12px 16px;
+            text-align: center;
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
@@ -192,17 +207,22 @@
             font-size: 0.7em;
             opacity: 0.5;
         }
+        thead th.sorted {
+            color: var(--accent);
+        }
         thead th.sorted .arrow {
             opacity: 1;
             color: var(--accent);
         }
         tbody td {
             background: var(--surface);
-            padding: 12px 14px;
-            font-size: 0.88em;
+            padding: 14px 16px;
+            font-size: 0.95em;
+            font-weight: 500;
             border-bottom: 1px solid var(--border);
             vertical-align: middle;
             word-break: break-word;
+            text-align: center;
         }
         tbody tr:hover td {
             background: var(--badge-bg);
@@ -211,7 +231,8 @@
             border-bottom: none;
         }
         .col-game {
-            width: 28%;
+            width: 26%;
+            text-align: left !important;
         }
         .col-rating {
             width: 13%;
@@ -223,13 +244,13 @@
             width: 14%;
         }
         .col-parts {
-            width: 13%;
+            width: 14%;
         }
         .col-link {
-            width: 18%;
+            width: 19%;
         }
         .game-name {
-            font-weight: 500;
+            font-weight: 600;
         }
         .game-rating {
             font-family: var(--mono);
@@ -238,20 +259,20 @@
         .game-date {
             font-family: var(--mono);
             color: var(--muted);
-            font-size: 0.85em;
+            font-size: 0.9em;
             white-space: nowrap;
         }
         .game-parts {
             font-family: var(--mono);
             color: var(--muted);
-            font-size: 0.85em;
+            font-size: 0.9em;
             white-space: nowrap;
         }
         .game-link {
             color: var(--accent);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85em;
+            font-weight: 600;
+            font-size: 0.9em;
             white-space: nowrap;
             transition: opacity 0.2s;
         }
@@ -259,11 +280,23 @@
             opacity: 0.7;
             text-decoration: underline;
         }
+        .text-na {
+            color: var(--muted);
+            font-style: italic;
+            font-size: 0.85em;
+        }
+        .text-coming {
+            color: var(--amber);
+            font-style: italic;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
         .no-results {
             text-align: center;
             color: var(--muted);
             padding: 48px 20px;
-            font-size: 0.95em;
+            font-size: 1em;
         }
         .loading-container {
             text-align: center;
@@ -284,18 +317,18 @@
         .loading-text {
             color: var(--muted);
             margin-top: 12px;
-            font-size: 0.9em;
+            font-size: 0.95em;
         }
         .error-container {
             text-align: center;
             padding: 32px 20px;
             color: #f85149;
-            font-size: 0.9em;
+            font-size: 0.95em;
         }
         .footer {
             margin-top: 40px;
             color: var(--muted);
-            font-size: 0.82em;
+            font-size: 0.85em;
             text-align: center;
             font-family: var(--mono);
         }
@@ -306,61 +339,17 @@
         .footer a:hover {
             color: var(--accent);
         }
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 26px;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 13px;
-            transition: .3s;
-        }
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background: var(--accent);
-            border-radius: 50%;
-            transition: .3s;
-        }
-        input:checked + .toggle-slider:before {
-            transform: translateX(22px);
-            background: var(--amber);
-        }
         @media (max-width: 860px) {
             table {
                 min-width: 700px;
             }
             thead th {
-                font-size: 0.7em;
-                padding: 8px 8px;
+                font-size: 0.72em;
+                padding: 10px 8px;
             }
             tbody td {
-                font-size: 0.8em;
-                padding: 10px 8px;
+                font-size: 0.85em;
+                padding: 12px 8px;
             }
             .col-game { width: 24%; }
             .col-rating { width: 12%; }
@@ -386,15 +375,10 @@
     </style>
 </head>
 <body>
-    <div class="theme-toggle">
-        <label class="toggle-switch">
-            <input type="checkbox" id="themeToggle">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
     <div class="container">
         <div class="top-bar">
             <a href="https://grimcyanide.com" class="back-link">← grimcyanide.com</a>
+            <button class="theme-toggle" id="themeToggle">light/dark</button>
         </div>
         <div class="header">
             <h1>VODs &amp; Playthroughs</h1>
@@ -419,9 +403,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="col-game sorted" data-col="game" id="thGame">Game <span class="arrow">▼</span></th>
+                        <th class="col-game" data-col="game" id="thGame">Game <span class="arrow"></span></th>
                         <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-                        <th class="col-started" data-col="started" id="thStarted">Started <span class="arrow"></span></th>
+                        <th class="col-started sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
                         <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
                         <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
                         <th class="col-link" id="thLink">Link</th>
@@ -445,7 +429,7 @@
     </div>
     <script>
         let allGames = [];
-        let currentSort = 'az';
+        let currentSort = 'recent-started';
         let sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
         const sortToggles = {
             'az': 'za', 'za': 'az',
@@ -467,7 +451,7 @@
                     return;
                 }
                 allGames = data.games;
-                currentSort = 'az';
+                currentSort = 'recent-started';
                 sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
                 updateAllArrows();
                 renderGames();
@@ -522,6 +506,7 @@
                 }
                 return text;
             }
+            if (!parts || parts === 0) return null;
             return parts + ' part' + (parts !== 1 ? 's' : '');
         }
         function updateAllArrows() {
@@ -564,15 +549,18 @@
             }
             body.innerHTML = filtered.map(function(g) {
                 var partsText = formatParts(g.partsDisplay, g.parts);
-                var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '—';
-                var linkHtml = g.linkUrl ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>' : '<span style="color:var(--muted);font-size:0.85em;">—</span>';
+                var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '<span class="text-na">N/A</span>';
+                var startedText = g.dateStarted ? g.dateStarted : '<span class="text-coming">COMING SOON</span>';
+                var finishedText = g.dateFinished ? g.dateFinished : '<span class="text-coming">COMING SOON</span>';
+                var partsDisplay = partsText ? partsText : '<span class="text-coming">COMING SOON</span>';
+                var linkHtml = g.linkUrl ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>' : '<span class="text-coming">COMING SOON</span>';
                 return '<tr>' +
-                    '<td><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
-                    '<td><span class="game-rating">' + ratingText + '</span></td>' +
-                    '<td><span class="game-date">' + (g.dateStarted || '?') + '</span></td>' +
-                    '<td><span class="game-date">' + (g.dateFinished || '—') + '</span></td>' +
-                    '<td><span class="game-parts">' + partsText + '</span></td>' +
-                    '<td>' + linkHtml + '</td>' +
+                    '<td class="col-game"><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
+                    '<td class="col-rating"><span class="game-rating">' + ratingText + '</span></td>' +
+                    '<td class="col-started"><span class="game-date">' + startedText + '</span></td>' +
+                    '<td class="col-finished"><span class="game-date">' + finishedText + '</span></td>' +
+                    '<td class="col-parts"><span class="game-parts">' + partsDisplay + '</span></td>' +
+                    '<td class="col-link">' + linkHtml + '</td>' +
                 '</tr>';
             }).join('');
         }
@@ -599,19 +587,12 @@
             searchTimeout = setTimeout(renderGames, 200);
         });
         var themeToggle = document.getElementById('themeToggle');
-        var currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'light') {
+        if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
-            themeToggle.checked = true;
         }
-        themeToggle.addEventListener('change', function() {
-            if (this.checked) {
-                document.body.classList.add('light-mode');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.body.classList.remove('light-mode');
-                localStorage.setItem('theme', 'dark');
-            }
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
         });
         loadGamesData();
     </script>
