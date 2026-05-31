@@ -440,80 +440,82 @@
         </div>
     </div>
     <script>
-        let allGames = [];
-        let currentSort = 'recent-started';
-        let sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
-        const sortToggles = {
+        var allGames = [];
+        var currentSort = 'recent-started';
+        var sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
+        var sortToggles = {
             'az': 'za', 'za': 'az',
             'rating-high': 'rating-low', 'rating-low': 'rating-high',
             'recent-started': 'oldest-started', 'oldest-started': 'recent-started',
             'recent-finished': 'oldest-finished', 'oldest-finished': 'recent-finished',
             'parts-high': 'parts-low', 'parts-low': 'parts-high'
         };
-        const columnIds = ['game', 'rating', 'started', 'finished', 'parts'];
-        async function loadGamesData() {
-            const body = document.getElementById('gamesBody');
-            try {
-                const response = await fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet');
-                if (!response.ok) throw new Error('API returned ' + response.status);
-                const data = await response.json();
-                if (data.error) throw new Error(data.error);
-                if (!data.games || data.games.length === 0) {
-                    body.innerHTML = '<tr><td colspan="6"><div class="no-results">No games found.</div></td></tr>';
-                    return;
-                }
-                allGames = data.games;
-                currentSort = 'recent-started';
-                sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
-                updateAllArrows();
-                renderGames();
-                updateResultCount();
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('gamesBody').innerHTML = '<tr><td colspan="6"><div class="error-container">Failed to load data. ' + error.message + '</div></td></tr>';
-            }
+        var columnIds = ['game', 'rating', 'started', 'finished', 'parts'];
+        var apiURL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
+        function loadGamesData() {
+            var body = document.getElementById('gamesBody');
+            var url = apiURL + '?t=' + Date.now();
+            fetch(url)
+                .then(function(r) { if (!r.ok) throw new Error('API returned ' + r.status); return r.json(); })
+                .then(function(data) {
+                    if (data.error) throw new Error(data.error);
+                    if (!data.games || !data.games.length) {
+                        body.innerHTML = '<tr><td colspan="6"><div class="no-results">No games found.</div></td></tr>';
+                        return;
+                    }
+                    allGames = data.games;
+                    currentSort = 'recent-started';
+                    sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished', parts: 'parts-high' };
+                    updateAllArrows();
+                    renderGames();
+                    updateResultCount();
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    body.innerHTML = '<tr><td colspan="6"><div class="error-container">Failed to load data. ' + error.message + '</div></td></tr>';
+                });
         }
         function parseDate(dateStr) {
             if (!dateStr) return null;
-            const dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            var dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
             if (dmyMatch) return new Date(dmyMatch[3], dmyMatch[2] - 1, dmyMatch[1]);
-            const parsed = new Date(dateStr);
+            var parsed = new Date(dateStr);
             if (!isNaN(parsed.getTime())) return parsed;
             return null;
         }
         function sortGames(games, sortBy) {
-            const sorted = [...games];
+            var sorted = games.slice();
             switch (sortBy) {
-                case 'az': return sorted.sort((a, b) => a.game.localeCompare(b.game));
-                case 'za': return sorted.sort((a, b) => b.game.localeCompare(a.game));
-                case 'recent-started': return sorted.sort((a, b) => { const dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
-                case 'oldest-started': return sorted.sort((a, b) => { const dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
-                case 'recent-finished': return sorted.sort((a, b) => { const dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
-                case 'oldest-finished': return sorted.sort((a, b) => { const dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
-                case 'rating-high': return sorted.sort((a, b) => b.rating - a.rating);
-                case 'rating-low': return sorted.sort((a, b) => a.rating - b.rating);
-                case 'parts-high': return sorted.sort((a, b) => (b.parts || 0) - (a.parts || 0));
-                case 'parts-low': return sorted.sort((a, b) => (a.parts || 0) - (b.parts || 0));
+                case 'az': return sorted.sort(function(a, b) { return a.game.localeCompare(b.game); });
+                case 'za': return sorted.sort(function(a, b) { return b.game.localeCompare(a.game); });
+                case 'recent-started': return sorted.sort(function(a, b) { var dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
+                case 'oldest-started': return sorted.sort(function(a, b) { var dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
+                case 'recent-finished': return sorted.sort(function(a, b) { var dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
+                case 'oldest-finished': return sorted.sort(function(a, b) { var dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
+                case 'rating-high': return sorted.sort(function(a, b) { return b.rating - a.rating; });
+                case 'rating-low': return sorted.sort(function(a, b) { return a.rating - b.rating; });
+                case 'parts-high': return sorted.sort(function(a, b) { return (b.parts || 0) - (a.parts || 0); });
+                case 'parts-low': return sorted.sort(function(a, b) { return (a.parts || 0) - (b.parts || 0); });
                 default: return sorted;
             }
         }
         function filterGames(games, statusFilter, searchQuery) {
-            let filtered = games;
-            if (statusFilter !== 'all') filtered = filtered.filter(g => g.isFinished === statusFilter);
+            var filtered = games;
+            if (statusFilter !== 'all') filtered = filtered.filter(function(g) { return g.isFinished === statusFilter; });
             if (searchQuery.trim()) {
-                const q = searchQuery.toLowerCase().trim();
-                filtered = filtered.filter(g => g.game.toLowerCase().includes(q));
+                var q = searchQuery.toLowerCase().trim();
+                filtered = filtered.filter(function(g) { return g.game.toLowerCase().indexOf(q) > -1; });
             }
             return filtered;
         }
         function formatParts(partsDisplay, parts) {
             if (partsDisplay && partsDisplay.trim()) {
-                let text = partsDisplay.trim();
-                if (text.toLowerCase().includes('so far')) {
+                var text = partsDisplay.trim();
+                if (text.toLowerCase().indexOf('so far') > -1) {
                     text = text.replace(/so far/i, '').trim();
-                    if (!text.toLowerCase().includes('part')) text = text + (text ? ' parts so far' : 'parts so far');
+                    if (text.toLowerCase().indexOf('part') === -1) text = text + (text ? ' parts so far' : 'parts so far');
                     else text = text + ' so far';
-                } else if (!text.toLowerCase().includes('part')) {
+                } else if (text.toLowerCase().indexOf('part') === -1) {
                     text = text + ' part' + ((parts && parts !== 1) ? 's' : '');
                 }
                 return text;
@@ -532,7 +534,7 @@
                 var dir = sortDirections[col];
                 if (dir === currentSort) {
                     th.classList.add('sorted');
-                    if (dir.includes('low') || dir === 'za' || dir.includes('oldest')) {
+                    if (dir.indexOf('low') > -1 || dir === 'za' || dir.indexOf('oldest') > -1) {
                         arrow.textContent = '▲';
                     } else {
                         arrow.textContent = '▼';
@@ -565,7 +567,10 @@
                 var startedText = g.dateStarted ? g.dateStarted : '<span class="text-tbd">TBD</span>';
                 var finishedText = g.dateFinished ? g.dateFinished : '<span class="text-tbd">TBD</span>';
                 var partsDisplay = partsText ? partsText : '<span class="text-tbd">—</span>';
-                var linkHtml = g.linkUrl ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>' : '<span class="text-coming">COMING SOON</span>';
+                var hasLink = g.linkUrl && g.linkUrl.trim().length > 0;
+                var linkHtml = hasLink
+                    ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>'
+                    : '<span class="text-coming">COMING SOON</span>';
                 return '<tr>' +
                     '<td class="col-game"><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
                     '<td class="col-rating"><span class="game-rating">' + ratingText + '</span></td>' +
