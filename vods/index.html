@@ -173,6 +173,8 @@
         }
         .table-wrapper {
             overflow-x: auto;
+            overflow-y: auto;
+            max-height: 70vh;
             border: 1px solid var(--border);
             border-radius: var(--radius);
             background: var(--border);
@@ -181,7 +183,6 @@
             width: 100%;
             border-collapse: collapse;
             min-width: 850px;
-            table-layout: fixed;
         }
         thead th {
             background: var(--surface);
@@ -197,6 +198,9 @@
             white-space: nowrap;
             border-bottom: 1px solid var(--border);
             transition: color 0.15s;
+            position: sticky;
+            top: 0;
+            z-index: 3;
         }
         thead th:hover {
             color: var(--accent);
@@ -221,6 +225,27 @@
             vertical-align: middle;
             word-break: break-word;
             text-align: center;
+            white-space: nowrap;
+        }
+        tbody td.col-game {
+            white-space: normal;
+            min-width: 180px;
+        }
+        tbody td.col-rating {
+            min-width: 90px;
+        }
+        tbody td.col-started {
+            min-width: 100px;
+        }
+        tbody td.col-finished {
+            min-width: 100px;
+        }
+        tbody td.col-parts {
+            min-width: 100px;
+        }
+        tbody td.col-link {
+            min-width: 140px;
+            white-space: nowrap;
         }
         tbody tr td {
             background: var(--surface);
@@ -234,50 +259,28 @@
         tbody tr:last-child td {
             border-bottom: none;
         }
-        .col-game {
-            width: 26%;
-        }
-        .col-rating {
-            width: 13%;
-        }
-        .col-started {
-            width: 14%;
-        }
-        .col-finished {
-            width: 14%;
-        }
-        .col-parts {
-            width: 14%;
-        }
-        .col-link {
-            width: 19%;
-        }
         .game-name {
             font-weight: 600;
             display: block;
         }
         .game-rating {
             font-family: var(--mono);
-            white-space: nowrap;
         }
         .game-date {
             font-family: var(--mono);
             color: var(--muted);
             font-size: 0.9em;
-            white-space: nowrap;
         }
         .game-parts {
             font-family: var(--mono);
             color: var(--muted);
             font-size: 0.9em;
-            white-space: nowrap;
         }
         .game-link {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9em;
-            white-space: nowrap;
             transition: opacity 0.2s;
         }
         .game-link:hover {
@@ -339,30 +342,9 @@
             color: var(--accent);
         }
         @media (max-width: 860px) {
-            .table-wrapper {
-                position: relative;
-            }
             table {
                 min-width: 600px;
             }
-            .col-game {
-                position: sticky;
-                left: 0;
-                z-index: 2;
-                width: 160px;
-                min-width: 160px;
-            }
-            thead th.col-game {
-                z-index: 4;
-            }
-            tbody td.col-game {
-                z-index: 2;
-            }
-            .col-rating { width: 80px; }
-            .col-started { width: 90px; }
-            .col-finished { width: 90px; }
-            .col-parts { width: 90px; }
-            .col-link { width: 100px; }
             thead th {
                 font-size: 0.7em;
                 padding: 10px 8px;
@@ -371,6 +353,22 @@
                 font-size: 0.82em;
                 padding: 12px 8px;
             }
+            tbody td.col-game {
+                position: sticky;
+                left: 0;
+                z-index: 2;
+                min-width: 140px;
+            }
+            thead th.col-game {
+                position: sticky;
+                left: 0;
+                z-index: 4;
+            }
+            tbody td.col-rating { min-width: 70px; }
+            tbody td.col-started { min-width: 80px; }
+            tbody td.col-finished { min-width: 80px; }
+            tbody td.col-parts { min-width: 80px; }
+            tbody td.col-link { min-width: 120px; }
         }
         @media (max-width: 600px) {
             .filters-section {
