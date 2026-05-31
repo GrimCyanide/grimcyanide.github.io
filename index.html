@@ -428,13 +428,17 @@
         function cleanPartsText(pd, p) {
             if (pd && pd.trim()) {
                 var t = pd.trim();
-                if (t.toLowerCase().indexOf('so far') > -1) {
+                var lower = t.toLowerCase();
+                if (lower.indexOf('so far') > -1) {
                     t = t.replace(/so far/i, '').trim();
                     if (t.toLowerCase().indexOf('part') === -1) t = t + (t ? ' parts so far' : 'parts so far');
                     else t = t + ' so far';
                     return t;
                 }
-                if (t.toLowerCase().indexOf('part') === -1) {
+                if (lower === 'full playthrough' || lower === 'full') {
+                    return 'full playthrough';
+                }
+                if (lower.indexOf('part') === -1) {
                     var num = parseInt(t, 10);
                     if (!isNaN(num)) {
                         return num + ' part' + (num !== 1 ? 's' : '');
@@ -486,8 +490,18 @@
             var partsDisplay = partsText || '—';
             var linkHtml = '';
             if (g.linkUrl) {
-                var linkLabel = g.linkText || 'watch';
-                linkHtml = '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">' + esc(linkLabel) + '</a>';
+                var lowerParts = partsText.toLowerCase();
+                var isFullPlaythrough = lowerParts === 'full playthrough' || lowerParts === 'full';
+                var isPlaylist = lowerParts.indexOf('part') > -1 && lowerParts.indexOf('so far') === -1;
+                var linkLabel;
+                if (isFullPlaythrough) {
+                    linkLabel = 'click here to watch the full playthrough';
+                } else if (isPlaylist) {
+                    linkLabel = 'click here to watch the playlist';
+                } else {
+                    linkLabel = 'click here to watch';
+                }
+                linkHtml = '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">' + linkLabel + '</a>';
             }
             inner.innerHTML = '<h3>' + esc(g.game) + '</h3>' +
                 '<p><strong>rating</strong> ' + ratingText + '</p>' +
