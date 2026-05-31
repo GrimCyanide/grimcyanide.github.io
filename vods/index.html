@@ -320,16 +320,16 @@
         }
         @media (max-width: 860px) {
             .container {
-                padding: 24px 10px;
+                padding: 24px 6px;
             }
             thead th {
-                font-size: 0.62em;
-                padding: 8px 4px;
-                letter-spacing: 0.2px;
+                font-size: 0.58em;
+                padding: 7px 3px;
+                letter-spacing: 0;
             }
             tbody td {
-                font-size: 0.7em;
-                padding: 10px 4px;
+                font-size: 0.66em;
+                padding: 9px 3px;
             }
         }
         @media (max-width: 600px) {
@@ -346,16 +346,15 @@
                 max-width: none !important;
             }
             .container {
-                padding: 16px 4px;
+                padding: 12px 2px;
             }
             thead th {
-                font-size: 0.55em;
-                padding: 6px 3px;
-                letter-spacing: 0;
+                font-size: 0.5em;
+                padding: 5px 2px;
             }
             tbody td {
-                font-size: 0.65em;
-                padding: 8px 3px;
+                font-size: 0.6em;
+                padding: 7px 2px;
             }
         }
     </style>
@@ -389,12 +388,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th data-col="game" id="thGame">Game <span class="arrow"></span></th>
-                        <th data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-                        <th class="sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
-                        <th data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
-                        <th data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
-                        <th id="thLink">Link</th>
+                        <th style="width:30%" data-col="game" id="thGame">Game <span class="arrow"></span></th>
+                        <th style="width:12%" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
+                        <th style="width:14%" class="sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
+                        <th style="width:14%" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
+                        <th style="width:14%" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
+                        <th style="width:16%" id="thLink">Link</th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
