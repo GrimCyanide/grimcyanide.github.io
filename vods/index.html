@@ -484,8 +484,8 @@
                 case 'oldest-started': return sorted.sort(function(a, b) { var dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
                 case 'recent-finished': return sorted.sort(function(a, b) { var dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
                 case 'oldest-finished': return sorted.sort(function(a, b) { var dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
-                case 'rating-high': return sorted.sort(function(a, b) { return b.rating - a.rating; });
-                case 'rating-low': return sorted.sort(function(a, b) { return a.rating - b.rating; });
+                case 'rating-high': return sorted.sort(function(a, b) { return (b.rating || 0) - (a.rating || 0); });
+                case 'rating-low': return sorted.sort(function(a, b) { return (a.rating || 0) - (b.rating || 0); });
                 case 'parts-high': return sorted.sort(function(a, b) { return (b.parts || 0) - (a.parts || 0); });
                 case 'parts-low': return sorted.sort(function(a, b) { return (a.parts || 0) - (b.parts || 0); });
                 default: return sorted;
@@ -501,7 +501,7 @@
             return filtered;
         }
         function hasValue(val) {
-            return val && val.toString().trim().length > 0;
+            return val !== null && val !== undefined && val.toString().trim().length > 0;
         }
         function formatParts(partsDisplay, parts) {
             if (hasValue(partsDisplay)) {
@@ -516,9 +516,6 @@
                     text = text + ' part' + ((parts && parts !== 1) ? 's' : '');
                 }
                 return text;
-            }
-            if (parts && parts > 0) {
-                return parts + ' part' + (parts !== 1 ? 's' : '');
             }
             return '';
         }
@@ -562,7 +559,7 @@
             }
             body.innerHTML = filtered.map(function(g) {
                 var partsText = formatParts(g.partsDisplay, g.parts);
-                var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '<span class="text-na">N/A</span>';
+                var ratingText = (g.rating && g.rating > 0) ? g.rating + '/10' : '<span class="text-coming">COMING SOON</span>';
                 var startedText = hasValue(g.dateStarted) ? g.dateStarted : '<span class="text-coming">COMING SOON</span>';
                 var finishedText = hasValue(g.dateFinished) ? g.dateFinished : '<span class="text-coming">COMING SOON</span>';
                 var partsDisplay = partsText ? partsText : '<span class="text-coming">COMING SOON</span>';
