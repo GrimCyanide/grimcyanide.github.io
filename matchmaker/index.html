@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALL x PIT Character Matchmaker - Random Pair Generator - GRIM_CYANIDE</title>
+    <title>BALL x PIT Matchmaker - GRIM_CYANIDE</title>
     <meta name="description" content="Randomly pairs two compatible BALL x PIT characters to play together. Spin the matchmaker to get random character combinations with proper game restrictions.">
     <meta name="keywords" content="BALL x PIT, ball x pit matchmaker, character randomizer, roguelike, roguelite, Kenny Sun, Devolver Digital, The Warrior, The Itchy Finger, The Repentant, The Cohabitants, The Cogitator, The Embedded, The Empty Nester, The Shade, The Shieldbearer, The Spendthrift, The Flagellant, The Juggler, The Tactician, The Radical, The Physicist, The Makeshift Sisyphus, character pairs, randomizer">
-    
     <meta property="og:title" content="BALL x PIT Character Matchmaker - Random Pair Generator">
     <meta property="og:description" content="Spin to get random character pairs for BALL x PIT with proper game compatibility restrictions">
     <meta property="og:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <meta property="og:url" content="https://grimcyanide.com/matchmaker">
     <meta property="og:type" content="website">
-    
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="BALL x PIT Character Matchmaker">
     <meta name="twitter:description" content="Randomly pairs two compatible BALL x PIT characters to play together">
-    
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -24,553 +21,346 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     <link rel="manifest" href="/site.webmanifest">
     <style>
+        :root {
+            --bg: #0b0e11;
+            --surface: #14181d;
+            --surface-alt: #181c22;
+            --border: #252a30;
+            --text: #c8cdd2;
+            --muted: #6b7280;
+            --accent: #e85d75;
+            --accent-soft: rgba(232, 93, 117, 0.15);
+            --green: #4ade80;
+            --green-bg: rgba(74, 222, 128, 0.12);
+            --red: #f87171;
+            --radius: 6px;
+            --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+        body.light-mode {
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --surface-alt: #f9fafb;
+            --border: #d1d5db;
+            --text: #1f2937;
+            --muted: #9ca3af;
+            --accent: #dc3545;
+            --accent-soft: rgba(220, 53, 69, 0.1);
+        }
+        * {
+            box-sizing: border-box;
+        }
         body {
-            background: #0a0a0a;
-            color: #00ffff;
-            font-family: 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            transition: all 0.3s ease;
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.4;
+            font-size: 15px;
         }
-
         .container {
-            max-width: 1200px;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px 40px;
             text-align: center;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin: 0;
-            text-shadow: 0 0 12px #00ffff, 0 0 24px #00ffff;
-            letter-spacing: 3px;
-            font-weight: normal;
-        }
-
-        .home-button {
-            display: inline-block;
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #00ffff;
-            border-radius: 8px;
-            padding: 12px 24px;
-            text-decoration: none;
-            color: #00ffff;
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
-            transition: all 0.3s ease;
         }
-
-        .home-button:hover {
-            background: rgba(0, 255, 255, 0.2);
-            transform: translateY(-2px);
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9em;
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+            transition: color 0.2s;
         }
-
+        .back-link:hover {
+            color: var(--accent);
+        }
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 0.75em;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .header {
+            margin-bottom: 32px;
+        }
+        .header h1 {
+            font-size: 2.2em;
+            margin: 0 0 6px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header .subtitle {
+            color: var(--muted);
+            font-size: 0.95em;
+            margin: 0;
+        }
         .slot-machine {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
-            margin: 40px 0;
-            position: relative;
+            gap: 28px;
+            margin: 32px 0;
         }
-
         .slot {
-            width: 200px;
-            height: 250px;
-            border: 2px solid #00ffff;
-            border-radius: 15px;
+            width: 180px;
+            height: 220px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             overflow: hidden;
-            position: relative;
-            background: #001a1a;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
         .character-display {
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 15px;
-            box-sizing: border-box;
+            gap: 10px;
+            padding: 14px;
         }
-
         .character-image {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid #00ffff;
-            margin-bottom: 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--surface-alt);
         }
-
         .character-name {
-            font-weight: bold;
-            color: #88ffff;
-            font-size: 1.1em;
-            height: 40px;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-align: center;
+            line-height: 1.2;
+            min-height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            width: 100%;
         }
-
         .vs {
-            font-size: 2em;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--accent);
+            flex-shrink: 0;
         }
-
         .result {
-            margin: 30px 0;
-            font-size: 1.5em;
-            color: #88ffff;
-            min-height: 60px;
+            margin: 20px 0 8px;
+            font-size: 1.3em;
+            font-weight: 600;
+            min-height: 32px;
         }
-
         .spin-button {
-            background: rgba(0, 255, 255, 0.1);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            padding: 15px 40px;
-            color: #00ffff;
-            font-size: 1.2em;
-            font-family: 'Courier New', monospace;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 32px;
+            color: var(--text);
+            font-size: 1em;
+            font-family: var(--font);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
+            transition: all 0.2s;
+            margin-top: 16px;
         }
-
         .spin-button:hover {
-            background: rgba(0, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent);
         }
-
         .spin-button:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
-            transform: none;
+            pointer-events: none;
         }
-
-        .invalid-combination {
-            color: #ff4444;
-            margin-top: 15px;
-            font-size: 1.1em;
+        .invalid-message {
+            color: var(--red);
+            margin-top: 10px;
+            font-size: 0.88em;
+            font-weight: 500;
+            min-height: 22px;
         }
-
         .disclaimer {
-            margin-top: 50px;
-            color: #008888;
-            font-size: 0.9em;
-            padding: 20px;
-            border-top: 1px solid #004444;
-            max-width: 600px;
+            margin-top: 44px;
+            color: var(--muted);
+            font-size: 0.78em;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            line-height: 1.6;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.4;
         }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 255, 255, 0.2);
-            border: 1px solid #00ffff;
-            border-radius: 15px;
-            transition: .4s;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "🌙";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 3px;
-            background: #00ffff;
-            border-radius: 50%;
-            transition: .4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        input:checked + .toggle-slider {
-            background: rgba(0, 136, 136, 0.2);
-            border: 1px solid #008888;
-        }
-
-        input:checked + .toggle-slider:before {
-            content: "☀️";
-            transform: translateX(30px);
-            background: #008888;
-        }
-
-        body.light-mode {
-            background: #e6f2f2 !important;
-            color: #004444 !important;
-        }
-
-        body.light-mode .header h1 {
-            text-shadow: 0 0 10px #000000, 0 0 20px #000000 !important;
-            color: #002222 !important;
-            font-weight: bold !important;
-        }
-
-        body.light-mode .home-button {
-            background: rgba(200, 200, 200, 0.9) !important;
-            border: 1px solid #000000 !important;
-            color: #001111 !important;
-            font-weight: 500 !important;
-        }
-
-        body.light-mode .home-button:hover {
-            background: rgba(180, 180, 180, 0.9) !important;
-        }
-
-        body.light-mode .slot {
-            border: 2px solid #000000 !important;
-            background: rgba(220, 220, 220, 0.8) !important;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        body.light-mode .character-image {
-            border: 1px solid #000000 !important;
-        }
-
-        body.light-mode .spin-button {
-            background: rgba(200, 200, 200, 0.9) !important;
-            border: 2px solid #000000 !important;
-            color: #001111 !important;
-            font-weight: 600 !important;
-        }
-
-        body.light-mode .spin-button:hover {
-            background: rgba(180, 180, 180, 0.9) !important;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        body.light-mode .spin-button:disabled {
-            background: rgba(150, 150, 150, 0.7) !important;
-        }
-
-        body.light-mode .disclaimer {
-            border-top: 1px solid #000000 !important;
-            color: #556666 !important;
-            font-weight: 500 !important;
-        }
-
-        body.light-mode .vs {
-            color: #001111 !important;
-            text-shadow: 0 0 10px #000000 !important;
-            font-weight: 600 !important;
-        }
-
-        body.light-mode .result {
-            color: #001111 !important;
-            font-weight: 600 !important;
-        }
-
-        body.light-mode .character-name {
-            color: #001111 !important;
-            font-weight: 600 !important;
-        }
-
-        body.light-mode .invalid-combination {
-            color: #cc0000 !important;
-            font-weight: 600 !important;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 500px) {
             .slot-machine {
                 flex-direction: column;
-                gap: 20px;
+                gap: 14px;
             }
-            
             .vs {
                 transform: rotate(90deg);
             }
-            
             .header h1 {
-                font-size: 2.2em;
+                font-size: 1.7em;
             }
-
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
+            .slot {
+                width: 160px;
+                height: 200px;
+            }
+            .character-image {
+                width: 80px;
+                height: 80px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="theme-toggle">
-        <label class="toggle-switch">
-            <input type="checkbox" id="themeToggle">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
-
     <div class="container">
-        <a href="https://grimcyanide.com" class="home-button">← Back to Home</a>
-        
-        <div class="header">
-            <h1>BALL x PIT MATCHMAKER</h1>
+        <div class="top-row">
+            <a href="https://grimcyanide.com" class="back-link">← grimcyanide.com</a>
+            <button class="theme-toggle" id="themeToggle">light/dark</button>
         </div>
-
+        <div class="header">
+            <h1>Ball x Pit Matchmaker</h1>
+            <p class="subtitle">spin for a random character pair</p>
+        </div>
         <div class="slot-machine">
-            <div class="slot" id="slot1">
+            <div class="slot">
                 <div class="character-display" id="display1">
                     <img src="/the_cohabitants.avif" alt="The Cohabitants" class="character-image">
                     <div class="character-name">The Cohabitants</div>
                 </div>
             </div>
-            
-            <div class="vs">X</div>
-            
-            <div class="slot" id="slot2">
+            <div class="vs">×</div>
+            <div class="slot">
                 <div class="character-display" id="display2">
                     <img src="/the_shade.avif" alt="The Shade" class="character-image">
                     <div class="character-name">The Shade</div>
                 </div>
             </div>
         </div>
-
         <div class="result" id="result">The Cohabitants × The Shade</div>
-        
-        <button class="spin-button" id="spinButton">SPIN MATCHMAKER</button>
-        <div class="invalid-combination" id="invalidMessage"></div>
-
+        <button class="spin-button" id="spinButton">spin</button>
+        <div class="invalid-message" id="invalidMessage"></div>
         <div class="disclaimer">
-            Picks two compatible characters to play together in BALL x PIT. <br>This site is not affiliated with BALL x PIT, Kenny Sun, or Devolver Digital. Character images and names are their copyright.
-            <br><br>
-            Latest Update: 31/01/2026.
+            picks two compatible characters to play together in BALL x PIT.<br>not affiliated with BALL x PIT, Kenny Sun, or Devolver Digital.<br>character images and names are their copyright.<br><br>updated 31/01/2026.
         </div>
     </div>
-
     <script>
-    const characters = [
-        { id: 1, name: "The Warrior", image: "/the_warrior.avif" },
-        { id: 2, name: "The Itchy Finger", image: "/the_itchy_finger.avif" },
-        { id: 3, name: "The Repentant", image: "/the_repentant.avif" },
-        { id: 4, name: "The Cohabitants", image: "/the_cohabitants.avif" },
-        { id: 5, name: "The Cogitator", image: "/the_cogitator.avif" },
-        { id: 6, name: "The Embedded", image: "/the_embedded.avif" },
-        { id: 7, name: "The Empty Nester", image: "/The_Empty_Nester.avif" },
-        { id: 8, name: "The Shade", image: "/the_shade.avif" },
-        { id: 9, name: "The Shieldbearer", image: "/the_shieldbearer.avif" },
-        { id: 10, name: "The Spendthrift", image: "/The_Spendthrift.avif" },
-        { id: 11, name: "The Flagellant", image: "/the_flagellant.avif" },
-        { id: 12, name: "The Juggler", image: "/the_juggler.avif" },
-        { id: 13, name: "The Tactician", image: "/the_tactician.avif" },
-        { id: 14, name: "The Radical", image: "/the_radical.avif" },
-        { id: 15, name: "The Physicist", image: "/the_physicist.avif" },
-        { id: 16, name: "The Makeshift Sisyphus", image: "/the_Makeshift_Sisyphus.avif" },
-        { id: 17, name: "The Falconer", image: "/Falconer.avif" },
-        { id: 18, name: "The Carouser", image: "/Carouser.avif" }
-    ];
-
-    const invalidCombinations = [
-        [3, 9],
-        [3, 11],
-        [4, 16],
-        [4, 10],
-        [4, 12],
-        [8, 16],
-        [9, 11],
-        [13, 9],
-        [13, 2],
-        [13, 11],
-        [14, 5],
-        [15, 11],
-        [15, 9],
-        [16, 10],
-        [17, 8],
-        [17, 4],
-        [18, 13]
-    ];
-
-    let isSpinning = false;
-    let currentChar1 = characters[3];
-    let currentChar2 = characters[7];
-
-    function updateDisplay(displayElement, character) {
-        displayElement.innerHTML = `
-            <img src="${character.image}" alt="${character.name}" class="character-image" onerror="this.style.display='none'">
-            <div class="character-name">${character.name}</div>
-        `;
-    }
-
-    function spinReels() {
-        if (isSpinning) return;
-        
-        isSpinning = true;
-        const spinButton = document.getElementById('spinButton');
-        const resultDiv = document.getElementById('result');
-        const invalidMessage = document.getElementById('invalidMessage');
-        const display1 = document.getElementById('display1');
-        const display2 = document.getElementById('display2');
-        
-        spinButton.disabled = true;
-        resultDiv.textContent = '';
-        invalidMessage.textContent = '';
-
-        const startTime = Date.now();
-        const totalDuration = 3000;
-        let fastPhase = true;
-        let interval = 80;
-
-        function cycleCharacters() {
-            const elapsed = Date.now() - startTime;
-            const progress = elapsed / totalDuration;
-
-            if (progress < 1) {
-                if (progress > 0.7 && fastPhase) {
-                    fastPhase = false;
-                    interval = 200;
-                } else if (progress > 0.9 && !fastPhase) {
-                    interval = 400;
-                }
-
-                const randomChar1 = characters[Math.floor(Math.random() * characters.length)];
-                const randomChar2 = characters[Math.floor(Math.random() * characters.length)];
-                
-                updateDisplay(display1, randomChar1);
-                updateDisplay(display2, randomChar2);
-                
-                setTimeout(cycleCharacters, interval);
-            } else {
-                let char1, char2;
-                let isValid = false;
-                let attempts = 0;
-                
-                while (!isValid && attempts < 100) {
-                    char1 = characters[Math.floor(Math.random() * characters.length)];
-                    char2 = characters[Math.floor(Math.random() * characters.length)];
-                    if (char1.id !== char2.id && !isInvalidCombination(char1.id, char2.id)) {
-                        isValid = true;
-                    }
-                    attempts++;
-                }
-                
-                if (!isValid) {
-                    char1 = characters[Math.floor(Math.random() * characters.length)];
-                    do {
-                        char2 = characters[Math.floor(Math.random() * characters.length)];
-                    } while (char1.id === char2.id);
-                }
-                
-                updateDisplay(display1, char1);
-                updateDisplay(display2, char2);
-                
-                resultDiv.textContent = `${char1.name} × ${char2.name}`;
-                if (isInvalidCombination(char1.id, char2.id)) {
-                    invalidMessage.textContent = "⚠️ These characters cannot be paired together!";
-                }
-                
-                isSpinning = false;
-                spinButton.disabled = false;
+        var characters = [
+            { id: 1, name: "The Warrior", image: "/the_warrior.avif" },
+            { id: 2, name: "The Itchy Finger", image: "/the_itchy_finger.avif" },
+            { id: 3, name: "The Repentant", image: "/the_repentant.avif" },
+            { id: 4, name: "The Cohabitants", image: "/the_cohabitants.avif" },
+            { id: 5, name: "The Cogitator", image: "/the_cogitator.avif" },
+            { id: 6, name: "The Embedded", image: "/the_embedded.avif" },
+            { id: 7, name: "The Empty Nester", image: "/The_Empty_Nester.avif" },
+            { id: 8, name: "The Shade", image: "/the_shade.avif" },
+            { id: 9, name: "The Shieldbearer", image: "/the_shieldbearer.avif" },
+            { id: 10, name: "The Spendthrift", image: "/The_Spendthrift.avif" },
+            { id: 11, name: "The Flagellant", image: "/the_flagellant.avif" },
+            { id: 12, name: "The Juggler", image: "/the_juggler.avif" },
+            { id: 13, name: "The Tactician", image: "/the_tactician.avif" },
+            { id: 14, name: "The Radical", image: "/the_radical.avif" },
+            { id: 15, name: "The Physicist", image: "/the_physicist.avif" },
+            { id: 16, name: "The Makeshift Sisyphus", image: "/the_Makeshift_Sisyphus.avif" },
+            { id: 17, name: "The Falconer", image: "/Falconer.avif" },
+            { id: 18, name: "The Carouser", image: "/Carouser.avif" }
+        ];
+        var invalidCombos = [
+            [3, 9], [3, 11], [4, 16], [4, 10], [4, 12],
+            [8, 16], [9, 11], [13, 9], [13, 2], [13, 11],
+            [14, 5], [15, 11], [15, 9], [16, 10], [17, 8],
+            [17, 4], [18, 13]
+        ];
+        var spinning = false;
+        function updateSlot(el, char) {
+            el.innerHTML = '<img src="' + char.image + '" alt="' + char.name + '" class="character-image" onerror="this.style.display=\'none\'"><div class="character-name">' + char.name + '</div>';
+        }
+        function isInvalid(id1, id2) {
+            return invalidCombos.some(function(p) {
+                return (p[0] === id1 && p[1] === id2) || (p[0] === id2 && p[1] === id1);
+            });
+        }
+        function getValidPair() {
+            var a, b, tries = 0;
+            while (tries < 200) {
+                a = characters[Math.floor(Math.random() * characters.length)];
+                b = characters[Math.floor(Math.random() * characters.length)];
+                if (a.id !== b.id && !isInvalid(a.id, b.id)) return [a, b];
+                tries++;
             }
+            a = characters[Math.floor(Math.random() * characters.length)];
+            do { b = characters[Math.floor(Math.random() * characters.length)]; } while (a.id === b.id);
+            return [a, b];
         }
-
-        cycleCharacters();
-    }
-
-    function isInvalidCombination(id1, id2) {
-        return invalidCombinations.some(pair => 
-            (pair[0] === id1 && pair[1] === id2) || 
-            (pair[0] === id2 && pair[1] === id1)
-        );
-    }
-
-    const themeToggle = document.getElementById('themeToggle');
-    const currentTheme = localStorage.getItem('theme');
-
-    if (currentTheme === 'light') {
-        document.body.classList.add('light-mode');
-        themeToggle.checked = true;
-    }
-
-    themeToggle.addEventListener('change', function() {
-        if (this.checked) {
-            document.body.classList.add('light-mode');
-            localStorage.setItem('theme', 'light');
-        } else {
-            document.body.classList.remove('light-mode');
-            localStorage.setItem('theme', 'dark');
-        }
-    });
-
-    window.addEventListener('load', function() {
-        const display1 = document.getElementById('display1');
-        const display2 = document.getElementById('display2');
-        const resultDiv = document.getElementById('result');
-        const invalidMessage = document.getElementById('invalidMessage');
-        
-        let char1, char2;
-        let isValid = false;
-        let attempts = 0;
-        
-        while (!isValid && attempts < 100) {
-            char1 = characters[Math.floor(Math.random() * characters.length)];
-            char2 = characters[Math.floor(Math.random() * characters.length)];
-            if (char1.id !== char2.id && !isInvalidCombination(char1.id, char2.id)) {
-                isValid = true;
+        function spin() {
+            if (spinning) return;
+            spinning = true;
+            var btn = document.getElementById('spinButton');
+            var res = document.getElementById('result');
+            var msg = document.getElementById('invalidMessage');
+            var d1 = document.getElementById('display1');
+            var d2 = document.getElementById('display2');
+            btn.disabled = true;
+            res.textContent = '';
+            msg.textContent = '';
+            var start = Date.now();
+            var duration = 2400;
+            var fast = true;
+            var delay = 70;
+            function tick() {
+                var elapsed = Date.now() - start;
+                var progress = elapsed / duration;
+                if (progress >= 1) {
+                    var pair = getValidPair();
+                    updateSlot(d1, pair[0]);
+                    updateSlot(d2, pair[1]);
+                    res.textContent = pair[0].name + ' × ' + pair[1].name;
+                    if (isInvalid(pair[0].id, pair[1].id)) msg.textContent = 'these characters cannot be paired';
+                    spinning = false;
+                    btn.disabled = false;
+                    return;
+                }
+                if (progress > 0.7 && fast) { fast = false; delay = 160; }
+                else if (progress > 0.9) { delay = 320; }
+                var r1 = characters[Math.floor(Math.random() * characters.length)];
+                var r2 = characters[Math.floor(Math.random() * characters.length)];
+                updateSlot(d1, r1);
+                updateSlot(d2, r2);
+                setTimeout(tick, delay);
             }
-            attempts++;
+            tick();
         }
-        
-        if (!isValid) {
-            char1 = characters[Math.floor(Math.random() * characters.length)];
-            do {
-                char2 = characters[Math.floor(Math.random() * characters.length)];
-            } while (char1.id === char2.id);
+        function initRandom() {
+            var pair = getValidPair();
+            updateSlot(document.getElementById('display1'), pair[0]);
+            updateSlot(document.getElementById('display2'), pair[1]);
+            document.getElementById('result').textContent = pair[0].name + ' × ' + pair[1].name;
         }
-        
-        updateDisplay(display1, char1);
-        updateDisplay(display2, char2);
-        
-        resultDiv.textContent = `${char1.name} × ${char2.name}`;
-        if (isInvalidCombination(char1.id, char2.id)) {
-            invalidMessage.textContent = "⚠️ These characters cannot be paired together!";
-        } else {
-            invalidMessage.textContent = "";
-        }
-    });
-
-    document.getElementById('spinButton').addEventListener('click', spinReels);
-</script>
+        document.getElementById('spinButton').addEventListener('click', spin);
+        var themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+        initRandom();
+    </script>
 </body>
 </html>
