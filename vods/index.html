@@ -172,15 +172,16 @@
             font-family: var(--mono);
         }
         .table-wrapper {
-            overflow-x: auto;
             border: 1px solid var(--border);
             border-radius: var(--radius);
             background: var(--border);
         }
+        .table-scroll {
+            overflow-x: auto;
+        }
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
             min-width: 850px;
         }
         thead th {
@@ -402,28 +403,30 @@
         </div>
         <div class="result-count" id="resultCount"></div>
         <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="col-game" data-col="game" id="thGame">Game <span class="arrow"></span></th>
-                        <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-                        <th class="col-started sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
-                        <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
-                        <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
-                        <th class="col-link" id="thLink">Link</th>
-                    </tr>
-                </thead>
-                <tbody id="gamesBody">
-                    <tr>
-                        <td colspan="6">
-                            <div class="loading-container">
-                                <div class="loading-spinner"></div>
-                                <p class="loading-text">Loading...</p>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col-game" data-col="game" id="thGame">Game <span class="arrow"></span></th>
+                            <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
+                            <th class="col-started sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
+                            <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
+                            <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
+                            <th class="col-link" id="thLink">Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gamesBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="loading-container">
+                                    <div class="loading-spinner"></div>
+                                    <p class="loading-text">Loading...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="footer">
             © 2026 <a href="https://grimcyanide.com">grimcyanide.com</a>
