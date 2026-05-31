@@ -171,13 +171,19 @@
             margin-bottom: 12px;
             font-family: var(--mono);
         }
-        .table-wrapper {
+        .table-outer {
             border: 1px solid var(--border);
             border-radius: var(--radius);
+            overflow: hidden;
             background: var(--border);
         }
-        .table-scroll {
+        .table-header-wrap {
+            overflow: hidden;
+            background: var(--surface);
+        }
+        .table-body-wrap {
             overflow-x: auto;
+            overflow-y: visible;
         }
         table {
             width: 100%;
@@ -198,9 +204,6 @@
             white-space: nowrap;
             border-bottom: 1px solid var(--border);
             transition: color 0.15s;
-            position: sticky;
-            top: 0;
-            z-index: 2;
         }
         thead th:hover {
             color: var(--accent);
@@ -402,8 +405,8 @@
             </div>
         </div>
         <div class="result-count" id="resultCount"></div>
-        <div class="table-wrapper">
-            <div class="table-scroll">
+        <div class="table-outer">
+            <div class="table-header-wrap" id="tableHeaderWrap">
                 <table>
                     <thead>
                         <tr>
@@ -415,6 +418,10 @@
                             <th class="col-link" id="thLink">Link</th>
                         </tr>
                     </thead>
+                </table>
+            </div>
+            <div class="table-body-wrap" id="tableBodyWrap">
+                <table>
                     <tbody id="gamesBody">
                         <tr>
                             <td colspan="6">
@@ -445,6 +452,11 @@
         };
         var columnIds = ['game', 'rating', 'started', 'finished', 'parts'];
         var apiURL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
+        var bodyWrap = document.getElementById('tableBodyWrap');
+        var headerWrap = document.getElementById('tableHeaderWrap');
+        bodyWrap.addEventListener('scroll', function() {
+            headerWrap.scrollLeft = bodyWrap.scrollLeft;
+        });
         function loadGamesData() {
             var body = document.getElementById('gamesBody');
             var url = apiURL + '?t=' + Date.now();
