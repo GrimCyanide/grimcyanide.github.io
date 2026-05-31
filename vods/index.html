@@ -25,6 +25,7 @@
         :root {
             --bg: #0b0e11;
             --surface: #14181d;
+            --surface-alt: #181c22;
             --border: #252a30;
             --text: #c8cdd2;
             --muted: #6b7280;
@@ -42,6 +43,7 @@
         body.light-mode {
             --bg: #f3f4f6;
             --surface: #ffffff;
+            --surface-alt: #f9fafb;
             --border: #d1d5db;
             --text: #1f2937;
             --muted: #9ca3af;
@@ -215,7 +217,6 @@
             color: var(--accent);
         }
         tbody td {
-            background: var(--surface);
             padding: 14px 16px;
             font-size: 0.95em;
             font-weight: 500;
@@ -223,6 +224,12 @@
             vertical-align: middle;
             word-break: break-word;
             text-align: center;
+        }
+        tbody tr td {
+            background: var(--surface);
+        }
+        tbody tr:nth-child(even) td {
+            background: var(--surface-alt);
         }
         tbody tr:hover td {
             background: var(--badge-bg);
@@ -232,7 +239,6 @@
         }
         .col-game {
             width: 26%;
-            text-align: left !important;
         }
         .col-rating {
             width: 13%;
@@ -251,6 +257,7 @@
         }
         .game-name {
             font-weight: 600;
+            display: block;
         }
         .game-rating {
             font-family: var(--mono);
@@ -284,6 +291,11 @@
             color: var(--muted);
             font-style: italic;
             font-size: 0.85em;
+        }
+        .text-tbd {
+            color: var(--muted);
+            font-style: italic;
+            font-size: 0.82em;
         }
         .text-coming {
             color: var(--amber);
@@ -475,13 +487,13 @@
                 case 'az': return sorted.sort((a, b) => a.game.localeCompare(b.game));
                 case 'za': return sorted.sort((a, b) => b.game.localeCompare(a.game));
                 case 'recent-started': return sorted.sort((a, b) => { const dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
-                case 'oldest-started': return sorted.sort((a, b) => { const dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dA - dB; });
+                case 'oldest-started': return sorted.sort((a, b) => { const dA = parseDate(a.dateStarted), dB = parseDate(b.dateStarted); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
                 case 'recent-finished': return sorted.sort((a, b) => { const dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dB - dA; });
-                case 'oldest-finished': return sorted.sort((a, b) => { const dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return 1; if (!dB) return -1; return dA - dB; });
+                case 'oldest-finished': return sorted.sort((a, b) => { const dA = parseDate(a.dateFinished), dB = parseDate(b.dateFinished); if (!dA && !dB) return 0; if (!dA) return -1; if (!dB) return 1; return dA - dB; });
                 case 'rating-high': return sorted.sort((a, b) => b.rating - a.rating);
                 case 'rating-low': return sorted.sort((a, b) => a.rating - b.rating);
-                case 'parts-high': return sorted.sort((a, b) => b.parts - a.parts);
-                case 'parts-low': return sorted.sort((a, b) => a.parts - b.parts);
+                case 'parts-high': return sorted.sort((a, b) => (b.parts || 0) - (a.parts || 0));
+                case 'parts-low': return sorted.sort((a, b) => (a.parts || 0) - (b.parts || 0));
                 default: return sorted;
             }
         }
@@ -495,19 +507,19 @@
             return filtered;
         }
         function formatParts(partsDisplay, parts) {
-            if (partsDisplay) {
-                let text = partsDisplay;
+            if (partsDisplay && partsDisplay.trim()) {
+                let text = partsDisplay.trim();
                 if (text.toLowerCase().includes('so far')) {
                     text = text.replace(/so far/i, '').trim();
                     if (!text.toLowerCase().includes('part')) text = text + (text ? ' parts so far' : 'parts so far');
                     else text = text + ' so far';
                 } else if (!text.toLowerCase().includes('part')) {
-                    text = text + ' part' + (parts !== 1 ? 's' : '');
+                    text = text + ' part' + ((parts && parts !== 1) ? 's' : '');
                 }
                 return text;
             }
-            if (!parts || parts === 0) return null;
-            return parts + ' part' + (parts !== 1 ? 's' : '');
+            if (!parts || parts === 0) return '';
+            return '';
         }
         function updateAllArrows() {
             columnIds.forEach(function(col) {
@@ -550,9 +562,9 @@
             body.innerHTML = filtered.map(function(g) {
                 var partsText = formatParts(g.partsDisplay, g.parts);
                 var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : '<span class="text-na">N/A</span>';
-                var startedText = g.dateStarted ? g.dateStarted : '<span class="text-coming">COMING SOON</span>';
-                var finishedText = g.dateFinished ? g.dateFinished : '<span class="text-coming">COMING SOON</span>';
-                var partsDisplay = partsText ? partsText : '<span class="text-coming">COMING SOON</span>';
+                var startedText = g.dateStarted ? g.dateStarted : '<span class="text-tbd">TBD</span>';
+                var finishedText = g.dateFinished ? g.dateFinished : '<span class="text-tbd">TBD</span>';
+                var partsDisplay = partsText ? partsText : '<span class="text-tbd">—</span>';
                 var linkHtml = g.linkUrl ? '<a href="' + escapeHtml(g.linkUrl) + '" target="_blank" rel="noopener" class="game-link">▶ ' + escapeHtml(g.linkText || 'Watch') + '</a>' : '<span class="text-coming">COMING SOON</span>';
                 return '<tr>' +
                     '<td class="col-game"><span class="game-name">' + escapeHtml(g.game) + '</span></td>' +
