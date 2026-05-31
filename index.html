@@ -43,9 +43,11 @@
             --surface-alt: #f9fafb;
             --border: #d1d5db;
             --text: #1f2937;
-            --muted: #9ca3af;
-            --accent: #dc3545;
-            --accent-soft: rgba(220, 53, 69, 0.1);
+            --muted: #6b7280;
+            --accent: #b91c1c;
+            --accent-soft: rgba(185, 28, 28, 0.1);
+            --green: #15803d;
+            --green-bg: rgba(21, 128, 61, 0.12);
         }
         * {
             box-sizing: border-box;
@@ -97,6 +99,7 @@
             text-decoration: none;
             color: var(--text);
             font-size: 0.88em;
+            font-weight: 500;
             transition: border 0.2s, background 0.2s;
             display: flex;
             align-items: center;
@@ -113,6 +116,7 @@
         .social-link .username {
             color: var(--muted);
             font-size: 0.85em;
+            font-weight: 500;
         }
         .content {
             display: grid;
@@ -193,6 +197,7 @@
             padding: 9px 10px;
             border-radius: 4px;
             font-size: 0.84em;
+            font-weight: 500;
             transition: background 0.15s;
             text-decoration: none;
             color: inherit;
@@ -207,7 +212,7 @@
             background: var(--accent-soft);
         }
         .vod-name {
-            font-weight: 500;
+            font-weight: 600;
             flex: 1;
             min-width: 0;
             text-align: center;
@@ -215,12 +220,13 @@
         .vod-rating {
             color: var(--muted);
             font-size: 0.85em;
+            font-weight: 500;
             white-space: nowrap;
             flex-shrink: 0;
         }
         .vod-status {
             font-size: 0.7em;
-            font-weight: 600;
+            font-weight: 700;
             padding: 3px 10px;
             border-radius: 10px;
             white-space: nowrap;
@@ -299,6 +305,7 @@
         }
         .game-popup-inner p strong {
             color: var(--text);
+            font-weight: 600;
         }
         .game-popup-inner a {
             color: var(--accent);
@@ -525,9 +532,6 @@
             if (e.target === this) closePopup();
         });
         var themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-        }
         themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('light-mode');
             localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
