@@ -171,19 +171,11 @@
             margin-bottom: 12px;
             font-family: var(--mono);
         }
-        .table-outer {
+        .table-wrapper {
+            overflow-x: auto;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            overflow: hidden;
             background: var(--border);
-        }
-        .table-header-wrap {
-            overflow: hidden;
-            background: var(--surface);
-        }
-        .table-body-wrap {
-            overflow-x: auto;
-            overflow-y: visible;
         }
         table {
             width: 100%;
@@ -204,6 +196,9 @@
             white-space: nowrap;
             border-bottom: 1px solid var(--border);
             transition: color 0.15s;
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
         thead th:hover {
             color: var(--accent);
@@ -405,35 +400,29 @@
             </div>
         </div>
         <div class="result-count" id="resultCount"></div>
-        <div class="table-outer">
-            <div class="table-header-wrap" id="tableHeaderWrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col-game" data-col="game" id="thGame">Game <span class="arrow"></span></th>
-                            <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-                            <th class="col-started sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
-                            <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
-                            <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
-                            <th class="col-link" id="thLink">Link</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="table-body-wrap" id="tableBodyWrap">
-                <table>
-                    <tbody id="gamesBody">
-                        <tr>
-                            <td colspan="6">
-                                <div class="loading-container">
-                                    <div class="loading-spinner"></div>
-                                    <p class="loading-text">Loading...</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-game" data-col="game" id="thGame">Game <span class="arrow"></span></th>
+                        <th class="col-rating" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
+                        <th class="col-started sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th>
+                        <th class="col-finished" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th>
+                        <th class="col-parts" data-col="parts" id="thParts">Parts <span class="arrow"></span></th>
+                        <th class="col-link" id="thLink">Link</th>
+                    </tr>
+                </thead>
+                <tbody id="gamesBody">
+                    <tr>
+                        <td colspan="6">
+                            <div class="loading-container">
+                                <div class="loading-spinner"></div>
+                                <p class="loading-text">Loading...</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="footer">
             © 2026 <a href="https://grimcyanide.com">grimcyanide.com</a>
@@ -452,11 +441,6 @@
         };
         var columnIds = ['game', 'rating', 'started', 'finished', 'parts'];
         var apiURL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
-        var bodyWrap = document.getElementById('tableBodyWrap');
-        var headerWrap = document.getElementById('tableHeaderWrap');
-        bodyWrap.addEventListener('scroll', function() {
-            headerWrap.scrollLeft = bodyWrap.scrollLeft;
-        });
         function loadGamesData() {
             var body = document.getElementById('gamesBody');
             var url = apiURL + '?t=' + Date.now();
