@@ -427,6 +427,23 @@
         };
         var columnIds = ['game', 'rating', 'started', 'finished'];
         var apiURL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
+
+        function getStatusFromPath() {
+            var path = window.location.pathname;
+            if (path.endsWith('/finished')) return 'Finished';
+            if (path.endsWith('/unfinished')) return 'Unfinished';
+            return 'all';
+        }
+
+        function updateURL(status) {
+            var newPath = '/vods';
+            if (status === 'Finished') newPath = '/vods/finished';
+            if (status === 'Unfinished') newPath = '/vods/unfinished';
+            if (window.location.pathname !== newPath) {
+                history.pushState(null, '', newPath);
+            }
+        }
+
         function loadGamesData() {
             var body = document.getElementById('gamesBody');
             var url = apiURL + '?t=' + Date.now();
@@ -441,6 +458,8 @@
                     allGames = data.games;
                     currentSort = 'recent-started';
                     sortDirections = { game: 'az', rating: 'rating-high', started: 'recent-started', finished: 'recent-finished' };
+                    var initialStatus = getStatusFromPath();
+                    document.getElementById('statusFilter').value = initialStatus;
                     updateAllArrows();
                     renderGames();
                     updateResultCount();
@@ -450,6 +469,7 @@
                     body.innerHTML = '<tr><td colspan="5"><div class="error-container">Failed to load data. ' + error.message + '</div></td></tr>';
                 });
         }
+
         function parseDate(dateStr) {
             if (!dateStr) return null;
             var dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -458,6 +478,7 @@
             if (!isNaN(parsed.getTime())) return parsed;
             return null;
         }
+
         function sortGames(games, sortBy) {
             var sorted = games.slice();
             switch (sortBy) {
@@ -472,6 +493,7 @@
                 default: return sorted;
             }
         }
+
         function filterGames(games, statusFilter, searchQuery) {
             var filtered = games;
             if (statusFilter !== 'all') filtered = filtered.filter(function(g) { return g.isFinished === statusFilter; });
@@ -481,9 +503,11 @@
             }
             return filtered;
         }
+
         function hasValue(val) {
             return val !== null && val !== undefined && val.toString().trim().length > 0;
         }
+
         function getPartCount(partsDisplay, parts) {
             if (hasValue(partsDisplay)) {
                 var t = partsDisplay.toString().trim();
@@ -494,6 +518,7 @@
             }
             return parts || 0;
         }
+
         function formatParts(partsDisplay, parts) {
             if (hasValue(partsDisplay)) {
                 var text = partsDisplay.toString().trim();
@@ -510,6 +535,7 @@
             }
             return '';
         }
+
         function updateAllArrows() {
             columnIds.forEach(function(col) {
                 var th = document.getElementById('th' + col.charAt(0).toUpperCase() + col.slice(1));
@@ -529,6 +555,7 @@
                 }
             });
         }
+
         function setSort(col) {
             var current = sortDirections[col];
             var next = sortToggles[current];
@@ -537,6 +564,7 @@
             updateAllArrows();
             renderGames();
         }
+
         function renderGames() {
             var body = document.getElementById('gamesBody');
             var statusFilter = document.getElementById('statusFilter').value;
@@ -572,32 +600,48 @@
                 '</tr>';
             }).join('');
         }
+
         function escapeHtml(text) {
             var div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
+
         function updateResultCount(filteredCount) {
             var el = document.getElementById('resultCount');
             if (!allGames.length) return;
             if (filteredCount !== undefined) el.textContent = filteredCount + ' of ' + allGames.length + ' games';
             else el.textContent = allGames.length + ' games';
         }
+
         document.getElementById('thGame').addEventListener('click', function() { setSort('game'); });
         document.getElementById('thRating').addEventListener('click', function() { setSort('rating'); });
         document.getElementById('thStarted').addEventListener('click', function() { setSort('started'); });
         document.getElementById('thFinished').addEventListener('click', function() { setSort('finished'); });
-        document.getElementById('statusFilter').addEventListener('change', renderGames);
+
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            updateURL(this.value);
+            renderGames();
+        });
+
         var searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(renderGames, 200);
         });
+
+        window.addEventListener('popstate', function() {
+            var status = getStatusFromPath();
+            document.getElementById('statusFilter').value = status;
+            renderGames();
+        });
+
         var themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('light-mode');
             localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
         });
+
         loadGamesData();
     </script>
 </body>
