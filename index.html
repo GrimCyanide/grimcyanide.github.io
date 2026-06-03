@@ -49,53 +49,29 @@
             --green: #1f2937;
             --green-bg: #4ade80;
         }
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body {
             background: var(--bg);
             color: var(--text);
             font-family: var(--font);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             min-height: 100vh;
             transition: background 0.3s, color 0.3s;
             line-height: 1.4;
             font-size: 15px;
         }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 30px 20px 40px;
-        }
-        .top-row {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            font-size: 2.6em;
-            margin: 0;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: var(--text);
-        }
-        .social-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 32px;
-        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px 40px; }
+        .top-row { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 2.6em; margin: 0; font-weight: 700; letter-spacing: -1px; color: var(--text); }
+        .social-links { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 32px; }
+        @media (max-width: 750px) { .social-links { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 450px) { .social-links { grid-template-columns: repeat(2, 1fr); } }
         .social-link {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 10px 16px;
+            padding: 12px 10px;
             text-decoration: none;
             color: var(--text);
             font-size: 0.88em;
@@ -103,286 +79,53 @@
             transition: border 0.2s, background 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-        .social-link:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-        }
-        .social-link .platform {
-            font-weight: 600;
-            color: var(--accent);
-        }
-        .social-link .username {
-            color: var(--muted);
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 24px;
-            align-items: stretch;
-        }
-        @media (max-width: 900px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-        .twitch-col {
-            min-width: 0;
-        }
-        .twitch-embed {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            background: #000;
-            aspect-ratio: 16 / 9;
-            position: relative;
-            width: 100%;
-        }
-        .twitch-embed iframe {
-            display: block;
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .vods-panel {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .vods-panel-header {
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--border);
-            font-weight: 600;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        .vods-panel-header a {
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.8em;
-            font-weight: 500;
-            text-transform: none;
-            letter-spacing: 0;
-        }
-        .vods-panel-header a:hover {
-            text-decoration: underline;
-        }
-        .vods-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 6px 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .vod-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px 10px;
-            border-radius: 4px;
-            font-size: 0.84em;
-            font-weight: 500;
-            transition: background 0.15s;
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-            flex-shrink: 0;
-            background: var(--surface);
-        }
-        .vod-row:nth-child(even) {
-            background: var(--surface-alt);
-        }
-        .vod-row:hover {
-            background: var(--accent-soft);
-        }
-        .vod-name {
-            font-weight: 600;
-            flex: 1;
-            min-width: 0;
-            text-align: center;
-        }
-        .vod-rating {
-            color: var(--muted);
-            font-size: 0.85em;
-            font-weight: 500;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .vod-status {
-            font-size: 0.7em;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 10px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .status-finished {
-            background: var(--green-bg);
-            color: var(--green);
-        }
-        .vods-list::-webkit-scrollbar {
-            width: 5px;
-        }
-        .vods-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .vods-list::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.8em;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--muted);
-            font-family: var(--font);
-            font-size: 0.75em;
-            padding: 5px 10px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .theme-toggle:hover {
-            border-color: var(--accent);
-            color: var(--text);
-        }
-        .game-popup, .setup-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 999;
             justify-content: center;
-            align-items: center;
+            gap: 6px;
+            text-align: center;
+            min-height: 48px;
         }
-        .game-popup.active, .setup-popup.active {
-            display: flex;
-        }
-        .game-popup-inner {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            max-width: 420px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .game-popup-inner h3, .setup-popup-inner h3 {
-            margin: 0 0 12px 0;
-            font-size: 1.1em;
-        }
-        .game-popup-inner p {
-            margin: 4px 0;
-            font-size: 0.88em;
-            color: var(--muted);
-        }
-        .game-popup-inner p strong {
-            color: var(--text);
-            font-weight: 600;
-        }
-        .game-popup-inner a {
-            color: var(--accent);
-        }
-        .popup-close {
-            background: var(--border);
-            border: none;
-            color: var(--text);
-            padding: 6px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 14px;
-            font-family: var(--font);
-            font-size: 0.85em;
-            width: 100%;
-        }
-        .popup-close:hover {
-            background: var(--accent);
-        }
-        .setup-popup-inner {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 28px;
-            max-width: 580px;
-            width: 92%;
-            max-height: 78vh;
-            overflow-y: auto;
-        }
-        .setup-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            background: var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            margin-bottom: 16px;
-        }
-        .setup-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: var(--surface);
-            font-size: 0.92em;
-            font-weight: 500;
-        }
-        .setup-item:nth-child(even) {
-            background: var(--surface-alt);
-        }
-        .setup-item strong {
-            color: var(--accent);
-            min-width: 110px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .setup-item span {
-            color: var(--muted);
-            margin-left: auto;
-            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
-            font-size: 0.9em;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .text-na {
-            color: var(--muted);
-            font-style: italic;
-        }
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 2em;
-            }
-            .social-link {
-                padding: 8px 12px;
-                font-size: 0.8em;
-            }
-        }
+        .social-link:hover { border-color: var(--accent); background: var(--accent-soft); }
+        .social-link .platform { font-weight: 600; color: var(--accent); white-space: nowrap; }
+        .content { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: stretch; }
+        @media (max-width: 900px) { .content { grid-template-columns: 1fr; } }
+        .twitch-col { min-width: 0; }
+        .twitch-embed { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 16 / 9; position: relative; width: 100%; }
+        .twitch-embed iframe { display: block; width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; }
+        .vods-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; }
+        .vods-panel-header { padding: 12px 14px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .vods-panel-header a { color: var(--accent); text-decoration: none; font-size: 0.8em; font-weight: 500; text-transform: none; letter-spacing: 0; }
+        .vods-panel-header a:hover { text-decoration: underline; }
+        .vods-list { flex: 1; overflow-y: auto; padding: 6px 8px; display: flex; flex-direction: column; gap: 2px; }
+        .vod-row { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 4px; font-size: 0.84em; font-weight: 500; transition: background 0.15s; text-decoration: none; color: inherit; cursor: pointer; flex-shrink: 0; background: var(--surface); }
+        .vod-row:nth-child(even) { background: var(--surface-alt); }
+        .vod-row:hover { background: var(--accent-soft); }
+        .vod-name { font-weight: 600; flex: 1; min-width: 0; text-align: center; }
+        .vod-rating { color: var(--muted); font-size: 0.85em; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+        .vod-status { font-size: 0.7em; font-weight: 700; padding: 3px 10px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+        .status-finished { background: var(--green-bg); color: var(--green); }
+        .vods-list::-webkit-scrollbar { width: 5px; }
+        .vods-list::-webkit-scrollbar-track { background: transparent; }
+        .vods-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 0.8em; padding-top: 20px; border-top: 1px solid var(--border); }
+        .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); font-family: var(--font); font-size: 0.75em; padding: 5px 10px; cursor: pointer; transition: all 0.15s; }
+        .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
+        .game-popup, .setup-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: center; }
+        .game-popup.active, .setup-popup.active { display: flex; }
+        .game-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .game-popup-inner h3, .setup-popup-inner h3 { margin: 0 0 12px 0; font-size: 1.1em; }
+        .game-popup-inner p { margin: 4px 0; font-size: 0.88em; color: var(--muted); }
+        .game-popup-inner p strong { color: var(--text); font-weight: 600; }
+        .game-popup-inner a { color: var(--accent); }
+        .popup-close { background: var(--border); border: none; color: var(--text); padding: 6px 14px; border-radius: 4px; cursor: pointer; margin-top: 14px; font-family: var(--font); font-size: 0.85em; width: 100%; }
+        .popup-close:hover { background: var(--accent); }
+        .setup-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; max-width: 580px; width: 92%; max-height: 78vh; overflow-y: auto; }
+        .setup-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+        .setup-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); font-size: 0.92em; font-weight: 500; }
+        .setup-item:nth-child(even) { background: var(--surface-alt); }
+        .setup-item strong { color: var(--accent); min-width: 110px; font-weight: 700; white-space: nowrap; }
+        .setup-item span { color: var(--muted); margin-left: auto; font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; font-weight: 600; white-space: nowrap; }
+        .text-na { color: var(--muted); font-style: italic; }
+        @media (max-width: 600px) { .header h1 { font-size: 2em; } }
     </style>
 </head>
 <body>
@@ -394,15 +137,16 @@
             <h1>GRIM_CYANIDE</h1>
         </div>
         <div class="social-links">
-            <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank"><span class="platform">Twitch</span><span class="username">GRIM_CYANIDE</span></a>
-            <a href="https://x.com/GrimCyanide" class="social-link" target="_blank"><span class="platform">X</span><span class="username">@GrimCyanide</span></a>
-            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank"><span class="platform">YouTube</span><span class="username">Grim_Cyanide</span></a>
-            <a href="/vods" class="social-link"><span class="platform">VODs</span><span class="username">full list + ratings</span></a>
-            <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank"><span class="platform">Discord</span><span class="username">join</span></a>
-            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span><span class="username">@grim_cyanide</span></a>
-            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank"><span class="platform">Steam</span><span class="username">profile</span></a>
-            <a href="/steam" class="social-link"><span class="platform">Steam</span><span class="username">games list</span></a>
-            <a href="#" class="social-link" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="platform">My Specs</span><span class="username">view gear</span></a>
+            <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank"><span class="platform">Twitch</span></a>
+            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank"><span class="platform">YouTube</span></a>
+            <a href="https://x.com/GrimCyanide" class="social-link" target="_blank"><span class="platform">Twitter</span></a>
+            <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank"><span class="platform">Discord</span></a>
+            <a href="/vods" class="social-link"><span class="platform">VODs</span></a>
+            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span></a>
+            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank"><span class="platform">Steam Profile</span></a>
+            <a href="/steam" class="social-link"><span class="platform">Steam Games</span></a>
+            <a href="#" class="social-link" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="platform">My PC Specs</span></a>
+            <a href="https://open.spotify.com/playlist/47Mz3t3vwuAT37djS0Eozy" class="social-link" target="_blank"><span class="platform">Spotify</span></a>
         </div>
         <div class="content">
             <div class="twitch-col">
@@ -412,8 +156,8 @@
             </div>
             <div class="vods-panel" id="vodsPanel">
                 <div class="vods-panel-header">
-                    <span>Recently Finished</span>
-                    <a href="/vods">see all →</a>
+                    <span>10 Most Recently Finished Games</span>
+                    <a href="/vods">View full list →</a>
                 </div>
                 <div class="vods-list" id="vodsList">
                     <div class="vod-row"><span class="vod-name">loading...</span><span class="vod-rating"></span><span class="vod-status"></span></div>
@@ -496,11 +240,7 @@
             }
         }
         window.addEventListener('resize', matchPanelHeight);
-        function esc(t) {
-            var d = document.createElement('div');
-            d.textContent = t;
-            return d.innerHTML;
-        }
+        function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
         function parseDate(dateStr) {
             if (!dateStr) return null;
             var dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -519,9 +259,7 @@
                     if (!isNaN(num)) return num + ' part' + (num !== 1 ? 's' : '') + ' so far';
                     return t + ' so far';
                 }
-                if (lower === 'full playthrough' || lower === 'full') {
-                    return 'full playthrough';
-                }
+                if (lower === 'full playthrough' || lower === 'full') return 'full playthrough';
                 if (lower.indexOf('part') === -1) {
                     var num2 = parseInt(t, 10);
                     if (!isNaN(num2)) return num2 + ' part' + (num2 !== 1 ? 's' : '');
@@ -583,13 +321,9 @@
             if (g.linkUrl) {
                 var lowerParts = partsText.toLowerCase();
                 var linkLabel;
-                if (lowerParts === 'full playthrough' || lowerParts === 'full') {
-                    linkLabel = 'click here to watch the full playthrough';
-                } else if (partCount > 1) {
-                    linkLabel = 'click here to watch the playlist';
-                } else {
-                    linkLabel = 'click here to watch';
-                }
+                if (lowerParts === 'full playthrough' || lowerParts === 'full') linkLabel = 'click here to watch the full playthrough';
+                else if (partCount > 1) linkLabel = 'click here to watch the playlist';
+                else linkLabel = 'click here to watch';
                 linkHtml = '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">' + linkLabel + '</a>';
             }
             inner.innerHTML = '<h3>' + esc(g.game) + '</h3>' +
@@ -602,15 +336,9 @@
                 '<button class="popup-close" onclick="closePopup()">close</button>';
             popup.classList.add('active');
         }
-        function closePopup() {
-            document.getElementById('gamePopup').classList.remove('active');
-        }
-        document.getElementById('gamePopup').addEventListener('click', function(e) {
-            if (e.target === this) closePopup();
-        });
-        document.getElementById('setupPopup').addEventListener('click', function(e) {
-            if (e.target === this) document.getElementById('setupPopup').classList.remove('active');
-        });
+        function closePopup() { document.getElementById('gamePopup').classList.remove('active'); }
+        document.getElementById('gamePopup').addEventListener('click', function(e) { if (e.target === this) closePopup(); });
+        document.getElementById('setupPopup').addEventListener('click', function(e) { if (e.target === this) document.getElementById('setupPopup').classList.remove('active'); });
         var themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('light-mode');
