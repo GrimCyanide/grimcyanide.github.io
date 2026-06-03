@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url = `https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&appid=${appid}`;
+    const url = `https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&appid=${appid}&l=en`;
     const response = await fetch(url);
     const data = await response.json();
 
