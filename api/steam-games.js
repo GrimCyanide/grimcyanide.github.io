@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   try {
     let url;
     if (type === 'owned') {
-      url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&include_appinfo=true&include_played_free_games=true&include_extended_appinfo=true`;
+      url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&include_appinfo=true&include_played_free_games=true`;
     } else {
       url = `https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&count=5`;
     }
@@ -22,18 +22,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.response && data.response.games) {
-      const games = data.response.games.map(g => ({
-        appid: g.appid,
-        name: g.name || 'Unknown',
-        playtime_forever: g.playtime_forever || 0,
-        playtime_2weeks: g.playtime_2weeks || 0,
-        rtime_last_played: g.rtime_last_played || 0,
-        img_icon_url: g.img_icon_url || '',
-        has_achievements: g.has_community_visible_stats || false,
-        achievements_earned: g.achievements_earned || 0,
-        achievements_total: g.achievements_total || 0
-      }));
-      res.status(200).json({ games });
+      res.status(200).json({ games: data.response.games });
     } else {
       res.status(200).json({ games: [] });
     }
