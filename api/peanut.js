@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peanut's Game Lists</title>
+<title>Peanut_Hotdog's Game Lists</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
 :root {
@@ -79,9 +79,8 @@ tbody tr:last-child td{border-bottom:none}
 </div>
 <script>
 var allGames=[],currentSort='name-az',currentTab='finished',sortDirections={name:'name-az',rating:'rating-high',date:'date-new'},sortToggles={'name-az':'name-za','name-za':'name-az','rating-high':'rating-low','rating-low':'rating-high','date-new':'date-old','date-old':'date-new'},finishedData=[],unfinishedData=[];
-var proxy='https://api.allorigins.win/raw?url=';
-var urlFinished=proxy+encodeURIComponent('https://pastebin.com/raw/BRS0H79q');
-var urlUnfinished=proxy+encodeURIComponent('https://pastebin.com/raw/iaHuJBAG');
+var urlFinished='https://corsproxy.io/?'+encodeURIComponent('https://pastebin.com/raw/BRS0H79q');
+var urlUnfinished='https://corsproxy.io/?'+encodeURIComponent('https://pastebin.com/raw/iaHuJBAG');
 function loadAllData(){
 var b=document.getElementById('gamesBody');
 Promise.all([fetch(urlFinished).then(function(r){if(!r.ok)throw new Error('Failed');return r.text()}),fetch(urlUnfinished).then(function(r){if(!r.ok)throw new Error('Failed');return r.text()})]).then(function(results){
@@ -90,7 +89,7 @@ var ul=results[1].split('\\n').filter(function(l){return l.trim().length>0});
 finishedData=fl.map(parseFinishedLine).filter(function(g){return g!==null});
 unfinishedData=ul.map(parseUnfinishedLine).filter(function(g){return g!==null});
 switchTab('finished');
-}).catch(function(e){console.error(e);b.innerHTML='<tr><td colspan="3" style="text-align:center;padding:48px;color:#f85149;">Failed to load</td></tr>';});
+}).catch(function(e){console.error(e);b.innerHTML='<tr><td colspan="3" style="text-align:center;padding:48px;color:#f85149;">Failed to load data</td></tr>';});
 }
 function switchTab(tab){
 currentTab=tab;
