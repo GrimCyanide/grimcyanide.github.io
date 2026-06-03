@@ -7,6 +7,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="description" content="GRIM_CYANIDE - Steam game library">
     <meta property="og:title" content="Steam Library - GRIM_CYANIDE">
@@ -29,6 +31,7 @@
             --accent: #e85d75;
             --accent-soft: rgba(232, 93, 117, 0.15);
             --amber: #d2991d;
+            --green: #4ade80;
             --badge-bg: rgba(48, 54, 61, 0.8);
             --radius: 6px;
             --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -44,6 +47,7 @@
             --accent: #b91c1c;
             --accent-soft: rgba(185, 28, 28, 0.1);
             --amber: #92400e;
+            --green: #15803d;
             --badge-bg: rgba(209, 213, 219, 0.6);
         }
         * { box-sizing: border-box; }
@@ -56,7 +60,7 @@
             transition: background 0.3s, color 0.3s;
             line-height: 1.5;
         }
-        .container { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
         .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
         .back-link { color: var(--muted); text-decoration: none; font-size: 0.95em; font-family: var(--mono); transition: color 0.2s; }
         .back-link:hover { color: var(--accent); }
@@ -65,6 +69,10 @@
         .header { text-align: center; margin-bottom: 28px; }
         .header h1 { font-size: 2.2em; margin: 0 0 6px 0; font-weight: 700; letter-spacing: -0.5px; }
         .header .subtitle { color: var(--muted); font-size: 1em; margin: 0; }
+        .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 28px; }
+        .stat-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 20px; text-align: center; min-width: 120px; }
+        .stat-value { font-size: 1.4em; font-weight: 700; font-family: var(--mono); color: var(--accent); }
+        .stat-label { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-top: 2px; }
         .filters-section { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: center; }
         .filter-group { display: flex; align-items: center; gap: 6px; }
         .filter-group label { color: var(--muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; white-space: nowrap; }
@@ -75,18 +83,21 @@
         .result-count { color: var(--muted); font-size: 0.88em; margin-bottom: 12px; font-family: var(--mono); }
         .table-wrapper { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--border); }
         table { width: 100%; border-collapse: collapse; }
-        thead th { background: var(--surface); color: var(--muted); font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; padding: 12px 16px; text-align: center; cursor: pointer; user-select: none; white-space: nowrap; border-bottom: 1px solid var(--border); transition: color 0.15s; }
+        thead th { background: var(--surface); color: var(--muted); font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; padding: 12px 12px; text-align: center; cursor: pointer; user-select: none; white-space: nowrap; border-bottom: 1px solid var(--border); transition: color 0.15s; }
         thead th:hover { color: var(--accent); }
         thead th .arrow { margin-left: 4px; font-size: 0.7em; opacity: 0.5; }
         thead th.sorted { color: var(--accent); }
         thead th.sorted .arrow { opacity: 1; color: var(--accent); }
-        tbody td { padding: 14px 16px; font-size: 0.92em; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; word-break: break-word; text-align: center; }
+        tbody td { padding: 12px 12px; font-size: 0.9em; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; word-break: break-word; text-align: center; }
         tbody tr td { background: var(--surface); }
         tbody tr:nth-child(even) td { background: var(--surface-alt); }
         tbody tr:hover td { background: var(--badge-bg); }
         tbody tr:last-child td { border-bottom: none; }
         .game-name { font-weight: 600; text-align: left; }
-        .game-playtime { font-family: var(--mono); color: var(--muted); font-size: 0.9em; white-space: nowrap; }
+        .game-playtime { font-family: var(--mono); color: var(--muted); font-size: 0.88em; white-space: nowrap; }
+        .game-lastplayed { font-family: var(--mono); color: var(--muted); font-size: 0.82em; white-space: nowrap; }
+        .game-achievements { font-family: var(--mono); font-size: 0.85em; white-space: nowrap; }
+        .ach-complete { color: var(--green); font-weight: 600; }
         .game-logo { width: 32px; height: 32px; border-radius: 4px; object-fit: cover; }
         .loading-container { text-align: center; padding: 48px 20px; }
         .loading-spinner { display: inline-block; width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -96,11 +107,14 @@
         .footer { margin-top: 40px; color: var(--muted); font-size: 0.85em; text-align: center; font-family: var(--mono); }
         .footer a { color: var(--muted); text-decoration: none; }
         .footer a:hover { color: var(--accent); }
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .header h1 { font-size: 1.8em; }
-            thead th { font-size: 0.7em; padding: 8px 6px; }
-            tbody td { font-size: 0.8em; padding: 10px 6px; }
-            .game-logo { width: 24px; height: 24px; }
+            .stats-bar { gap: 10px; }
+            .stat-item { padding: 10px 14px; min-width: 80px; }
+            .stat-value { font-size: 1.1em; }
+            thead th { font-size: 0.66em; padding: 8px 4px; }
+            tbody td { font-size: 0.75em; padding: 8px 4px; }
+            .game-logo { width: 22px; height: 22px; }
         }
     </style>
 </head>
@@ -114,6 +128,7 @@
             <h1>Steam Library</h1>
             <p class="subtitle">every game I own on Steam</p>
         </div>
+        <div class="stats-bar" id="statsBar"></div>
         <div class="filters-section">
             <div class="filter-group">
                 <label for="sortBy">Sort</label>
@@ -122,6 +137,8 @@
                     <option value="name-desc">Z → A</option>
                     <option value="playtime-desc" selected>Most Played</option>
                     <option value="playtime-asc">Least Played</option>
+                    <option value="recent">Recently Played</option>
+                    <option value="achievements">Achievements %</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -134,13 +151,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width:60px"></th>
-                        <th style="text-align:left" class="sorted" id="thName">Game <span class="arrow">▼</span></th>
-                        <th id="thPlaytime">Playtime <span class="arrow"></span></th>
+                        <th style="width:50px"></th>
+                        <th style="text-align:left" id="thName">Game <span class="arrow"></span></th>
+                        <th style="width:100px" id="thPlaytime">Playtime <span class="arrow"></span></th>
+                        <th style="width:110px" id="thLastPlayed">Last Played <span class="arrow"></span></th>
+                        <th style="width:110px" id="thAchievements">Achievements <span class="arrow"></span></th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
-                    <tr><td colspan="3"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr>
+                    <tr><td colspan="5"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -151,7 +170,6 @@
         var currentSort = 'playtime-desc';
         var steamId = '76561198066010654';
         var apiURL = 'https://grimcyanide-github-io.vercel.app/api/steam-games';
-
         var excludeIds = [];
 
         function loadData() {
@@ -162,17 +180,47 @@
                 .then(function(data) {
                     if (data.error) throw new Error(data.error);
                     if (!data.games || !data.games.length) {
-                        body.innerHTML = '<tr><td colspan="3"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>';
+                        body.innerHTML = '<tr><td colspan="5"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>';
                         return;
                     }
                     allGames = data.games.filter(function(g) { return excludeIds.indexOf(g.appid) === -1; });
+                    renderStats();
                     renderGames();
                     updateResultCount();
                 })
                 .catch(function(e) {
                     console.error(e);
-                    body.innerHTML = '<tr><td colspan="3"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
+                    body.innerHTML = '<tr><td colspan="5"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
                 });
+        }
+
+        function renderStats() {
+            var totalGames = allGames.length;
+            var totalMinutes = 0;
+            var totalAchievements = 0;
+            var totalPossibleAchievements = 0;
+            allGames.forEach(function(g) {
+                totalMinutes += g.playtime_forever || 0;
+            });
+            var totalHours = (totalMinutes / 60).toFixed(0);
+            var avgHours = totalGames > 0 ? (totalMinutes / 60 / totalGames).toFixed(1) : '0';
+            document.getElementById('statsBar').innerHTML =
+                '<div class="stat-item"><div class="stat-value">' + totalGames + '</div><div class="stat-label">Games</div></div>' +
+                '<div class="stat-item"><div class="stat-value">' + totalHours + 'h</div><div class="stat-label">Total Playtime</div></div>' +
+                '<div class="stat-item"><div class="stat-value">' + avgHours + 'h</div><div class="stat-label">Avg Per Game</div></div>';
+        }
+
+        function timeAgo(timestamp) {
+            if (!timestamp || timestamp === 0) return 'Never';
+            var now = Math.floor(Date.now() / 1000);
+            var diff = now - timestamp;
+            if (diff < 60) return 'Just now';
+            if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+            if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+            if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+            if (diff < 2592000) return Math.floor(diff / 604800) + 'w ago';
+            if (diff < 31536000) return Math.floor(diff / 2592000) + 'mo ago';
+            return Math.floor(diff / 31536000) + 'y ago';
         }
 
         function renderGames() {
@@ -184,8 +232,14 @@
             switch (sortBy) {
                 case 'name': sorted.sort(function(a, b) { return a.name.localeCompare(b.name); }); break;
                 case 'name-desc': sorted.sort(function(a, b) { return b.name.localeCompare(a.name); }); break;
-                case 'playtime-desc': sorted.sort(function(a, b) { return b.playtime_forever - a.playtime_forever; }); break;
-                case 'playtime-asc': sorted.sort(function(a, b) { return a.playtime_forever - b.playtime_forever; }); break;
+                case 'playtime-desc': sorted.sort(function(a, b) { return (b.playtime_forever || 0) - (a.playtime_forever || 0); }); break;
+                case 'playtime-asc': sorted.sort(function(a, b) { return (a.playtime_forever || 0) - (b.playtime_forever || 0); }); break;
+                case 'recent': sorted.sort(function(a, b) { return (b.rtime_last_played || 0) - (a.rtime_last_played || 0); }); break;
+                case 'achievements': sorted.sort(function(a, b) {
+                    var pctA = a.achievements_total > 0 ? a.achievements_earned / a.achievements_total : -1;
+                    var pctB = b.achievements_total > 0 ? b.achievements_earned / b.achievements_total : -1;
+                    return pctB - pctA;
+                }); break;
             }
 
             if (query) {
@@ -195,18 +249,31 @@
             updateResultCount(sorted.length);
 
             if (!sorted.length) {
-                body.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:48px;color:var(--muted);">No games match.</td></tr>';
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:48px;color:var(--muted);">No games match.</td></tr>';
                 return;
             }
 
             body.innerHTML = sorted.map(function(g) {
                 var hours = (g.playtime_forever / 60).toFixed(1);
                 var playtimeText = hours >= 1 ? hours + 'h' : Math.round(g.playtime_forever) + 'm';
-                var imgSrc = 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/' + g.appid + '/' + g.img_icon_url + '.jpg';
+                var lastPlayed = timeAgo(g.rtime_last_played);
+                var imgSrc = g.img_icon_url ? 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/' + g.appid + '/' + g.img_icon_url + '.jpg' : '';
+                var achHtml = '';
+                if (g.achievements_total > 0) {
+                    var pct = Math.round((g.achievements_earned / g.achievements_total) * 100);
+                    var achClass = pct === 100 ? 'ach-complete' : '';
+                    achHtml = '<span class="game-achievements ' + achClass + '">' + g.achievements_earned + '/' + g.achievements_total + ' (' + pct + '%)</span>';
+                } else if (g.has_achievements) {
+                    achHtml = '<span class="game-achievements" style="color:var(--muted);">0/0</span>';
+                } else {
+                    achHtml = '<span class="game-achievements" style="color:var(--muted);">—</span>';
+                }
                 return '<tr>' +
-                    '<td><img src="' + imgSrc + '" class="game-logo" loading="lazy" onerror="this.style.display=\'none\'"></td>' +
+                    '<td>' + (imgSrc ? '<img src="' + imgSrc + '" class="game-logo" loading="lazy" onerror="this.style.display=\'none\'">' : '') + '</td>' +
                     '<td class="game-name">' + escapeHtml(g.name) + '</td>' +
                     '<td class="game-playtime">' + playtimeText + '</td>' +
+                    '<td class="game-lastplayed">' + lastPlayed + '</td>' +
+                    '<td>' + achHtml + '</td>' +
                 '</tr>';
             }).join('');
         }
