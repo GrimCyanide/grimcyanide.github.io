@@ -12,7 +12,11 @@ export default async function handler(req, res) {
   }
 
   const { password } = req.body || {};
-  const correctPassword = process.env.PEANUT_PASSWORD || 'peanut2024';
+  const correctPassword = process.env.PEANUT_PASSWORD;
+
+  if (!correctPassword) {
+    return res.status(500).json({ error: 'Server not configured' });
+  }
 
   if (password !== correctPassword) {
     return res.status(403).json({ error: 'Incorrect password' });
