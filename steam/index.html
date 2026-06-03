@@ -71,12 +71,12 @@
         .header { text-align: center; margin-bottom: 28px; }
         .header h1 { font-size: 2.2em; margin: 0 0 6px 0; font-weight: 700; letter-spacing: -0.5px; }
         .header .subtitle { color: var(--muted); font-size: 1em; margin: 0; }
-        .steam-profile { text-align: center; margin-bottom: 24px; }
-        .steam-profile a { color: var(--blue); text-decoration: none; font-family: var(--mono); font-size: 0.88em; transition: opacity 0.2s; }
-        .steam-profile a:hover { opacity: 0.7; }
-        .steam-status { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .steam-profile { text-align: center; margin-bottom: 24px; font-family: var(--mono); font-size: 0.88em; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .steam-status { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .steam-status.online { background: var(--green); }
         .steam-status.offline { background: var(--muted); }
+        .steam-profile a { color: var(--blue); text-decoration: none; font-size: 0.95em; }
+        .steam-profile a:hover { opacity: 0.7; }
         .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 28px; }
         .stat-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 20px; text-align: center; min-width: 120px; }
         .stat-value { font-size: 1.4em; font-weight: 700; font-family: var(--mono); color: var(--accent); }
@@ -163,8 +163,9 @@
             <p class="subtitle">every game I own on Steam</p>
         </div>
         <div class="steam-profile" id="steamProfile">
-            <span class="steam-status" id="steamStatusDot"></span>
-            <a href="https://steamcommunity.com/id/GrimCyanide" target="_blank" id="steamProfileLink">steamcommunity.com/id/GrimCyanide</a>
+            <span class="steam-status offline" id="steamStatusDot"></span>
+            <span id="steamStatusText">loading...</span>
+            <a href="https://steamcommunity.com/id/GrimCyanide" target="_blank" id="steamProfileLink">view profile →</a>
         </div>
         <div class="stats-bar" id="statsBar"></div>
         <div class="filters-section">
@@ -235,15 +236,18 @@
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     var dot = document.getElementById('steamStatusDot');
+                    var text = document.getElementById('steamStatusText');
                     if (data.online) {
                         dot.className = 'steam-status online';
-                        document.getElementById('steamProfileLink').innerHTML = '<span class="steam-status online"></span>steamcommunity.com/id/GrimCyanide — online now';
+                        text.textContent = 'online now';
                     } else {
                         dot.className = 'steam-status offline';
-                        document.getElementById('steamProfileLink').innerHTML = '<span class="steam-status offline"></span>steamcommunity.com/id/GrimCyanide';
+                        text.textContent = 'offline';
                     }
                 })
-                .catch(function() {});
+                .catch(function() {
+                    document.getElementById('steamStatusText').textContent = 'offline';
+                });
         }
 
         function renderStats() {
