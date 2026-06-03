@@ -31,13 +31,11 @@
             --accent: #e85d75;
             --accent-soft: rgba(232, 93, 117, 0.15);
             --amber: #d2991d;
-            --green: #4ade80;
             --badge-bg: rgba(48, 54, 61, 0.8);
             --radius: 6px;
             --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
             --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
         }
-        
         body.light-mode {
             --bg: #f3f4f6;
             --surface: #ffffff;
@@ -48,7 +46,6 @@
             --accent: #b91c1c;
             --accent-soft: rgba(185, 28, 28, 0.1);
             --amber: #92400e;
-            --green: #15803d;
             --badge-bg: rgba(209, 213, 219, 0.6);
         }
         * { box-sizing: border-box; }
@@ -61,7 +58,7 @@
             transition: background 0.3s, color 0.3s;
             line-height: 1.5;
         }
-        .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
         .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
         .back-link { color: var(--muted); text-decoration: none; font-size: 0.95em; font-family: var(--mono); transition: color 0.2s; }
         .back-link:hover { color: var(--accent); }
@@ -97,8 +94,6 @@
         .game-name { font-weight: 600; text-align: left; }
         .game-playtime { font-family: var(--mono); color: var(--muted); font-size: 0.88em; white-space: nowrap; }
         .game-lastplayed { font-family: var(--mono); color: var(--muted); font-size: 0.82em; white-space: nowrap; }
-        .game-achievements { font-family: var(--mono); font-size: 0.85em; white-space: nowrap; }
-        .ach-complete { color: var(--green); font-weight: 600; }
         .game-logo { width: 32px; height: 32px; border-radius: 4px; object-fit: cover; }
         .loading-container { text-align: center; padding: 48px 20px; }
         .loading-spinner { display: inline-block; width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -132,17 +127,6 @@
         <div class="stats-bar" id="statsBar"></div>
         <div class="filters-section">
             <div class="filter-group">
-                <label for="sortBy">Sort</label>
-                <select id="sortBy">
-                    <option value="name">A → Z</option>
-                    <option value="name-desc">Z → A</option>
-                    <option value="playtime-desc" selected>Most Played</option>
-                    <option value="playtime-asc">Least Played</option>
-                    <option value="recent">Recently Played</option>
-                    <option value="achievements">Achievements %</option>
-                </select>
-            </div>
-            <div class="filter-group">
                 <label for="searchInput">Search</label>
                 <input type="text" id="searchInput" class="search-input" placeholder="Filter games...">
             </div>
@@ -153,14 +137,13 @@
                 <thead>
                     <tr>
                         <th style="width:50px"></th>
-                        <th style="text-align:left" id="thName">Game <span class="arrow"></span></th>
-                        <th style="width:100px" id="thPlaytime">Playtime <span class="arrow"></span></th>
-                        <th style="width:110px" id="thLastPlayed">Last Played <span class="arrow"></span></th>
-                        <th style="width:110px" id="thAchievements">Achievements <span class="arrow"></span></th>
+                        <th style="text-align:left" data-col="name" id="thName">Game <span class="arrow"></span></th>
+                        <th style="width:100px" data-col="playtime" class="sorted" id="thPlaytime">Playtime <span class="arrow">▼</span></th>
+                        <th style="width:120px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
-                    <tr><td colspan="5"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr>
+                    <tr><td colspan="4"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -169,6 +152,12 @@
     <script>
         var allGames = [];
         var currentSort = 'playtime-desc';
+        var sortDirections = { name: 'name-az', playtime: 'playtime-desc', lastplayed: 'recent' };
+        var sortToggles = {
+            'name-az': 'name-za', 'name-za': 'name-az',
+            'playtime-desc': 'playtime-asc', 'playtime-asc': 'playtime-desc',
+            'recent': 'oldest', 'oldest': 'recent'
+        };
         var steamId = '76561198066010654';
         var apiURL = 'https://grimcyanide-github-io.vercel.app/api/steam-games';
         var excludeIds = [];
@@ -181,28 +170,25 @@
                 .then(function(data) {
                     if (data.error) throw new Error(data.error);
                     if (!data.games || !data.games.length) {
-                        body.innerHTML = '<tr><td colspan="5"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>';
+                        body.innerHTML = '<tr><td colspan="4"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>';
                         return;
                     }
                     allGames = data.games.filter(function(g) { return excludeIds.indexOf(g.appid) === -1; });
                     renderStats();
+                    updateAllArrows();
                     renderGames();
                     updateResultCount();
                 })
                 .catch(function(e) {
                     console.error(e);
-                    body.innerHTML = '<tr><td colspan="5"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
+                    body.innerHTML = '<tr><td colspan="4"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
                 });
         }
 
         function renderStats() {
             var totalGames = allGames.length;
             var totalMinutes = 0;
-            var totalAchievements = 0;
-            var totalPossibleAchievements = 0;
-            allGames.forEach(function(g) {
-                totalMinutes += g.playtime_forever || 0;
-            });
+            allGames.forEach(function(g) { totalMinutes += g.playtime_forever || 0; });
             var totalHours = (totalMinutes / 60).toFixed(0);
             var avgHours = totalGames > 0 ? (totalMinutes / 60 / totalGames).toFixed(1) : '0';
             document.getElementById('statsBar').innerHTML =
@@ -224,23 +210,46 @@
             return Math.floor(diff / 31536000) + 'y ago';
         }
 
+        function updateAllArrows() {
+            ['name', 'playtime', 'lastplayed'].forEach(function(col) {
+                var th = document.getElementById('th' + col.charAt(0).toUpperCase() + col.slice(1));
+                if (!th) return;
+                var arrow = th.querySelector('.arrow');
+                if (!arrow) return;
+                th.classList.remove('sorted');
+                arrow.textContent = '';
+                if (sortDirections[col] === currentSort) {
+                    th.classList.add('sorted');
+                    if (currentSort.includes('za') || currentSort.includes('asc') || currentSort.includes('oldest')) {
+                        arrow.textContent = '▲';
+                    } else {
+                        arrow.textContent = '▼';
+                    }
+                }
+            });
+        }
+
+        function setSort(col) {
+            var current = sortDirections[col];
+            var next = sortToggles[current];
+            sortDirections[col] = next;
+            currentSort = next;
+            updateAllArrows();
+            renderGames();
+        }
+
         function renderGames() {
             var body = document.getElementById('gamesBody');
-            var sortBy = document.getElementById('sortBy').value;
             var query = document.getElementById('searchInput').value.toLowerCase().trim();
             var sorted = allGames.slice();
 
-            switch (sortBy) {
-                case 'name': sorted.sort(function(a, b) { return a.name.localeCompare(b.name); }); break;
-                case 'name-desc': sorted.sort(function(a, b) { return b.name.localeCompare(a.name); }); break;
+            switch (currentSort) {
+                case 'name-az': sorted.sort(function(a, b) { return a.name.localeCompare(b.name); }); break;
+                case 'name-za': sorted.sort(function(a, b) { return b.name.localeCompare(a.name); }); break;
                 case 'playtime-desc': sorted.sort(function(a, b) { return (b.playtime_forever || 0) - (a.playtime_forever || 0); }); break;
                 case 'playtime-asc': sorted.sort(function(a, b) { return (a.playtime_forever || 0) - (b.playtime_forever || 0); }); break;
                 case 'recent': sorted.sort(function(a, b) { return (b.rtime_last_played || 0) - (a.rtime_last_played || 0); }); break;
-                case 'achievements': sorted.sort(function(a, b) {
-                    var pctA = a.achievements_total > 0 ? a.achievements_earned / a.achievements_total : -1;
-                    var pctB = b.achievements_total > 0 ? b.achievements_earned / b.achievements_total : -1;
-                    return pctB - pctA;
-                }); break;
+                case 'oldest': sorted.sort(function(a, b) { return (a.rtime_last_played || 0) - (b.rtime_last_played || 0); }); break;
             }
 
             if (query) {
@@ -250,7 +259,7 @@
             updateResultCount(sorted.length);
 
             if (!sorted.length) {
-                body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:48px;color:var(--muted);">No games match.</td></tr>';
+                body.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:48px;color:var(--muted);">No games match.</td></tr>';
                 return;
             }
 
@@ -259,22 +268,11 @@
                 var playtimeText = hours >= 1 ? hours + 'h' : Math.round(g.playtime_forever) + 'm';
                 var lastPlayed = timeAgo(g.rtime_last_played);
                 var imgSrc = g.img_icon_url ? 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/' + g.appid + '/' + g.img_icon_url + '.jpg' : '';
-                var achHtml = '';
-                if (g.achievements_total > 0) {
-                    var pct = Math.round((g.achievements_earned / g.achievements_total) * 100);
-                    var achClass = pct === 100 ? 'ach-complete' : '';
-                    achHtml = '<span class="game-achievements ' + achClass + '">' + g.achievements_earned + '/' + g.achievements_total + ' (' + pct + '%)</span>';
-                } else if (g.has_achievements) {
-                    achHtml = '<span class="game-achievements" style="color:var(--muted);">0/0</span>';
-                } else {
-                    achHtml = '<span class="game-achievements" style="color:var(--muted);">—</span>';
-                }
                 return '<tr>' +
                     '<td>' + (imgSrc ? '<img src="' + imgSrc + '" class="game-logo" loading="lazy" onerror="this.style.display=\'none\'">' : '') + '</td>' +
                     '<td class="game-name">' + escapeHtml(g.name) + '</td>' +
                     '<td class="game-playtime">' + playtimeText + '</td>' +
                     '<td class="game-lastplayed">' + lastPlayed + '</td>' +
-                    '<td>' + achHtml + '</td>' +
                 '</tr>';
             }).join('');
         }
@@ -294,7 +292,10 @@
             }
         }
 
-        document.getElementById('sortBy').addEventListener('change', renderGames);
+        document.getElementById('thName').addEventListener('click', function() { setSort('name'); });
+        document.getElementById('thPlaytime').addEventListener('click', function() { setSort('playtime'); });
+        document.getElementById('thLastPlayed').addEventListener('click', function() { setSort('lastplayed'); });
+
         var searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
