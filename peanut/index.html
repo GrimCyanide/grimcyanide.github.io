@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>peanut</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --bg: #0b0e11;
+            --surface: #14181d;
+            --border: #252a30;
+            --text: #c8cdd2;
+            --muted: #6b7280;
+            --accent: #e85d75;
+            --radius: 6px;
+            --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            width: 320px;
+            text-align: center;
+        }
+        .login-box h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .login-box input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.95em;
+            outline: none;
+            margin-bottom: 12px;
+            transition: border 0.2s;
+        }
+        .login-box input:focus {
+            border-color: var(--accent);
+        }
+        .login-box button {
+            width: 100%;
+            background: var(--accent);
+            border: none;
+            border-radius: var(--radius);
+            padding: 10px;
+            color: #fff;
+            font-family: var(--font);
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .login-box button:hover { opacity: 0.85; }
+        .login-box button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .error-msg {
+            color: #f85149;
+            font-size: 0.85em;
+            margin-top: 8px;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>🔒</h1>
+        <input type="password" id="pwInput" placeholder="password" autofocus>
+        <button id="submitBtn" onclick="checkPassword()">enter</button>
+        <div class="error-msg" id="errorMsg"></div>
+    </div>
+    <script>
+        function checkPassword() {
+            var btn = document.getElementById('submitBtn');
+            var input = document.getElementById('pwInput');
+            var error = document.getElementById('errorMsg');
+            var password = input.value.trim();
+            if (!password) { error.textContent = 'enter a password'; return; }
+            btn.disabled = true;
+            btn.textContent = 'checking...';
+            error.textContent = '';
+            fetch('/api/peanut', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: password })
+            })
+            .then(function(r) {
+                if (r.ok) return r.text();
+                if (r.status === 403) throw new Error('wrong password');
+                throw new Error('something went wrong');
+            })
+            .then(function(html) {
+                document.open();
+                document.write(html);
+                document.close();
+            })
+            .catch(function(e) {
+                error.textContent = e.message;
+                btn.disabled = false;
+                btn.textContent = 'enter';
+            });
+        }
+        document.getElementById('pwInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+    </script>
+</body>
+</html>
