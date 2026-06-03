@@ -112,18 +112,18 @@
         .game-popup, .setup-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: center; }
         .game-popup.active, .setup-popup.active { display: flex; }
         .game-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        .game-popup-inner h3, .setup-popup-inner h3 { margin: 0 0 12px 0; font-size: 1.1em; text-align: center; }
+        .game-popup-inner h3, .setup-popup-inner h3 { margin: 0 0 12px 0; font-size: 1.1em; }
         .game-popup-inner p { margin: 4px 0; font-size: 0.88em; color: var(--muted); }
         .game-popup-inner p strong { color: var(--text); font-weight: 600; }
         .game-popup-inner a { color: var(--accent); }
         .popup-close { background: var(--border); border: none; color: var(--text); padding: 6px 14px; border-radius: 4px; cursor: pointer; margin-top: 14px; font-family: var(--font); font-size: 0.85em; width: 100%; }
         .popup-close:hover { background: var(--accent); }
-        .setup-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; max-width: 580px; width: 92%; max-height: 78vh; overflow-y: auto; }
+        .setup-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; max-width: 620px; width: 92%; }
         .setup-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
-        .setup-item { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 16px; background: var(--surface); font-size: 0.92em; font-weight: 500; }
+        .setup-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); font-size: 0.92em; font-weight: 500; }
         .setup-item:nth-child(even) { background: var(--surface-alt); }
-        .setup-item strong { color: var(--accent); font-weight: 700; white-space: nowrap; text-align: center; flex: 1; }
-        .setup-item span { color: var(--muted); font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; font-weight: 600; white-space: nowrap; text-align: center; flex: 1; }
+        .setup-item strong { color: var(--accent); font-weight: 700; white-space: nowrap; min-width: 120px; }
+        .setup-item span { color: var(--muted); font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 0.9em; font-weight: 600; }
         .text-na { color: var(--muted); font-style: italic; }
         @media (max-width: 600px) { .header h1 { font-size: 2em; } }
     </style>
@@ -138,14 +138,14 @@
         </div>
         <div class="social-links">
             <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank"><span class="platform">Twitch</span></a>
-            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank"><span class="platform">YouTube</span></a>
             <a href="https://x.com/GrimCyanide" class="social-link" target="_blank"><span class="platform">Twitter</span></a>
-            <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank"><span class="platform">Discord</span></a>
             <a href="/vods" class="social-link"><span class="platform">VODs</span></a>
-            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span></a>
             <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank"><span class="platform">Steam Profile</span></a>
-            <a href="/steam" class="social-link"><span class="platform">Steam Games</span></a>
             <a href="#" class="social-link" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="platform">My PC Specs</span></a>
+            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank"><span class="platform">YouTube</span></a>
+            <a href="https://discord.gg/kUpgQmuDPh" class="social-link" target="_blank"><span class="platform">Discord</span></a>
+            <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span></a>
+            <a href="/steam" class="social-link"><span class="platform">Steam Games</span></a>
             <a href="https://open.spotify.com/playlist/47Mz3t3vwuAT37djS0Eozy" class="social-link" target="_blank"><span class="platform">Spotify</span></a>
         </div>
         <div class="content">
