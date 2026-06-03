@@ -108,7 +108,7 @@
         .footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 0.8em; padding-top: 20px; border-top: 1px solid var(--border); }
         .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); font-family: var(--font); font-size: 0.75em; padding: 5px 10px; cursor: pointer; transition: all 0.15s; }
         .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
-        .game-popup, .setup-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: center; }
+        .game-popup, .setup-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: flex-start; padding-top: 40px; }
         .game-popup.active, .setup-popup.active { display: flex; }
         .game-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; }
         .game-popup-inner h3, .setup-popup-inner h3 { margin: 0 0 12px 0; font-size: 1.1em; }
@@ -117,7 +117,7 @@
         .game-popup-inner a { color: var(--accent); }
         .popup-close { background: var(--border); border: none; color: var(--text); padding: 6px 14px; border-radius: 4px; cursor: pointer; margin-top: 14px; font-family: var(--font); font-size: 0.85em; width: 100%; }
         .popup-close:hover { background: var(--accent); }
-        .setup-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; max-width: 580px; width: 92%; max-height: 80vh; overflow-y: auto; }
+        .setup-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 16px; max-width: 580px; width: 92%; max-height: 60vh; overflow-y: auto; }
         .setup-popup-inner::-webkit-scrollbar { width: 5px; }
         .setup-popup-inner::-webkit-scrollbar-track { background: transparent; }
         .setup-popup-inner::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
