@@ -31,6 +31,7 @@
             --accent: #e85d75;
             --accent-soft: rgba(232, 93, 117, 0.15);
             --amber: #d2991d;
+            --green: #4ade80;
             --badge-bg: rgba(48, 54, 61, 0.8);
             --radius: 6px;
             --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -46,6 +47,7 @@
             --accent: #b91c1c;
             --accent-soft: rgba(185, 28, 28, 0.1);
             --amber: #92400e;
+            --green: #15803d;
             --badge-bg: rgba(209, 213, 219, 0.6);
         }
         * { box-sizing: border-box; }
@@ -95,6 +97,8 @@
         .game-playtime { font-family: var(--mono); color: var(--muted); font-size: 0.88em; white-space: nowrap; }
         .game-lastplayed { font-family: var(--mono); color: var(--muted); font-size: 0.82em; white-space: nowrap; }
         .game-logo { width: 32px; height: 32px; border-radius: 4px; object-fit: cover; }
+        .ach-btn { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); cursor: pointer; font-size: 0.75em; padding: 4px 10px; font-family: var(--font); transition: all 0.15s; white-space: nowrap; }
+        .ach-btn:hover { border-color: var(--accent); color: var(--accent); }
         .loading-container { text-align: center; padding: 48px 20px; }
         .loading-spinner { display: inline-block; width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -103,6 +107,20 @@
         .footer { margin-top: 40px; color: var(--muted); font-size: 0.85em; text-align: center; font-family: var(--mono); }
         .footer a { color: var(--muted); text-decoration: none; }
         .footer a:hover { color: var(--accent); }
+        .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: center; }
+        .popup-overlay.active { display: flex; }
+        .popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 500px; width: 90%; max-height: 70vh; overflow-y: auto; }
+        .popup-inner h3 { margin: 0 0 16px 0; font-size: 1.1em; }
+        .ach-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85em; }
+        .ach-row:last-child { border-bottom: none; }
+        .ach-icon { font-size: 1.2em; flex-shrink: 0; }
+        .ach-icon.unlocked { color: var(--green); }
+        .ach-icon.locked { color: var(--muted); opacity: 0.4; }
+        .ach-info { flex: 1; min-width: 0; }
+        .ach-name { font-weight: 600; }
+        .ach-desc { color: var(--muted); font-size: 0.85em; }
+        .popup-close { background: var(--border); border: none; color: var(--text); padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 16px; font-family: var(--font); font-size: 0.85em; width: 100%; }
+        .popup-close:hover { background: var(--accent); }
         @media (max-width: 700px) {
             .header h1 { font-size: 1.8em; }
             .stats-bar { gap: 10px; }
@@ -139,15 +157,19 @@
                         <th style="width:50px"></th>
                         <th style="text-align:left" data-col="name" id="thName">Game <span class="arrow"></span></th>
                         <th style="width:100px" data-col="playtime" class="sorted" id="thPlaytime">Playtime <span class="arrow">▼</span></th>
-                        <th style="width:120px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
+                        <th style="width:110px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
+                        <th style="width:80px"></th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
-                    <tr><td colspan="4"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr>
+                    <tr><td colspan="5"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr>
                 </tbody>
             </table>
         </div>
         <div class="footer">© 2026 <a href="https://grimcyanide.com">grimcyanide.com</a> — data from Steam</div>
+    </div>
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-inner" id="popupInner"></div>
     </div>
     <script>
         var allGames = [];
@@ -159,18 +181,19 @@
             'recent': 'oldest', 'oldest': 'recent'
         };
         var steamId = '76561198066010654';
-        var apiURL = 'https://grimcyanide-github-io.vercel.app/api/steam-games';
+        var gamesApiURL = 'https://grimcyanide-github-io.vercel.app/api/steam-games';
+        var achApiURL = 'https://grimcyanide-github-io.vercel.app/api/steam-achievements';
         var excludeIds = [];
 
         function loadData() {
             var body = document.getElementById('gamesBody');
-            var url = apiURL + '?steamid=' + steamId + '&type=owned&t=' + Date.now();
+            var url = gamesApiURL + '?steamid=' + steamId + '&type=owned&t=' + Date.now();
             fetch(url)
                 .then(function(r) { if (!r.ok) throw new Error('API returned ' + r.status); return r.json(); })
                 .then(function(data) {
                     if (data.error) throw new Error(data.error);
                     if (!data.games || !data.games.length) {
-                        body.innerHTML = '<tr><td colspan="4"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>';
+                        body.innerHTML = '<tr><td colspan="5"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>';
                         return;
                     }
                     allGames = data.games.filter(function(g) { return excludeIds.indexOf(g.appid) === -1; });
@@ -181,7 +204,7 @@
                 })
                 .catch(function(e) {
                     console.error(e);
-                    body.innerHTML = '<tr><td colspan="4"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
+                    body.innerHTML = '<tr><td colspan="5"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
                 });
         }
 
@@ -259,7 +282,7 @@
             updateResultCount(sorted.length);
 
             if (!sorted.length) {
-                body.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:48px;color:var(--muted);">No games match.</td></tr>';
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:48px;color:var(--muted);">No games match.</td></tr>';
                 return;
             }
 
@@ -273,9 +296,50 @@
                     '<td class="game-name">' + escapeHtml(g.name) + '</td>' +
                     '<td class="game-playtime">' + playtimeText + '</td>' +
                     '<td class="game-lastplayed">' + lastPlayed + '</td>' +
+                    '<td><button class="ach-btn" onclick="loadAchievements(' + g.appid + ',\'' + escapeHtml(g.name).replace(/'/g, "\\'") + '\')">achievements</button></td>' +
                 '</tr>';
             }).join('');
         }
+
+        function loadAchievements(appid, gameName) {
+            var overlay = document.getElementById('popupOverlay');
+            var inner = document.getElementById('popupInner');
+            inner.innerHTML = '<h3>' + gameName + '</h3><div style="text-align:center;padding:20px;color:var(--muted);">Loading achievements...</div>';
+            overlay.classList.add('active');
+            var url = achApiURL + '?steamid=' + steamId + '&appid=' + appid;
+            fetch(url)
+                .then(function(r) { if (!r.ok) throw new Error('Failed'); return r.json(); })
+                .then(function(data) {
+                    if (!data.achievements || !data.achievements.length) {
+                        inner.innerHTML = '<h3>' + gameName + '</h3><p style="color:var(--muted);text-align:center;padding:20px;">No achievements available.</p><button class="popup-close" onclick="closePopup()">close</button>';
+                        return;
+                    }
+                    var earned = data.achievements.filter(function(a) { return a.achieved === 1; }).length;
+                    var total = data.achievements.length;
+                    var pct = Math.round((earned / total) * 100);
+                    var html = '<h3>' + gameName + '</h3><p style="color:var(--muted);margin-bottom:12px;">' + earned + '/' + total + ' (' + pct + '%)</p>';
+                    data.achievements.forEach(function(a) {
+                        var unlocked = a.achieved === 1;
+                        html += '<div class="ach-row">' +
+                            '<span class="ach-icon ' + (unlocked ? 'unlocked' : 'locked') + '">' + (unlocked ? '✓' : '○') + '</span>' +
+                            '<div class="ach-info"><div class="ach-name">' + escapeHtml(a.name) + '</div><div class="ach-desc">' + escapeHtml(a.description || '') + '</div></div>' +
+                        '</div>';
+                    });
+                    html += '<button class="popup-close" onclick="closePopup()">close</button>';
+                    inner.innerHTML = html;
+                })
+                .catch(function() {
+                    inner.innerHTML = '<h3>' + gameName + '</h3><p style="color:#f85149;text-align:center;padding:20px;">Failed to load achievements.</p><button class="popup-close" onclick="closePopup()">close</button>';
+                });
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('active');
+        }
+
+        document.getElementById('popupOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closePopup();
+        });
 
         function escapeHtml(text) {
             var div = document.createElement('div');
