@@ -329,10 +329,10 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 70vh;
+            padding: 28px;
+            max-width: 580px;
+            width: 92%;
+            max-height: 78vh;
             overflow-y: auto;
         }
         .setup-grid {
@@ -347,18 +347,19 @@
         .setup-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
+            gap: 12px;
+            padding: 12px 16px;
             background: var(--surface);
-            font-size: 0.88em;
+            font-size: 0.92em;
+            font-weight: 500;
         }
         .setup-item:nth-child(even) {
             background: var(--surface-alt);
         }
         .setup-item strong {
             color: var(--accent);
-            min-width: 100px;
-            font-weight: 600;
+            min-width: 110px;
+            font-weight: 700;
             white-space: nowrap;
         }
         .setup-item span {
@@ -366,6 +367,7 @@
             margin-left: auto;
             font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
             font-size: 0.9em;
+            font-weight: 600;
             white-space: nowrap;
         }
         .text-na {
@@ -400,7 +402,7 @@
             <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span><span class="username">@grim_cyanide</span></a>
             <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank"><span class="platform">Steam</span><span class="username">profile</span></a>
             <a href="/steam" class="social-link"><span class="platform">Steam</span><span class="username">games list</span></a>
-            <a href="#" class="social-link" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="platform">Setup</span><span class="username">my gear</span></a>
+            <a href="#" class="social-link" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="platform">My Specs</span><span class="username">view gear</span></a>
         </div>
         <div class="content">
             <div class="twitch-col">
@@ -425,7 +427,7 @@
     </div>
     <div class="setup-popup" id="setupPopup">
         <div class="setup-popup-inner">
-            <h3>my setup</h3>
+            <h3>my specs</h3>
             <div class="setup-grid">
                 <div class="setup-item"><strong>CPU</strong> Ryzen 7 9800X3D <span>£530</span></div>
                 <div class="setup-item"><strong>Cooler</strong> Corsair iCUE H100i ELITE LCD XT <span>£100</span></div>
