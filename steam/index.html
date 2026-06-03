@@ -186,8 +186,8 @@
                     <tr>
                         <th style="width:36px"></th>
                         <th style="text-align:left" data-col="name" id="thName">Game <span class="arrow"></span></th>
-                        <th style="width:90px" data-col="playtime" class="sorted" id="thPlaytime">Playtime <span class="arrow">▼</span></th>
-                        <th style="width:100px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
+                        <th style="width:90px" data-col="playtime" id="thPlaytime">Playtime <span class="arrow"></span></th>
+                        <th style="width:100px" data-col="lastplayed" class="sorted" id="thLastPlayed">Last Played <span class="arrow">▼</span></th>
                         <th style="width:80px"></th>
                     </tr>
                 </thead>
@@ -203,7 +203,7 @@
     </div>
     <script>
         var allGames = [];
-        var currentSort = 'playtime-desc';
+        var currentSort = 'recent';
         var sortDirections = { name: 'name-az', playtime: 'playtime-desc', lastplayed: 'recent' };
         var sortToggles = {
             'name-az': 'name-za', 'name-za': 'name-az',
