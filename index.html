@@ -269,7 +269,7 @@
             border-color: var(--accent);
             color: var(--text);
         }
-        .game-popup {
+        .game-popup, .setup-popup {
             display: none;
             position: fixed;
             top: 0;
@@ -281,7 +281,7 @@
             justify-content: center;
             align-items: center;
         }
-        .game-popup.active {
+        .game-popup.active, .setup-popup.active {
             display: flex;
         }
         .game-popup-inner {
@@ -294,7 +294,7 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-        .game-popup-inner h3 {
+        .game-popup-inner h3, .setup-popup-inner h3 {
             margin: 0 0 12px 0;
             font-size: 1.1em;
         }
@@ -310,7 +310,7 @@
         .game-popup-inner a {
             color: var(--accent);
         }
-        .game-popup-close {
+        .popup-close {
             background: var(--border);
             border: none;
             color: var(--text);
@@ -320,9 +320,53 @@
             margin-top: 14px;
             font-family: var(--font);
             font-size: 0.85em;
+            width: 100%;
         }
-        .game-popup-close:hover {
+        .popup-close:hover {
             background: var(--accent);
+        }
+        .setup-popup-inner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .setup-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .setup-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--surface);
+            font-size: 0.88em;
+        }
+        .setup-item:nth-child(even) {
+            background: var(--surface-alt);
+        }
+        .setup-item strong {
+            color: var(--accent);
+            min-width: 100px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .setup-item span {
+            color: var(--muted);
+            margin-left: auto;
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9em;
+            white-space: nowrap;
         }
         .text-na {
             color: var(--muted);
@@ -356,6 +400,7 @@
             <a href="https://www.tiktok.com/@grim_cyanide" class="social-link" target="_blank"><span class="platform">TikTok</span><span class="username">@grim_cyanide</span></a>
             <a href="https://steamcommunity.com/id/GrimCyanide" class="social-link" target="_blank"><span class="platform">Steam</span><span class="username">profile</span></a>
             <a href="/steam" class="social-link"><span class="platform">Steam</span><span class="username">games list</span></a>
+            <a href="#" class="social-link" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="platform">Setup</span><span class="username">my gear</span></a>
         </div>
         <div class="content">
             <div class="twitch-col">
@@ -377,6 +422,35 @@
     </div>
     <div class="game-popup" id="gamePopup">
         <div class="game-popup-inner" id="gamePopupInner"></div>
+    </div>
+    <div class="setup-popup" id="setupPopup">
+        <div class="setup-popup-inner">
+            <h3>my setup</h3>
+            <div class="setup-grid">
+                <div class="setup-item"><strong>CPU</strong> Ryzen 7 9800X3D <span>£530</span></div>
+                <div class="setup-item"><strong>Cooler</strong> Corsair iCUE H100i ELITE LCD XT <span>£100</span></div>
+                <div class="setup-item"><strong>GPU</strong> Gigabyte RTX 5080 Gaming OC <span>£1200</span></div>
+                <div class="setup-item"><strong>RAM</strong> Corsair Vengeance 32GB DDR5-6000 <span>£121</span></div>
+                <div class="setup-item"><strong>Motherboard</strong> Gigabyte X870E AORUS ELITE WIFI7 <span>£300</span></div>
+                <div class="setup-item"><strong>PSU</strong> Corsair RM1000x 1000W <span>£150</span></div>
+                <div class="setup-item"><strong>Case</strong> Corsair 3000D AIRFLOW <span>£80</span></div>
+                <div class="setup-item"><strong>Main Monitor</strong> Gigabyte MO27Q28G 1440p 280Hz <span>£500</span></div>
+                <div class="setup-item"><strong>Monitor</strong> Gigabyte M27Q 1440p 170Hz <span>£250</span></div>
+                <div class="setup-item"><strong>Monitor</strong> iiyama GB2570HSU 1080p 165Hz <span>£130</span></div>
+                <div class="setup-item"><strong>SSD</strong> WD Black SN850X 4TB NVMe <span>£260</span></div>
+                <div class="setup-item"><strong>SSD</strong> Crucial P3 Plus 1TB NVMe <span>£60</span></div>
+                <div class="setup-item"><strong>SSD</strong> Crucial P3 Plus 1TB NVMe <span>£60</span></div>
+                <div class="setup-item"><strong>HDD</strong> Seagate Barracuda 8TB <span>£150</span></div>
+                <div class="setup-item"><strong>External</strong> Seagate One Touch 2TB <span>£70</span></div>
+                <div class="setup-item"><strong>Keyboard</strong> Logitech G213 Prodigy <span>£70</span></div>
+                <div class="setup-item"><strong>Mouse</strong> Corsair Scimitar RGB Elite <span>£74</span></div>
+                <div class="setup-item"><strong>Headphones</strong> Audio-Technica ATH-M50x <span>£124</span></div>
+                <div class="setup-item"><strong>Mic</strong> HyperX QuadCast <span>£105</span></div>
+                <div class="setup-item"><strong>Stream Deck</strong> Elgato Stream Deck MK.2 <span>£172</span></div>
+                <div class="setup-item"><strong>Fans</strong> 4x Corsair iCUE AF120 RGB SLIM <span>£96</span></div>
+            </div>
+            <button class="popup-close" onclick="document.getElementById('setupPopup').classList.remove('active')">close</button>
+        </div>
     </div>
     <script>
         var allVODs = [];
@@ -523,7 +597,7 @@
                 '<p><strong>parts</strong> ' + partsDisplay + '</p>' +
                 (linkHtml ? '<p>' + linkHtml + '</p>' : '') +
                 '<p><a href="/vods">view all games →</a></p>' +
-                '<button class="game-popup-close" onclick="closePopup()">close</button>';
+                '<button class="popup-close" onclick="closePopup()">close</button>';
             popup.classList.add('active');
         }
         function closePopup() {
@@ -531,6 +605,9 @@
         }
         document.getElementById('gamePopup').addEventListener('click', function(e) {
             if (e.target === this) closePopup();
+        });
+        document.getElementById('setupPopup').addEventListener('click', function(e) {
+            if (e.target === this) document.getElementById('setupPopup').classList.remove('active');
         });
         var themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', function() {
