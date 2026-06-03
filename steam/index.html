@@ -141,13 +141,18 @@
         .popup-close { background: var(--border); border: none; color: var(--text); padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 16px; font-family: var(--font); font-size: 0.85em; width: 100%; }
         .popup-close:hover { background: var(--accent); }
         @media (max-width: 700px) {
-            .header h1 { font-size: 1.8em; }
-            .stats-bar { gap: 10px; }
-            .stat-item { padding: 10px 14px; min-width: 80px; }
-            .stat-value { font-size: 1.1em; }
-            thead th { font-size: 0.66em; padding: 8px 4px; }
-            tbody td { font-size: 0.75em; padding: 8px 4px; }
-            .game-logo { width: 22px; height: 22px; }
+            .container { padding: 16px 4px; }
+            .header h1 { font-size: 1.6em; }
+            .stats-bar { gap: 6px; }
+            .stat-item { padding: 8px 10px; min-width: 70px; }
+            .stat-value { font-size: 1em; }
+            thead th { font-size: 0.55em; padding: 6px 3px; letter-spacing: 0; }
+            tbody td { font-size: 0.65em; padding: 8px 3px; }
+            .game-logo { width: 18px; height: 18px; }
+            .game-playtime { font-size: 0.75em; }
+            .game-lastplayed { font-size: 0.72em; }
+            .game-recent { font-size: 0.68em; }
+            .ach-btn { font-size: 0.65em; padding: 3px 7px; }
             .popup-inner { max-width: 95%; padding: 16px; }
         }
     </style>
@@ -179,11 +184,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width:50px"></th>
+                        <th style="width:36px"></th>
                         <th style="text-align:left" data-col="name" id="thName">Game <span class="arrow"></span></th>
-                        <th style="width:100px" data-col="playtime" class="sorted" id="thPlaytime">Playtime <span class="arrow">▼</span></th>
-                        <th style="width:110px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
-                        <th style="width:90px"></th>
+                        <th style="width:90px" data-col="playtime" class="sorted" id="thPlaytime">Playtime <span class="arrow">▼</span></th>
+                        <th style="width:100px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
+                        <th style="width:80px"></th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
