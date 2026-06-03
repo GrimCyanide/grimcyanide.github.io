@@ -32,6 +32,7 @@
             --accent-soft: rgba(232, 93, 117, 0.15);
             --amber: #d2991d;
             --green: #4ade80;
+            --blue: #58a6ff;
             --badge-bg: rgba(48, 54, 61, 0.8);
             --radius: 6px;
             --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -48,6 +49,7 @@
             --accent-soft: rgba(185, 28, 28, 0.1);
             --amber: #92400e;
             --green: #15803d;
+            --blue: #0969da;
             --badge-bg: rgba(209, 213, 219, 0.6);
         }
         * { box-sizing: border-box; }
@@ -69,6 +71,12 @@
         .header { text-align: center; margin-bottom: 28px; }
         .header h1 { font-size: 2.2em; margin: 0 0 6px 0; font-weight: 700; letter-spacing: -0.5px; }
         .header .subtitle { color: var(--muted); font-size: 1em; margin: 0; }
+        .steam-profile { text-align: center; margin-bottom: 24px; }
+        .steam-profile a { color: var(--blue); text-decoration: none; font-family: var(--mono); font-size: 0.88em; transition: opacity 0.2s; }
+        .steam-profile a:hover { opacity: 0.7; }
+        .steam-status { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .steam-status.online { background: var(--green); }
+        .steam-status.offline { background: var(--muted); }
         .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 28px; }
         .stat-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 20px; text-align: center; min-width: 120px; }
         .stat-value { font-size: 1.4em; font-weight: 700; font-family: var(--mono); color: var(--accent); }
@@ -88,17 +96,20 @@
         thead th .arrow { margin-left: 4px; font-size: 0.7em; opacity: 0.5; }
         thead th.sorted { color: var(--accent); }
         thead th.sorted .arrow { opacity: 1; color: var(--accent); }
-        tbody td { padding: 12px 12px; font-size: 0.9em; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; word-break: break-word; text-align: center; }
+        tbody td { padding: 10px 12px; font-size: 0.9em; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; word-break: break-word; text-align: center; }
         tbody tr td { background: var(--surface); }
         tbody tr:nth-child(even) td { background: var(--surface-alt); }
         tbody tr:hover td { background: var(--badge-bg); }
         tbody tr:last-child td { border-bottom: none; }
         .game-name { font-weight: 600; text-align: left; }
-        .game-playtime { font-family: var(--mono); color: var(--muted); font-size: 0.88em; white-space: nowrap; }
+        .game-name a { color: inherit; text-decoration: none; cursor: pointer; }
+        .game-name a:hover { color: var(--accent); }
+        .game-playtime { font-family: var(--mono); color: var(--muted); font-size: 0.85em; white-space: nowrap; }
+        .game-recent { font-family: var(--mono); color: var(--green); font-size: 0.78em; white-space: nowrap; display: block; }
         .game-lastplayed { font-family: var(--mono); color: var(--muted); font-size: 0.82em; white-space: nowrap; }
         .game-logo { width: 32px; height: 32px; border-radius: 4px; object-fit: cover; }
-        .ach-btn { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); cursor: pointer; font-size: 0.75em; padding: 4px 10px; font-family: var(--font); transition: all 0.15s; white-space: nowrap; }
-        .ach-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .ach-btn { background: var(--surface); border: 1px solid var(--blue); border-radius: 4px; color: var(--blue); cursor: pointer; font-size: 0.73em; padding: 4px 10px; font-family: var(--font); font-weight: 600; transition: all 0.15s; white-space: nowrap; }
+        .ach-btn:hover { background: rgba(88, 166, 255, 0.1); border-color: var(--blue); }
         .loading-container { text-align: center; padding: 48px 20px; }
         .loading-spinner { display: inline-block; width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -109,10 +120,17 @@
         .footer a:hover { color: var(--accent); }
         .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: center; }
         .popup-overlay.active { display: flex; }
-        .popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 550px; width: 90%; max-height: 70vh; overflow-y: auto; }
+        .popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 550px; width: 90%; max-height: 70vh; overflow-y: auto; text-align: center; }
         .popup-inner h3 { margin: 0 0 12px 0; font-size: 1.1em; }
+        .popup-inner p { color: var(--muted); margin-bottom: 20px; font-size: 0.92em; }
         .popup-inner .ach-summary { color: var(--muted); margin-bottom: 16px; font-size: 0.9em; }
-        .ach-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88em; }
+        .popup-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .popup-btn { padding: 10px 20px; border-radius: var(--radius); font-family: var(--font); font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.15s; text-decoration: none; }
+        .popup-btn-primary { background: var(--blue); border: none; color: #fff; }
+        .popup-btn-primary:hover { opacity: 0.85; }
+        .popup-btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+        .popup-btn-secondary:hover { border-color: var(--accent); }
+        .ach-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88em; text-align: left; }
         .ach-row:nth-child(odd) { background: rgba(255,255,255,0.01); }
         .ach-icon { font-size: 1.1em; flex-shrink: 0; width: 20px; text-align: center; }
         .ach-icon.unlocked { color: var(--green); }
@@ -144,6 +162,10 @@
             <h1>Steam Library</h1>
             <p class="subtitle">every game I own on Steam</p>
         </div>
+        <div class="steam-profile" id="steamProfile">
+            <span class="steam-status" id="steamStatusDot"></span>
+            <a href="https://steamcommunity.com/id/GrimCyanide" target="_blank" id="steamProfileLink">steamcommunity.com/id/GrimCyanide</a>
+        </div>
         <div class="stats-bar" id="statsBar"></div>
         <div class="filters-section">
             <div class="filter-group">
@@ -160,7 +182,7 @@
                         <th style="text-align:left" data-col="name" id="thName">Game <span class="arrow"></span></th>
                         <th style="width:100px" data-col="playtime" class="sorted" id="thPlaytime">Playtime <span class="arrow">▼</span></th>
                         <th style="width:110px" data-col="lastplayed" id="thLastPlayed">Last Played <span class="arrow"></span></th>
-                        <th style="width:80px"></th>
+                        <th style="width:90px"></th>
                     </tr>
                 </thead>
                 <tbody id="gamesBody">
@@ -209,6 +231,19 @@
                     console.error(e);
                     body.innerHTML = '<tr><td colspan="5"><div class="error-container">Failed to load: ' + e.message + '</div></td></tr>';
                 });
+            fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid=' + steamId)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var dot = document.getElementById('steamStatusDot');
+                    if (data.online) {
+                        dot.className = 'steam-status online';
+                        document.getElementById('steamProfileLink').innerHTML = '<span class="steam-status online"></span>steamcommunity.com/id/GrimCyanide — online now';
+                    } else {
+                        dot.className = 'steam-status offline';
+                        document.getElementById('steamProfileLink').innerHTML = '<span class="steam-status offline"></span>steamcommunity.com/id/GrimCyanide';
+                    }
+                })
+                .catch(function() {});
         }
 
         function renderStats() {
@@ -292,16 +327,30 @@
             body.innerHTML = sorted.map(function(g) {
                 var hours = (g.playtime_forever / 60).toFixed(1);
                 var playtimeText = hours >= 1 ? hours + 'h' : Math.round(g.playtime_forever) + 'm';
+                var recentHours = g.playtime_2weeks ? (g.playtime_2weeks / 60).toFixed(1) : 0;
+                var recentHtml = recentHours > 0 ? '<span class="game-recent">' + recentHours + 'h recent</span>' : '';
                 var lastPlayed = timeAgo(g.rtime_last_played);
                 var imgSrc = g.img_icon_url ? 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/' + g.appid + '/' + g.img_icon_url + '.jpg' : '';
                 return '<tr>' +
                     '<td>' + (imgSrc ? '<img src="' + imgSrc + '" class="game-logo" loading="lazy" onerror="this.style.display=\'none\'">' : '') + '</td>' +
-                    '<td class="game-name">' + escapeHtml(g.name) + '</td>' +
-                    '<td class="game-playtime">' + playtimeText + '</td>' +
+                    '<td class="game-name"><a onclick="openStorePopup(' + g.appid + ',\'' + escapeHtml(g.name).replace(/'/g, "\\'") + '\')" title="view on Steam store">' + escapeHtml(g.name) + '</a></td>' +
+                    '<td class="game-playtime">' + playtimeText + recentHtml + '</td>' +
                     '<td class="game-lastplayed">' + lastPlayed + '</td>' +
                     '<td><button class="ach-btn" onclick="loadAchievements(' + g.appid + ',\'' + escapeHtml(g.name).replace(/'/g, "\\'") + '\')">achievements</button></td>' +
                 '</tr>';
             }).join('');
+        }
+
+        function openStorePopup(appid, gameName) {
+            var overlay = document.getElementById('popupOverlay');
+            var inner = document.getElementById('popupInner');
+            inner.innerHTML = '<h3>' + gameName + '</h3>' +
+                '<p>open this game in the Steam store?</p>' +
+                '<div class="popup-buttons">' +
+                '<a href="https://store.steampowered.com/app/' + appid + '" target="_blank" class="popup-btn popup-btn-primary">open store page</a>' +
+                '<button class="popup-btn popup-btn-secondary" onclick="closePopup()">cancel</button>' +
+                '</div>';
+            overlay.classList.add('active');
         }
 
         function loadAchievements(appid, gameName) {
