@@ -18,160 +18,18 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: 'Incorrect password' });
   }
 
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peanut_Hotdog's Game Lists</title>
-<meta name="robots" content="noindex, nofollow">
-<style>
-:root {
---bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--amber:#d2991d;--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace;
-}
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5}
-.container{max-width:900px;margin:0 auto;padding:32px 24px}
-.header{text-align:center;margin-bottom:24px}
-.header h1{font-size:2.2em;margin:0 0 6px 0;font-weight:700;letter-spacing:-0.5px}
-.header .subtitle{color:var(--muted);font-size:1em;margin:0}
-.tab-buttons{display:flex;justify-content:center;gap:8px;margin-bottom:24px}
-.tab-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--muted);font-family:var(--font);font-size:0.88em;font-weight:600;padding:10px 24px;cursor:pointer;transition:all 0.15s}
-.tab-btn:hover{border-color:var(--accent);color:var(--text)}
-.tab-btn.active{border-color:var(--accent);background:rgba(232,93,117,0.1);color:var(--accent)}
-.result-count{color:var(--muted);font-size:0.88em;margin-bottom:12px;font-family:var(--mono);text-align:center}
-.table-wrapper{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--border)}
-table{width:100%;border-collapse:collapse}
-thead th{background:var(--surface);color:var(--muted);font-size:0.82em;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;padding:12px 16px;text-align:center;cursor:pointer;user-select:none;white-space:nowrap;border-bottom:1px solid var(--border);transition:color 0.15s}
-thead th:hover{color:var(--accent)}
-thead th .arrow{margin-left:4px;font-size:0.7em;opacity:0.5}
-thead th.sorted{color:var(--accent)}
-thead th.sorted .arrow{opacity:1;color:var(--accent)}
-tbody td{padding:14px 16px;font-size:0.92em;font-weight:500;border-bottom:1px solid var(--border);vertical-align:middle;word-break:break-word;text-align:center}
-tbody tr td{background:var(--surface)}
-tbody tr:nth-child(even) td{background:var(--surface-alt)}
-tbody tr:hover td{background:rgba(232,93,117,0.08)}
-tbody tr:last-child td{border-bottom:none}
-.game-name{font-weight:600;text-align:left}
-.game-name small{display:block;font-weight:400;color:var(--muted);font-size:0.82em;margin-top:2px}
-.game-rating{font-family:var(--mono);white-space:nowrap}
-.game-date{font-family:var(--mono);color:var(--muted);font-size:0.85em;white-space:nowrap}
-.text-na{color:var(--muted);font-style:italic;font-size:0.85em}
-.footer{margin-top:40px;color:var(--muted);font-size:0.82em;text-align:center;font-family:var(--mono)}
-</style>
-</head>
-<body>
-<div class="container">
-<div class="header"><h1>Peanut_Hotdog's Games</h1><p class="subtitle">played, rated, catalogued.</p></div>
-<div class="tab-buttons">
-<button class="tab-btn active" id="btnFinished" onclick="switchTab('finished')">Finished</button>
-<button class="tab-btn" id="btnUnfinished" onclick="switchTab('unfinished')">Unfinished</button>
-</div>
-<div class="result-count" id="resultCount"></div>
-<div class="table-wrapper"><table><thead><tr>
-<th style="width:55%" class="sorted" data-col="name" id="thName">Game <span class="arrow">▼</span></th>
-<th style="width:18%" data-col="rating" id="thRating">Rating <span class="arrow"></span></th>
-<th style="width:27%" data-col="date" id="thDate">Finished <span class="arrow"></span></th>
-</tr></thead><tbody id="gamesBody">
-<tr><td colspan="3" style="text-align:center;padding:48px;color:var(--muted);">Loading...</td></tr>
-</tbody></table></div>
-<div class="footer">Peanut_Hotdog's Lists</div>
-</div>
-<script>
-var allGames=[],currentSort='name-az',currentTab='finished',sortDirections={name:'name-az',rating:'rating-high',date:'date-new'},sortToggles={'name-az':'name-za','name-za':'name-az','rating-high':'rating-low','rating-low':'rating-high','date-new':'date-old','date-old':'date-new'},finishedData=[],unfinishedData=[];
-var urlFinished='https://corsproxy.io/?'+encodeURIComponent('https://pastebin.com/raw/BRS0H79q');
-var urlUnfinished='https://corsproxy.io/?'+encodeURIComponent('https://pastebin.com/raw/iaHuJBAG');
-function loadAllData(){
-var b=document.getElementById('gamesBody');
-Promise.all([fetch(urlFinished).then(function(r){if(!r.ok)throw new Error('Failed');return r.text()}),fetch(urlUnfinished).then(function(r){if(!r.ok)throw new Error('Failed');return r.text()})]).then(function(results){
-var fl=results[0].split('\\n').filter(function(l){return l.trim().length>0});
-var ul=results[1].split('\\n').filter(function(l){return l.trim().length>0});
-finishedData=fl.map(parseFinishedLine).filter(function(g){return g!==null});
-unfinishedData=ul.map(parseUnfinishedLine).filter(function(g){return g!==null});
-switchTab('finished');
-}).catch(function(e){console.error(e);b.innerHTML='<tr><td colspan="3" style="text-align:center;padding:48px;color:#f85149;">Failed to load data</td></tr>';});
-}
-function switchTab(tab){
-currentTab=tab;
-document.getElementById('btnFinished').classList.toggle('active',tab==='finished');
-document.getElementById('btnUnfinished').classList.toggle('active',tab==='unfinished');
-allGames=(tab==='finished'?finishedData:unfinishedData).slice();
-document.getElementById('thDate').innerHTML=(tab==='finished'?'Finished':'Last Played')+' <span class="arrow"></span>';
-currentSort='name-az';sortDirections={name:'name-az',rating:'rating-high',date:'date-new'};
-updateAllArrows();renderGames();
-document.getElementById('resultCount').textContent=allGames.length+' games';
-}
-function parseDate(str){
-if(!str)return null;
-var parts=str.split('/');
-if(parts.length===3){
-var day=parseInt(parts[0],10);
-var monthMap={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
-var month=monthMap[parts[1].toLowerCase().substring(0,3)];
-var year=parseInt(parts[2],10);
-if(!isNaN(day)&&month!==undefined&&!isNaN(year)){if(year<100)year+=2000;return new Date(year,month,day);}
-}
-return null;
-}
-function parseFinishedLine(line){
-line=line.trim();
-var dateMatch=line.match(/\\[([^\\]]+)\\]$/);
-var date=dateMatch?dateMatch[1]:'';
-if(date)line=line.substring(0,dateMatch.index).trim();
-var mainMatch=line.match(/^(.+?)\\s*\\((\\d+(?:\\.\\d+)?)\\/10\\)\\s*(.*)$/);
-if(!mainMatch)return null;
-var name=mainMatch[1].trim();
-var rating=parseFloat(mainMatch[2]);
-var extra=mainMatch[3].trim();
-var subtitle='';
-if(extra){var subMatch=extra.match(/^\\+?\\s*(.+?)\\s*\\((\\d+(?:\\.\\d+)?)\\/10\\)$/);if(subMatch)subtitle=subMatch[1]+' ('+subMatch[2]+'/10)';}
-return{name:name,rating:rating,date:date,subtitle:subtitle};
-}
-function parseUnfinishedLine(line){
-line=line.trim();
-var dateMatch=line.match(/\\[Last Played\\s+([^\\]]+)\\]$/);
-var date=dateMatch?dateMatch[1]:'';
-if(date)line=line.substring(0,dateMatch.index).trim();
-return{name:line,rating:null,date:date,subtitle:''};
-}
-function updateAllArrows(){
-['name','rating','date'].forEach(function(col){
-var th=document.getElementById('th'+col.charAt(0).toUpperCase()+col.slice(1));
-if(!th)return;
-var arrow=th.querySelector('.arrow');
-if(!arrow)return;
-th.classList.remove('sorted');arrow.textContent='';
-if(sortDirections[col]===currentSort){th.classList.add('sorted');if(currentSort.includes('za')||currentSort.includes('low')||currentSort.includes('old')){arrow.textContent='▲';}else{arrow.textContent='▼';}}
-});
-}
-function setSort(col){var current=sortDirections[col];var next=sortToggles[current];sortDirections[col]=next;currentSort=next;updateAllArrows();renderGames();}
-function renderGames(){
-var body=document.getElementById('gamesBody');
-var sorted=allGames.slice();
-switch(currentSort){
-case'name-az':sorted.sort(function(a,b){return a.name.localeCompare(b.name)});break;
-case'name-za':sorted.sort(function(a,b){return b.name.localeCompare(a.name)});break;
-case'rating-high':sorted.sort(function(a,b){return(b.rating||0)-(a.rating||0)});break;
-case'rating-low':sorted.sort(function(a,b){return(a.rating||0)-(b.rating||0)});break;
-case'date-new':sorted.sort(function(a,b){var dA=parseDate(a.date),dB=parseDate(b.date);if(!dA&&!dB)return 0;if(!dA)return 1;if(!dB)return-1;return dB-dA});break;
-case'date-old':sorted.sort(function(a,b){var dA=parseDate(a.date),dB=parseDate(b.date);if(!dA&&!dB)return 0;if(!dA)return 1;if(!dB)return-1;return dA-dB});break;
-}
-body.innerHTML=sorted.map(function(g){
-var ratingHtml=g.rating?g.rating+'/10':'<span class="text-na">—</span>';
-var dateHtml=g.date||'<span class="text-na">—</span>';
-var subHtml=g.subtitle?'<small>'+escapeHtml(g.subtitle)+'</small>':'';
-return'<tr><td class="game-name">'+escapeHtml(g.name)+subHtml+'</td><td class="game-rating">'+ratingHtml+'</td><td class="game-date">'+dateHtml+'</td></tr>';
-}).join('');
-}
-function escapeHtml(text){var div=document.createElement('div');div.textContent=text;return div.innerHTML;}
-document.getElementById('thName').addEventListener('click',function(){setSort('name')});
-document.getElementById('thRating').addEventListener('click',function(){setSort('rating')});
-document.getElementById('thDate').addEventListener('click',function(){setSort('date')});
-loadAllData();
-</script>
-</body>
-</html>`;
+  const htmlUrl = process.env.PEANUT_HTML_URL;
+  if (!htmlUrl) {
+    return res.status(500).json({ error: 'HTML source not configured' });
+  }
 
-  res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(html);
+  try {
+    const response = await fetch(htmlUrl);
+    if (!response.ok) throw new Error('Failed to fetch HTML');
+    const html = await response.text();
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).send(html);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to load page content' });
+  }
 }
