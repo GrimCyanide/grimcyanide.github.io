@@ -31,7 +31,7 @@
         .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.75em;padding:5px 10px;cursor:pointer;transition:all 0.15s}
         .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
         .nav-links{display:flex;justify-content:center;gap:6px;margin-bottom:28px}
-        .nav-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 24px;text-decoration:none;color:var(--muted);font-size:0.82em;font-weight:500;transition:border 0.2s,color 0.2s;width:200px;text-align:center}
+        .nav-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 24px;text-decoration:none;color:var(--muted);font-size:0.82em;font-weight:500;transition:border 0.2s,color 0.2s;width:200px;text-align:center;flex-shrink:0}
         .nav-link:hover{border-color:var(--accent);color:var(--text)}
         .nav-link.active{border-color:var(--accent);color:var(--accent)}
         .header{text-align:center;margin-bottom:28px}
@@ -75,7 +75,7 @@
         .footer a{color:var(--muted);text-decoration:none}
         .footer a:hover{color:var(--accent)}
         @media(max-width:860px){.container{padding:24px 6px}thead th{font-size:0.62em;padding:8px 4px;letter-spacing:0.2px}tbody td{font-size:0.72em;padding:10px 4px}}
-        @media(max-width:600px){.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.container{padding:12px 2px}thead th{font-size:0.55em;padding:6px 2px;letter-spacing:0}tbody td{font-size:0.65em;padding:8px 2px}}
+        @media(max-width:600px){.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.container{padding:12px 2px}thead th{font-size:0.55em;padding:6px 2px;letter-spacing:0}tbody td{font-size:0.65em;padding:8px 2px}.nav-link{width:140px;padding:8px 12px;font-size:0.75em}}
     </style>
 </head>
 <body>
@@ -100,7 +100,7 @@
         function loadGamesData(){var e=document.getElementById('gamesBody'),t=apiURL+'?t='+Date.now();fetch(t).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games,currentSort='recent-started',sortDirections={game:'az',rating:'rating-high',started:'recent-started',finished:'recent-finished'},updateAllArrows(),renderGames(),updateResultCount()):e.innerHTML='<tr><td colspan="5"><div class="no-results">No games found.</div></td></tr>'}).catch(function(t){console.error('Error:',t),e.innerHTML='<tr><td colspan="5"><div class="error-container">Failed to load data. '+t.message+'</div></td></tr>'})}
         function parseDate(e){if(!e)return null;var t=e.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(t)return new Date(t[3],t[2]-1,t[1]);var o=new Date(e);return isNaN(o.getTime())?null:o}
         function sortGames(e,t){var o=e.slice();switch(t){case'az':return o.sort(function(e,t){return e.game.localeCompare(t.game)});case'za':return o.sort(function(e,t){return t.game.localeCompare(e.game)});case'recent-started':return o.sort(function(e,t){var o=parseDate(e.dateStarted),n=parseDate(t.dateStarted);return!o&&!n?0:!o?1:!n?-1:n-o});case'oldest-started':return o.sort(function(e,t){var o=parseDate(e.dateStarted),n=parseDate(t.dateStarted);return!o&&!n?0:!o?-1:!n?1:o-n});case'recent-finished':return o.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return!o&&!n?0:!o?1:!n?-1:n-o});case'oldest-finished':return o.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return!o&&!n?0:!o?-1:!n?1:o-n});case'rating-high':return o.sort(function(e,t){return(t.rating||0)-(e.rating||0)});case'rating-low':return o.sort(function(e,t){return(e.rating||0)-(t.rating||0)});default:return o}}
-        function filterGames(e,t,o){var n=e;return'tall'!==t&&(n=n.filter(function(e){return e.isFinished===t})),o.trim()&&(o=o.toLowerCase().trim(),n=n.filter(function(e){return e.game.toLowerCase().indexOf(o)>-1})),n}
+        function filterGames(e,t,o){var n=e;return'all'!==t&&(n=n.filter(function(e){return e.isFinished===t})),o.trim()&&(o=o.toLowerCase().trim(),n=n.filter(function(e){return e.game.toLowerCase().indexOf(o)>-1})),n}
         function hasValue(e){return null!==e&&void 0!==e&&e.toString().trim().length>0}
         function getPartCount(e,t){if(hasValue(e)){var o=e.toString().trim(),n=parseInt(o,10);if(!isNaN(n))return n;var a=o.match(/(\d+)\s*part/);if(a)return parseInt(a[1],10)}return t||0}
         function formatParts(e,t){if(hasValue(e)){var o=e.toString().trim();if(o.toLowerCase().indexOf('so far')>-1){o=o.replace(/so far/i,'').trim();return o.toLowerCase().indexOf('part')===-1&&(o+=o?' parts so far':'parts so far'),o}return o.toLowerCase().indexOf('part')===-1&&(o+=' part'+(t&&1!==t?'s':'')),o}return''}
