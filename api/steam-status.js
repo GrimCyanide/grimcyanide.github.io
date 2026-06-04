@@ -22,9 +22,13 @@ export default async function handler(req, res) {
     if (data.response && data.response.players && data.response.players.length > 0) {
       const player = data.response.players[0];
       const online = player.personastate !== 0;
-      res.status(200).json({ online: online, personastate: player.personastate });
+      res.status(200).json({ 
+        online: online, 
+        personastate: player.personastate,
+        game: player.gameextrainfo || null
+      });
     } else {
-      res.status(200).json({ online: false });
+      res.status(200).json({ online: false, game: null });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
