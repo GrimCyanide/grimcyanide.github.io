@@ -50,56 +50,22 @@
             --green-bg: #4ade80;
         }
         * { box-sizing: border-box; }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font);
-            margin: 0; padding: 0;
-            min-height: 100vh;
-            transition: background 0.3s, color 0.3s;
-            line-height: 1.4;
-            font-size: 15px;
-        }
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 40px; }
-        .top-row { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-        .header { text-align: center; margin-bottom: 28px; padding-top: 8px; }
-        .header h1 { font-size: 2.6em; margin: 0; font-weight: 700; letter-spacing: -1px; color: var(--text); }
+        body { background: var(--bg); color: var(--text); font-family: var(--font); margin: 0; padding: 0; min-height: 100vh; transition: background 0.3s, color 0.3s; line-height: 1.4; font-size: 15px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 40px; }
+        .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+        .back-link { color: var(--muted); text-decoration: none; font-size: 0.95em; font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; transition: color 0.2s; }
+        .back-link:hover { color: var(--accent); }
+        .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); font-family: var(--font); font-size: 0.75em; padding: 5px 10px; cursor: pointer; transition: all 0.15s; }
+        .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
         .nav-links { display: flex; justify-content: center; gap: 6px; margin-bottom: 28px; }
-        .nav-link {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 8px 24px;
-            text-decoration: none;
-            color: var(--muted);
-            font-size: 0.82em;
-            font-weight: 500;
-            transition: border 0.2s, color 0.2s;
-            flex: 1;
-            max-width: 200px;
-            text-align: center;
-        }
+        .nav-link { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 24px; text-decoration: none; color: var(--muted); font-size: 0.82em; font-weight: 500; transition: border 0.2s, color 0.2s; flex: 1; max-width: 200px; text-align: center; }
         .nav-link:hover { border-color: var(--accent); color: var(--text); }
         .nav-link.active { border-color: var(--accent); color: var(--accent); }
+        .header { text-align: center; margin-bottom: 28px; }
+        .header h1 { font-size: 2.6em; margin: 0; font-weight: 700; letter-spacing: -1px; color: var(--text); }
         .social-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 32px; }
         @media (max-width: 750px) { .social-links { grid-template-columns: repeat(2, 1fr); } }
-        .social-link {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px 10px;
-            text-decoration: none;
-            color: var(--text);
-            font-size: 0.88em;
-            font-weight: 500;
-            transition: border 0.2s, background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-align: center;
-            min-height: 48px;
-        }
+        .social-link { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 10px; text-decoration: none; color: var(--text); font-size: 0.88em; font-weight: 500; transition: border 0.2s, background 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; min-height: 48px; }
         .social-link:hover { border-color: var(--accent); background: var(--accent-soft); }
         .social-link .platform { font-weight: 600; color: var(--accent); white-space: nowrap; }
         .content { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: stretch; }
@@ -123,8 +89,6 @@
         .vods-list::-webkit-scrollbar-track { background: transparent; }
         .vods-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         .footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 0.8em; padding-top: 20px; border-top: 1px solid var(--border); }
-        .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); font-family: var(--font); font-size: 0.75em; padding: 5px 10px; cursor: pointer; transition: all 0.15s; }
-        .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
         .game-popup, .setup-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: flex-start; padding-top: 40px; }
         .game-popup.active, .setup-popup.active { display: flex; }
         .game-popup-inner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; }
@@ -149,17 +113,16 @@
 </head>
 <body>
     <div class="container">
-        <div class="top-row">
+        <div class="top-bar">
+            <span></span>
             <button class="theme-toggle" id="themeToggle">light/dark</button>
-        </div>
-        <div class="header">
-            <h1>GRIM_CYANIDE</h1>
         </div>
         <div class="nav-links">
             <a href="/" class="nav-link active">Home</a>
             <a href="/vods" class="nav-link">VODs &amp; Ratings</a>
             <a href="/steam" class="nav-link">My Steam Games</a>
         </div>
+        <div class="header"><h1>GRIM_CYANIDE</h1></div>
         <div class="social-links">
             <a href="https://www.twitch.tv/grim_cyanide" class="social-link" target="_blank"><span class="platform">Twitch</span></a>
             <a href="https://www.youtube.com/@Grim_Cyanide" class="social-link" target="_blank"><span class="platform">YouTube</span></a>
@@ -171,26 +134,15 @@
             <a href="https://open.spotify.com/playlist/47Mz3t3vwuAT37djS0Eozy" class="social-link" target="_blank"><span class="platform">My Spotify Playlist</span></a>
         </div>
         <div class="content">
-            <div class="twitch-col">
-                <div class="twitch-embed" id="twitchEmbed">
-                    <iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe>
-                </div>
-            </div>
+            <div class="twitch-col"><div class="twitch-embed" id="twitchEmbed"><iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe></div></div>
             <div class="vods-panel" id="vodsPanel">
-                <div class="vods-panel-header">
-                    <span>10 Most Recently Finished Games</span>
-                    <a href="/vods">View full list →</a>
-                </div>
-                <div class="vods-list" id="vodsList">
-                    <div class="vod-row"><span class="vod-name">loading...</span><span class="vod-rating"></span><span class="vod-status"></span></div>
-                </div>
+                <div class="vods-panel-header"><span>10 Most Recently Finished Games</span><a href="/vods">View full list →</a></div>
+                <div class="vods-list" id="vodsList"><div class="vod-row"><span class="vod-name">loading...</span><span class="vod-rating"></span><span class="vod-status"></span></div></div>
             </div>
         </div>
         <div class="footer">© 2026 grimcyanide.com</div>
     </div>
-    <div class="game-popup" id="gamePopup">
-        <div class="game-popup-inner" id="gamePopupInner"></div>
-    </div>
+    <div class="game-popup" id="gamePopup"><div class="game-popup-inner" id="gamePopupInner"></div></div>
     <div class="setup-popup" id="setupPopup">
         <div class="setup-popup-inner">
             <h3>my specs</h3>
@@ -217,152 +169,19 @@
         </div>
     </div>
     <script>
-        var allVODs = [];
-        var panelHeightSet = false;
-        function loadVODsData() {
-            var list = document.getElementById('vodsList');
-            fetch('https://grimcyanide-github-io.vercel.app/api/vods-sheet')
-                .then(function(r) { if (!r.ok) throw new Error('API ' + r.status); return r.json(); })
-                .then(function(data) {
-                    if (data.error) throw new Error(data.error);
-                    if (!data.games || !data.games.length) {
-                        list.innerHTML = '<div class="vod-row"><span class="vod-name">nothing here yet</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
-                        return;
-                    }
-                    allVODs = data.games;
-                    matchPanelHeight();
-                    renderVODs();
-                })
-                .catch(function(e) {
-                    console.error(e);
-                    list.innerHTML = '<div class="vod-row"><span class="vod-name">couldn\'t load</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
-                });
-        }
-        function matchPanelHeight() {
-            var twitch = document.getElementById('twitchEmbed');
-            var panel = document.getElementById('vodsPanel');
-            if (!twitch || !panel) return;
-            var iframe = twitch.querySelector('iframe');
-            var setHeight = function() {
-                var h = twitch.offsetHeight;
-                if (h > 0) {
-                    panel.style.maxHeight = h + 'px';
-                    panelHeightSet = true;
-                }
-            };
-            setHeight();
-            if (!panelHeightSet && iframe) {
-                iframe.addEventListener('load', function() {
-                    setTimeout(setHeight, 200);
-                });
-            }
-        }
-        window.addEventListener('resize', matchPanelHeight);
-        function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-        function parseDate(dateStr) {
-            if (!dateStr) return null;
-            var dmyMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-            if (dmyMatch) return new Date(dmyMatch[3], dmyMatch[2] - 1, dmyMatch[1]);
-            var parsed = new Date(dateStr);
-            if (!isNaN(parsed.getTime())) return parsed;
-            return null;
-        }
-        function cleanPartsText(pd, p) {
-            if (pd && pd.trim()) {
-                var t = pd.trim();
-                var lower = t.toLowerCase();
-                if (lower.indexOf('so far') > -1) {
-                    t = t.replace(/so far/i, '').trim();
-                    var num = parseInt(t, 10);
-                    if (!isNaN(num)) return num + ' part' + (num !== 1 ? 's' : '') + ' so far';
-                    return t + ' so far';
-                }
-                if (lower === 'full playthrough' || lower === 'full') return 'full playthrough';
-                if (lower.indexOf('part') === -1) {
-                    var num2 = parseInt(t, 10);
-                    if (!isNaN(num2)) return num2 + ' part' + (num2 !== 1 ? 's' : '');
-                    return t;
-                }
-                return t;
-            }
-            if (p && p > 0) return p + ' part' + (p !== 1 ? 's' : '');
-            return '';
-        }
-        function getPartCount(pd, p) {
-            if (pd && pd.trim()) {
-                var t = pd.trim();
-                var num = parseInt(t, 10);
-                if (!isNaN(num)) return num;
-                var match = t.match(/(\d+)\s*part/);
-                if (match) return parseInt(match[1], 10);
-            }
-            return p || 0;
-        }
-        function renderVODs() {
-            var list = document.getElementById('vodsList');
-            var finished = allVODs.filter(function(g) { return g.isFinished === 'Finished'; });
-            finished.sort(function(a, b) {
-                var dA = parseDate(a.dateFinished);
-                var dB = parseDate(b.dateFinished);
-                if (!dA && !dB) return 0;
-                if (!dA) return 1;
-                if (!dB) return -1;
-                return dB - dA;
-            });
-            var recent = finished.slice(0, 10);
-            if (!recent.length) {
-                list.innerHTML = '<div class="vod-row"><span class="vod-name">no finished games yet</span><span class="vod-rating"></span><span class="vod-status"></span></div>';
-                return;
-            }
-            list.innerHTML = recent.map(function(g, i) {
-                var rt = g.rating && g.rating > 0 ? g.rating + '/10' : '<span class="text-na">N/A</span>';
-                return '<div class="vod-row" onclick="showGamePopup(' + i + ')">' +
-                    '<span class="vod-name">' + esc(g.game) + '</span>' +
-                    '<span class="vod-rating">' + rt + '</span>' +
-                    '<span class="vod-status status-finished">finished</span>' +
-                '</div>';
-            }).join('');
-            window._recentGames = recent;
-        }
-        function showGamePopup(index) {
-            var g = window._recentGames[index];
-            if (!g) return;
-            var popup = document.getElementById('gamePopup');
-            var inner = document.getElementById('gamePopupInner');
-            var partsText = cleanPartsText(g.partsDisplay, g.parts);
-            var partCount = getPartCount(g.partsDisplay, g.parts);
-            var ratingText = g.rating && g.rating > 0 ? g.rating + '/10' : 'N/A';
-            var startedText = g.dateStarted || 'TBD';
-            var finishedText = g.dateFinished || 'TBD';
-            var partsDisplay = partsText || '—';
-            var linkHtml = '';
-            if (g.linkUrl) {
-                var lowerParts = partsText.toLowerCase();
-                var linkLabel;
-                if (lowerParts === 'full playthrough' || lowerParts === 'full') linkLabel = 'click here to watch the full playthrough';
-                else if (partCount > 1) linkLabel = 'click here to watch the playlist';
-                else linkLabel = 'click here to watch';
-                linkHtml = '<a href="' + esc(g.linkUrl) + '" target="_blank" rel="noopener">' + linkLabel + '</a>';
-            }
-            inner.innerHTML = '<h3>' + esc(g.game) + '</h3>' +
-                '<p><strong>rating</strong> ' + ratingText + '</p>' +
-                '<p><strong>started</strong> ' + startedText + '</p>' +
-                '<p><strong>finished</strong> ' + finishedText + '</p>' +
-                '<p><strong>parts</strong> ' + partsDisplay + '</p>' +
-                (linkHtml ? '<p>' + linkHtml + '</p>' : '') +
-                '<p><a href="/vods">view all games →</a></p>' +
-                '<button class="popup-close" onclick="closePopup()">close</button>';
-            popup.classList.add('active');
-        }
-        function closePopup() { document.getElementById('gamePopup').classList.remove('active'); }
-        document.getElementById('gamePopup').addEventListener('click', function(e) { if (e.target === this) closePopup(); });
-        document.getElementById('setupPopup').addEventListener('click', function(e) { if (e.target === this) document.getElementById('setupPopup').classList.remove('active'); });
-        var themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('light-mode');
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-        });
-        loadVODsData();
+        var allVODs=[],panelHeightSet=!1;
+        function loadVODsData(){var e=document.getElementById("vodsList");fetch("https://grimcyanide-github-io.vercel.app/api/vods-sheet").then(function(e){if(!e.ok)throw new Error("API "+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allVODs=t.games,matchPanelHeight(),renderVODs()):e.innerHTML='<div class="vod-row"><span class="vod-name">nothing here yet</span><span class="vod-rating"></span><span class="vod-status"></span></div>'}).catch(function(t){console.error(t),e.innerHTML='<div class="vod-row"><span class="vod-name">couldn\'t load</span><span class="vod-rating"></span><span class="vod-status"></span></div>'})}
+        function matchPanelHeight(){var e=document.getElementById("twitchEmbed"),t=document.getElementById("vodsPanel");if(e&&t){var o=e.querySelector("iframe"),n=function(){var o=e.offsetHeight;o>0&&(t.style.maxHeight=o+"px",panelHeightSet=!0)};n(),panelHeightSet||!o||o.addEventListener("load",function(){setTimeout(n,200)})}}
+        window.addEventListener("resize",matchPanelHeight);
+        function esc(e){var t=document.createElement("div");return t.textContent=e,t.innerHTML}
+        function parseDate(e){if(!e)return null;var t=e.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(t)return new Date(t[3],t[2]-1,t[1]);var o=new Date(e);return isNaN(o.getTime())?null:o}
+        function cleanPartsText(e,t){if(e&&e.trim()){var o=e.trim().toLowerCase();if(o.indexOf("so far")>-1){e=e.replace(/so far/i,"").trim();var n=parseInt(e,10);return isNaN(n)?e+" so far":n+" part"+(1!==n?"s":"")+" so far"}if("full playthrough"===o||"full"===o)return"full playthrough";if(o.indexOf("part")===-1){var a=parseInt(e,10);return isNaN(a)?e:a+" part"+(1!==a?"s":"")}return e}return t&&t>0?t+" part"+(1!==t?"s":""):""}
+        function getPartCount(e,t){if(e&&e.trim()){var o=e.trim(),n=parseInt(o,10);if(!isNaN(n))return n;var a=o.match(/(\d+)\s*part/);if(a)return parseInt(a[1],10)}return t||0}
+        function renderVODs(){var e=document.getElementById("vodsList"),t=allVODs.filter(function(e){return"Finished"===e.isFinished});t.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return!o&&!n?0:!o?1:!n?-1:n-o});var o=t.slice(0,10);o.length?(e.innerHTML=o.map(function(e,t){var o=e.rating&&e.rating>0?e.rating+"/10":'<span class="text-na">N/A</span>';return'<div class="vod-row" onclick="showGamePopup('+t+')"><span class="vod-name">'+esc(e.game)+'</span><span class="vod-rating">'+o+'</span><span class="vod-status status-finished">finished</span></div>'}).join(""),window._recentGames=o):e.innerHTML='<div class="vod-row"><span class="vod-name">no finished games yet</span><span class="vod-rating"></span><span class="vod-status"></span></div>'}
+        function showGamePopup(e){var t=window._recentGames[e];if(t){var o=document.getElementById("gamePopup"),n=document.getElementById("gamePopupInner"),a=cleanPartsText(t.partsDisplay,t.parts),i=getPartCount(t.partsDisplay,t.parts),s=t.rating&&t.rating>0?t.rating+"/10":"N/A",l=t.dateStarted||"TBD",r=t.dateFinished||"TBD",d=a||"—",c="";if(t.linkUrl){var p=a.toLowerCase(),u="full playthrough"===p||"full"===p?"click here to watch the full playthrough":i>1?"click here to watch the playlist":"click here to watch";c='<a href="'+esc(t.linkUrl)+'" target="_blank" rel="noopener">'+u+"</a>"}n.innerHTML="<h3>"+esc(t.game)+"</h3><p><strong>rating</strong> "+s+"</p><p><strong>started</strong> "+l+"</p><p><strong>finished</strong> "+r+"</p><p><strong>parts</strong> "+d+"</p>"+(c?"<p>"+c+"</p>":"")+'<p><a href="/vods">view all games →</a></p><button class="popup-close" onclick="closePopup()">close</button>',o.classList.add("active")}}
+        function closePopup(){document.getElementById("gamePopup").classList.remove("active")}
+        document.getElementById("gamePopup").addEventListener("click",function(e){e.target===this&&closePopup()}),document.getElementById("setupPopup").addEventListener("click",function(e){e.target===this&&document.getElementById("setupPopup").classList.remove("active")});
+        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")}),loadVODsData();
     </script>
 </body>
 </html>
