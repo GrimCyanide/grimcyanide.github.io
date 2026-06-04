@@ -31,7 +31,7 @@ body.light-mode {
     --blue: #0969da;
     --badge-bg: rgba(209, 213, 219, 0.6);
 }
-html { overflow-y: scroll; scrollbar-gutter: stable; }
+html{overflow-y:scroll;scrollbar-gutter:stable;}
 * { box-sizing: border-box; }
 body {
     background: var(--bg);
@@ -54,9 +54,9 @@ body {
 .nav-links { display: flex; justify-content: center; gap: 6px; margin-bottom: 28px; }
 .nav-link {
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 8px 24px; text-decoration: none; color: var(--muted);
+    padding: 8px 18px; text-decoration: none; color: var(--muted);
     font-size: 0.82em; font-weight: 500; transition: border 0.2s, color 0.2s;
-    width: 200px; text-align: center; flex-shrink: 0;
+    width: 180px; text-align: center; flex-shrink: 0;
 }
 .nav-link:hover { border-color: var(--accent); color: var(--text); }
 .nav-link.active { border-color: var(--accent); color: var(--accent); }
@@ -133,7 +133,7 @@ tbody tr:last-child td { border-bottom: none; }
 @media (max-width: 600px) {
     .container { padding: 16px 6px; }
     .header h1 { font-size: 1.6em; }
-    .nav-link { width: 120px; padding: 8px 10px; font-size: 0.72em; }
+    .nav-link { width: auto; padding: 8px 10px; font-size: 0.7em; }
     thead th { font-size: 0.55em; padding: 6px 3px; letter-spacing: 0; }
     tbody td { font-size: 0.65em; padding: 8px 3px; }
     .popup-inner { max-width: 95%; padding: 16px; }
