@@ -71,7 +71,7 @@
         .header { text-align: center; margin-bottom: 28px; }
         .header h1 { font-size: 2.2em; margin: 0 0 6px 0; font-weight: 700; letter-spacing: -0.5px; }
         .header .subtitle { color: var(--muted); font-size: 1em; margin: 0; }
-        .steam-profile { text-align: center; margin-bottom: 24px; font-family: var(--mono); font-size: 0.88em; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .steam-profile { text-align: center; margin-bottom: 24px; font-family: var(--mono); font-size: 0.88em; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .steam-status { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .steam-status.online { background: var(--green); }
         .steam-status.offline { background: var(--muted); }
@@ -243,7 +243,11 @@
                     var text = document.getElementById('steamStatusText');
                     if (data.online) {
                         dot.className = 'steam-status online';
-                        text.textContent = 'online now';
+                        if (data.game) {
+                            text.innerHTML = 'online now — Currently playing <strong>' + escapeHtml(data.game) + '</strong>';
+                        } else {
+                            text.textContent = 'online now';
+                        }
                     } else {
                         dot.className = 'steam-status offline';
                         text.textContent = 'offline';
