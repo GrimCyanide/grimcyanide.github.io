@@ -31,6 +31,7 @@ body.light-mode {
     --blue: #0969da;
     --badge-bg: rgba(209, 213, 219, 0.6);
 }
+html { overflow-y: scroll; }
 * { box-sizing: border-box; }
 body {
     background: var(--bg);
