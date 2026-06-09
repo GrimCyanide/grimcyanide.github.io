@@ -2,13 +2,13 @@
     navigation: auto;
 }
 ::view-transition-group(root) {
-    animation-duration: 1.5s;
+    animation-duration: 0.5s;
 }
 ::view-transition-old(root) {
-    animation: fade-out 1.5s ease-in-out;
+    animation: fade-out 0.5s ease-in-out;
 }
 ::view-transition-new(root) {
-    animation: fade-in 1.5s ease-in-out;
+    animation: fade-in 0.5s ease-in-out;
 }
 @keyframes fade-out {
     to { opacity: 0; }
