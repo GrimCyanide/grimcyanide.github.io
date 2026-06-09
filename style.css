@@ -11,6 +11,7 @@
     --green: #4ade80;
     --green-bg: rgba(74, 222, 128, 0.15);
     --blue: #58a6ff;
+    --red: #f87171;
     --badge-bg: rgba(48, 54, 61, 0.8);
     --radius: 6px;
     --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -29,6 +30,7 @@ body.light-mode {
     --green: #15803d;
     --green-bg: #4ade80;
     --blue: #0969da;
+    --red: #dc2626;
     --badge-bg: rgba(209, 213, 219, 0.6);
 }
 html{overflow-y:scroll;scrollbar-gutter:stable;}
