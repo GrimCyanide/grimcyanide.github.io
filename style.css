@@ -7,12 +7,10 @@
     --muted: #6b7280;
     --accent: #e85d75;
     --accent-soft: rgba(232, 93, 117, 0.15);
-    --amber: #f59e0b;
+    --amber: #d2991d;
     --green: #4ade80;
     --green-bg: rgba(74, 222, 128, 0.15);
     --blue: #58a6ff;
-    --red: #f87171;
-    --purple: #a78bfa;
     --badge-bg: rgba(48, 54, 61, 0.8);
     --radius: 6px;
     --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -27,12 +25,10 @@ body.light-mode {
     --muted: #4b5563;
     --accent: #b91c1c;
     --accent-soft: rgba(185, 28, 28, 0.1);
-    --amber: #d97706;
+    --amber: #92400e;
     --green: #15803d;
     --green-bg: #4ade80;
     --blue: #0969da;
-    --red: #dc2626;
-    --purple: #7c3aed;
     --badge-bg: rgba(209, 213, 219, 0.6);
 }
 html{overflow-y:scroll;scrollbar-gutter:stable;}
@@ -75,7 +71,7 @@ body {
 .footer a:hover { color: var(--accent); }
 .text-na { color: var(--muted); font-style: italic; }
 .text-coming {
-    color: var(--purple); font-style: italic; font-size: 0.8em;
+    color: var(--amber); font-style: italic; font-size: 0.8em;
     font-weight: 600; letter-spacing: 0.5px;
 }
 .loading-container { text-align: center; padding: 48px 20px; }
