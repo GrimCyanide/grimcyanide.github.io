@@ -2,39 +2,20 @@
     navigation: auto;
 }
 ::view-transition-group(root) {
-    animation-duration: 0.3s;
+    animation-duration: 1.5s;
 }
-::view-transition-old(home) {
-    animation: slide-out-left 0.3s ease-in;
+::view-transition-old(root) {
+    animation: fade-out 1.5s ease-in-out;
 }
-::view-transition-new(vods) {
-    animation: slide-in-right 0.3s ease-out;
+::view-transition-new(root) {
+    animation: fade-in 1.5s ease-in-out;
 }
-::view-transition-old(vods) {
-    animation: slide-out-left 0.3s ease-in;
+@keyframes fade-out {
+    to { opacity: 0; }
 }
-::view-transition-new(steam) {
-    animation: slide-in-right 0.3s ease-out;
-}
-::view-transition-old(steam) {
-    animation: slide-out-right 0.3s ease-in;
-}
-::view-transition-new(home) {
-    animation: slide-in-left 0.3s ease-out;
-}
-@keyframes slide-out-left {
-    to { transform: translateX(-100vw); }
-}
-@keyframes slide-in-right {
-    from { transform: translateX(100vw); }
-    to { transform: translateX(0); }
-}
-@keyframes slide-out-right {
-    to { transform: translateX(100vw); }
-}
-@keyframes slide-in-left {
-    from { transform: translateX(-100vw); }
-    to { transform: translateX(0); }
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 :root {
     --bg: #0b0e11;
