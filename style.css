@@ -1,3 +1,41 @@
+@view-transition {
+    navigation: auto;
+}
+::view-transition-group(root) {
+    animation-duration: 0.25s;
+}
+::view-transition-old(home) {
+    animation: slide-out-left 0.25s ease-in;
+}
+::view-transition-new(vods) {
+    animation: slide-in-right 0.25s ease-out;
+}
+::view-transition-old(vods) {
+    animation: slide-out-left 0.25s ease-in;
+}
+::view-transition-new(steam) {
+    animation: slide-in-right 0.25s ease-out;
+}
+::view-transition-old(steam) {
+    animation: slide-out-right 0.25s ease-in;
+}
+::view-transition-new(home) {
+    animation: slide-in-left 0.25s ease-out;
+}
+@keyframes slide-out-left {
+    to { transform: translateX(-100vw); }
+}
+@keyframes slide-in-right {
+    from { transform: translateX(100vw); }
+    to { transform: translateX(0); }
+}
+@keyframes slide-out-right {
+    to { transform: translateX(100vw); }
+}
+@keyframes slide-in-left {
+    from { transform: translateX(-100vw); }
+    to { transform: translateX(0); }
+}
 :root {
     --bg: #0b0e11;
     --surface: #14181d;
