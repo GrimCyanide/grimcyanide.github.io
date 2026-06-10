@@ -10,6 +10,10 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   try {
     let url;
     if (type === 'owned') {
@@ -22,9 +26,29 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.response && data.response.games) {
-      res.status(200).json({ games: data.response.games });
+      const games = data.response.games;
+      const appIds = games.map(g => g.appid).join(',');
+      let prices = {};
+      
+      if (appIds && type === 'owned') {
+        try {
+          const priceResponse = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appIds}&filters=price_overview`);
+          const priceData = await priceResponse.json();
+          for (const [id, info] of Object.entries(priceData)) {
+            if (info.success && info.data && info.data.price_overview) {
+              prices[id] = {
+                initial: (info.data.price_overview.initial / 100).toFixed(2),
+                final: (info.data.price_overview.final / 100).toFixed(2),
+                discount: info.data.price_overview.discount_percent
+              };
+            }
+          }
+        } catch(e) {}
+      }
+
+      res.status(200).json({ games, prices });
     } else {
-      res.status(200).json({ games: [] });
+      res.status(200).json({ games: [], prices: {} });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
