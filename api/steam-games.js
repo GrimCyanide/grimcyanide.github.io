@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { steamid, type } = req.query;
+  let { steamid, type } = req.query;
   const STEAM_API_KEY = process.env.STEAM_API_KEY;
 
   if (!steamid) {
@@ -15,6 +15,17 @@ export default async function handler(req, res) {
   }
 
   try {
+    if (!/^\d+$/.test(steamid)) {
+      const resolveUrl = `https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=${STEAM_API_KEY}&vanityurl=${steamid}`;
+      const resolveResponse = await fetch(resolveUrl);
+      const resolveData = await resolveResponse.json();
+      if (resolveData.response && resolveData.response.success === 1) {
+        steamid = resolveData.response.steamid;
+      } else {
+        return res.status(400).json({ error: 'Could not resolve Steam ID from that URL' });
+      }
+    }
+
     let url;
     if (type === 'owned') {
       url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&include_appinfo=true&include_played_free_games=true`;
@@ -46,9 +57,9 @@ export default async function handler(req, res) {
         } catch(e) {}
       }
 
-      res.status(200).json({ games, prices });
+      res.status(200).json({ games, prices, resolvedId: steamid });
     } else {
-      res.status(200).json({ games: [], prices: {} });
+      res.status(200).json({ games: [], prices: {}, resolvedId: steamid });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
