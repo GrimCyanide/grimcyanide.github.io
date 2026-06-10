@@ -26,10 +26,9 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.response && data.response.games) {
-      const games = data.response.games;
-      res.status(200).json({ games, prices: {} });
+      res.status(200).json({ games: data.response.games });
     } else {
-      res.status(200).json({ games: [], prices: {} });
+      res.status(200).json({ games: [] });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
