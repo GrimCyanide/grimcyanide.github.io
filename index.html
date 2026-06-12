@@ -45,9 +45,12 @@
         .status-dot.live{background:#f87171}
         .status-dot.spotify{background:#1db954}
         .status-bar span a{display:inline-block;max-width:65ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
-        .container{max-width:1000px;margin:0 auto;padding:24px 24px 40px}
-        .twitch-wrap{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;width:100%;margin-bottom:24px}
-        .twitch-wrap iframe{display:block;width:100%;height:100%;border:none;position:absolute;top:0;left:0}
+        .container{max-width:1200px;margin:0 auto;padding:24px 24px 40px}
+        .twitch-row{display:flex;gap:12px;margin-bottom:24px;min-height:0}
+        .twitch-stream{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;flex:3;min-width:0}
+        .twitch-stream iframe{display:block;width:100%;height:100%;border:none;position:absolute;top:0;left:0}
+        .twitch-chat{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#0b0e11;flex:1;min-width:200px}
+        .twitch-chat iframe{display:block;width:100%;height:100%;border:none}
         .social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
         .social-btn{background:var(--surface);border:1px solid var(--border);padding:8px 14px;text-decoration:none;color:var(--text);font-size:0.82em;font-weight:500;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;border-left:2px solid var(--accent)}
         .social-btn:hover{background:var(--surface-alt);border-color:var(--accent);padding-left:18px}
@@ -67,7 +70,7 @@
         .setup-item:nth-child(even){background:var(--surface-alt)}
         .setup-item strong{color:var(--accent);font-weight:700;white-space:nowrap;min-width:120px}
         .setup-item span{color:var(--muted);font-family:var(--mono);font-size:0.9em;font-weight:600}
-        @media(max-width:600px){.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:16px 8px 32px}.social-btn{padding:7px 12px;font-size:0.78em}}
+        @media(max-width:800px){.twitch-row{flex-direction:column}.twitch-chat{display:none}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:16px 8px 32px}.social-btn{padding:7px 12px;font-size:0.78em}}
     </style>
 </head>
 <body data-view-transition="home">
@@ -84,7 +87,10 @@
         <span class="status-dot spotify" id="spotifyDot"></span><span id="spotifyStatus">loading status...</span>
     </div>
     <div class="container">
-        <div class="twitch-wrap"><iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe></div>
+        <div class="twitch-row">
+            <div class="twitch-stream"><iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe></div>
+            <div class="twitch-chat"><iframe src="https://www.twitch.tv/embed/grim_cyanide/chat?parent=grimcyanide.com"></iframe></div>
+        </div>
         <div class="social-row">
             <a href="https://www.twitch.tv/grim_cyanide" class="social-btn" target="_blank"><span class="icon">Twitch</span></a>
             <a href="https://www.youtube.com/@Grim_Cyanide" class="social-btn" target="_blank"><span class="icon">YouTube</span></a>
@@ -125,7 +131,7 @@
     <script>
         document.getElementById("setupPopup").addEventListener("click",function(e){e.target===this&&document.getElementById("setupPopup").classList.remove("active")});
         fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid=76561198066010654').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='steam: currently playing '+e.game:o.textContent='steam: online, not playing anything'):(t.className='status-dot offline',o.textContent='steam: offline')}).catch(function(){document.getElementById('steamStatus').textContent='steam: offline'});
-        fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');e.isLive?(t.className='status-dot live',o.textContent='twitch: live now'):(t.className='status-dot offline',o.textContent='twitch: offline')}).catch(function(){document.getElementById('twitchStatus').textContent='twitch: offline'});
+        fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');if(e.isLive){t.className='status-dot live';o.textContent='twitch: live now'}else{t.className='status-dot offline';if(e.lastStreamDate){var n=new Date(e.lastStreamDate);var a=Math.floor((Date.now()-n.getTime())/86400000);var i=a>0?a+' days ago':a===0?'today':'unknown';o.textContent='twitch: last live '+i}else{o.textContent='twitch: offline'}}}).catch(function(){document.getElementById('twitchStatus').textContent='twitch: offline'});
         fetch('https://grimcyanide-github-io.vercel.app/api/lastfm-now-playing').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('spotifyDot'),o=document.getElementById('spotifyStatus');if(e.playing){var n='https://open.spotify.com/search/'+encodeURIComponent(e.track+' '+e.artist);t.className='status-dot spotify';o.innerHTML='currently listening to <a href="'+n+'" target="_blank" style="color:var(--green);text-decoration:none">'+e.track+' by '+e.artist+'</a>'}else{t.className='status-dot offline';o.textContent='currently listening to: nothing'}}).catch(function(){document.getElementById('spotifyStatus').textContent='currently listening to: offline'});
         var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
     </script>
