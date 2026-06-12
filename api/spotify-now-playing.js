@@ -11,13 +11,17 @@ export default async function handler(req, res) {
   }
 
   try {
+    const params = new URLSearchParams();
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', refreshToken);
+
     const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
+        'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64')
       },
-      body: 'grant_type=refresh_token&refresh_token=' + refreshToken
+      body: params.toString()
     });
     const tokenText = await tokenRes.text();
     let tokenData;
