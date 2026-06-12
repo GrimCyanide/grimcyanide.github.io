@@ -93,31 +93,31 @@
         <div class="setup-popup-inner">
             <h3>my specs</h3>
             <div class="setup-grid">
-                <div class="setup-item"><strong>CPU</strong> <span>Ryzen 7 9800X3D — £530</span></div>
-                <div class="setup-item"><strong>Cooler</strong> <span>Corsair iCUE H100i ELITE LCD XT — £100</span></div>
-                <div class="setup-item"><strong>GPU</strong> <span>Gigabyte RTX 5080 Gaming OC — £1200</span></div>
-                <div class="setup-item"><strong>RAM</strong> <span>Corsair Vengeance 32GB DDR5-6000 — £121</span></div>
-                <div class="setup-item"><strong>Motherboard</strong> <span>Gigabyte X870E AORUS ELITE WIFI7 — £300</span></div>
-                <div class="setup-item"><strong>PSU</strong> <span>Corsair RM1000x 1000W — £150</span></div>
-                <div class="setup-item"><strong>Case</strong> <span>Corsair 3000D AIRFLOW — £80</span></div>
-                <div class="setup-item"><strong>Main Monitor</strong> <span>Gigabyte MO27Q28G 1440p 280Hz — £500</span></div>
-                <div class="setup-item"><strong>Monitor</strong> <span>Gigabyte M27Q 1440p 170Hz — £250</span></div>
-                <div class="setup-item"><strong>Monitor</strong> <span>iiyama GB2570HSU 1080p 165Hz — £130</span></div>
-                <div class="setup-item"><strong>SSD Storage</strong> <span>6TB Total (1x 4TB NVMe, 2x 1TB NVMe) — £380</span></div>
-                <div class="setup-item"><strong>HDD Storage</strong> <span>10TB Total (1x 8TB Internal, 1x 2TB External) — £220</span></div>
-                <div class="setup-item"><strong>Keyboard</strong> <span>Logitech G213 Prodigy — £70</span></div>
-                <div class="setup-item"><strong>Mouse</strong> <span>Corsair Scimitar RGB Elite — £74</span></div>
-                <div class="setup-item"><strong>Headphones</strong> <span>Audio-Technica ATH-M50x — £124</span></div>
-                <div class="setup-item"><strong>Mic</strong> <span>HyperX QuadCast — £105</span></div>
-                <div class="setup-item"><strong>Stream Deck</strong> <span>Elgato Stream Deck MK.2 — £172</span></div>
+                <div class="setup-item"><strong>CPU</strong> <span>Ryzen 7 9800X3D</span></div>
+                <div class="setup-item"><strong>Cooler</strong> <span>Corsair iCUE H100i ELITE LCD XT</span></div>
+                <div class="setup-item"><strong>GPU</strong> <span>Gigabyte RTX 5080 Gaming OC</span></div>
+                <div class="setup-item"><strong>RAM</strong> <span>Corsair Vengeance 32GB DDR5-6000</span></div>
+                <div class="setup-item"><strong>Motherboard</strong> <span>Gigabyte X870E AORUS ELITE WIFI7</span></div>
+                <div class="setup-item"><strong>PSU</strong> <span>Corsair RM1000x 1000W</span></div>
+                <div class="setup-item"><strong>Case</strong> <span>Corsair 3000D AIRFLOW</span></div>
+                <div class="setup-item"><strong>Main Monitor</strong> <span>Gigabyte MO27Q28G 1440p 280Hz</span></div>
+                <div class="setup-item"><strong>Monitor</strong> <span>Gigabyte M27Q 1440p 170Hz</span></div>
+                <div class="setup-item"><strong>Monitor</strong> <span>iiyama GB2570HSU 1080p 165Hz</span></div>
+                <div class="setup-item"><strong>SSD Storage</strong> <span>6TB Total (1x 4TB NVMe, 2x 1TB NVMe)</span></div>
+                <div class="setup-item"><strong>HDD Storage</strong> <span>10TB Total (1x 8TB Internal, 1x 2TB External)</span></div>
+                <div class="setup-item"><strong>Keyboard</strong> <span>Logitech G213 Prodigy</span></div>
+                <div class="setup-item"><strong>Mouse</strong> <span>Corsair Scimitar RGB Elite</span></div>
+                <div class="setup-item"><strong>Headphones</strong> <span>Audio-Technica ATH-M50x</span></div>
+                <div class="setup-item"><strong>Mic</strong> <span>HyperX QuadCast</span></div>
+                <div class="setup-item"><strong>Stream Deck</strong> <span>Elgato Stream Deck MK.2</span></div>
             </div>
             <button class="popup-close" onclick="document.getElementById('setupPopup').classList.remove('active')">close</button>
         </div>
     </div>
     <script>
         document.getElementById("setupPopup").addEventListener("click",function(e){e.target===this&&document.getElementById("setupPopup").classList.remove("active")});
-        fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid=76561198066010654').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='steam — '+e.game:o.textContent='steam — online'):(t.className='status-dot offline',o.textContent='steam — offline')}).catch(function(){document.getElementById('steamStatus').textContent='steam — offline'});
-        fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');e.isLive?(t.className='status-dot live',o.textContent='twitch — live now'):(t.className='status-dot offline',o.textContent='twitch — offline')}).catch(function(){document.getElementById('twitchStatus').textContent='twitch — offline'});
+        fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid=76561198066010654').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='steam: currently playing '+e.game:o.textContent='steam: online'):(t.className='status-dot offline',o.textContent='steam: offline')}).catch(function(){document.getElementById('steamStatus').textContent='steam: offline'});
+        fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');e.isLive?(t.className='status-dot live',o.textContent='twitch: live now'):(t.className='status-dot offline',o.textContent='twitch: offline')}).catch(function(){document.getElementById('twitchStatus').textContent='twitch: offline'});
         var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
     </script>
 </body>
