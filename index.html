@@ -44,6 +44,9 @@
         .status-dot.offline{background:var(--muted)}
         .status-dot.live{background:#f87171}
         .status-dot.spotify{background:#1db954}
+        .status-bar span a{display:inline-block;max-width:65ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+        .status-bar span a:hover{overflow:visible;position:relative;animation:scroll-text 6s linear infinite}
+        @keyframes scroll-text{0%{transform:translateX(0)}20%{transform:translateX(0)}80%{transform:translateX(calc(-100% + 65ch))}100%{transform:translateX(calc(-100% + 65ch))}}
         .container{max-width:1000px;margin:0 auto;padding:24px 24px 40px}
         .twitch-wrap{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;width:100%;margin-bottom:24px}
         .twitch-wrap iframe{display:block;width:100%;height:100%;border:none;position:absolute;top:0;left:0}
@@ -125,7 +128,7 @@
         document.getElementById("setupPopup").addEventListener("click",function(e){e.target===this&&document.getElementById("setupPopup").classList.remove("active")});
         fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid=76561198066010654').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='steam: currently playing '+e.game:o.textContent='steam: online'):(t.className='status-dot offline',o.textContent='steam: offline')}).catch(function(){document.getElementById('steamStatus').textContent='steam: offline'});
         fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');e.isLive?(t.className='status-dot live',o.textContent='twitch: live now'):(t.className='status-dot offline',o.textContent='twitch: offline')}).catch(function(){document.getElementById('twitchStatus').textContent='twitch: offline'});
-        fetch('https://grimcyanide-github-io.vercel.app/api/lastfm-now-playing').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('spotifyDot'),o=document.getElementById('spotifyStatus');e.playing?(t.className='status-dot spotify',o.innerHTML='spotify: <a href="'+e.url+'" target="_blank" style="color:var(--green);text-decoration:none">'+e.track+' — '+e.artist+'</a>'):(t.className='status-dot offline',o.textContent='spotify: not playing')}).catch(function(){document.getElementById('spotifyStatus').textContent='spotify: offline'});
+        fetch('https://grimcyanide-github-io.vercel.app/api/lastfm-now-playing').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('spotifyDot'),o=document.getElementById('spotifyStatus');e.playing?(t.className='status-dot spotify',o.innerHTML='spotify: <a href="'+e.url+'" target="_blank" style="color:var(--green);text-decoration:none">'+e.track+' by '+e.artist+'</a>'):(t.className='status-dot offline',o.textContent='spotify: not playing')}).catch(function(){document.getElementById('spotifyStatus').textContent='spotify: offline'});
         var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
     </script>
 </body>
