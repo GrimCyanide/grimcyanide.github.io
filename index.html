@@ -23,96 +23,36 @@
     <meta name="twitter:description" content="UK gamer streaming for fun and company. Drop by and say hello on Twitch">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <style>
-        :root{
-            --bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--green-bg:rgba(74,222,128,0.15);--blue:#58a6ff;--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace;
-        }
-        body.light-mode{
-            --bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#4b5563;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--green:#15803d;--green-bg:#4ade80;--blue:#0969da;
-        }
+        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--green-bg:rgba(74,222,128,0.15);--blue:#58a6ff;--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
+        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#4b5563;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--green:#15803d;--green-bg:#4ade80;--blue:#0969da}
         *{box-sizing:border-box}
-        body{
-            background:var(--bg);color:var(--text);font-family:var(--font);
-            margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;
-            line-height:1.5;font-size:15px;
-        }
+        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
-        .nav-bar{
-            position:sticky;top:0;z-index:100;background:var(--bg);
-            border-bottom:1px solid var(--border);padding:10px 24px;
-            display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-        }
+        .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
         .nav-left{display:flex;align-items:center;gap:8px}
         .nav-logo{font-weight:700;font-size:1.1em;color:var(--accent);text-decoration:none;letter-spacing:-0.5px}
         .nav-links{display:flex;gap:4px;flex-wrap:wrap}
-        .nav-link{
-            background:transparent;border:1px solid transparent;border-radius:var(--radius);
-            padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;
-            font-weight:500;transition:all 0.15s;
-        }
+        .nav-link{background:transparent;border:1px solid transparent;border-radius:var(--radius);padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
         .nav-right{display:flex;align-items:center;gap:10px}
-        .theme-toggle{
-            background:none;border:1px solid var(--border);border-radius:4px;
-            color:var(--muted);font-family:var(--font);font-size:0.7em;
-            padding:4px 8px;cursor:pointer;transition:all 0.15s;
-        }
+        .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
         .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
-        .status-bar{
-            display:flex;align-items:center;justify-content:center;gap:16px;
-            padding:10px 24px;font-size:0.8em;color:var(--muted);flex-wrap:wrap;
-        }
+        .status-bar{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 24px;font-size:0.8em;color:var(--muted);flex-wrap:wrap}
         .status-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
         .status-dot.online{background:var(--green)}
         .status-dot.offline{background:var(--muted)}
         .status-dot.live{background:#f87171}
         .container{max-width:1000px;margin:0 auto;padding:24px 24px 40px}
-        .twitch-wrap{
-            border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
-            background:#000;aspect-ratio:16/9;position:relative;width:100%;margin-bottom:24px;
-        }
+        .twitch-wrap{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;width:100%;margin-bottom:24px}
         .twitch-wrap iframe{display:block;width:100%;height:100%;border:none;position:absolute;top:0;left:0}
         .social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
-        .social-btn{
-            background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-            padding:10px 18px;text-decoration:none;color:var(--text);font-size:0.85em;
-            font-weight:500;transition:border 0.2s,background 0.2s;display:flex;
-            align-items:center;gap:6px;white-space:nowrap;
-        }
+        .social-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 18px;text-decoration:none;color:var(--text);font-size:0.85em;font-weight:500;transition:border 0.2s,background 0.2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
         .social-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
         .social-btn .icon{font-weight:700;color:var(--accent)}
-        .recent-games{
-            background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-            overflow:hidden;max-width:600px;margin:0 auto 32px;
-        }
-        .recent-games-header{
-            padding:12px 16px;border-bottom:1px solid var(--border);
-            font-weight:600;font-size:0.82em;text-transform:uppercase;letter-spacing:0.5px;
-            color:var(--muted);display:flex;justify-content:space-between;align-items:center;
-        }
-        .recent-games-header a{color:var(--accent);text-decoration:none;font-size:0.85em;font-weight:500;text-transform:none;letter-spacing:0}
-        .recent-games-header a:hover{text-decoration:underline}
-        .recent-list{padding:6px 8px;display:flex;flex-direction:column;gap:2px;max-height:300px;overflow-y:auto}
-        .recent-row{
-            display:flex;align-items:center;gap:10px;padding:10px 12px;
-            border-radius:4px;font-size:0.84em;font-weight:500;cursor:pointer;transition:background 0.15s;
-        }
-        .recent-row:nth-child(even){background:var(--surface-alt)}
-        .recent-row:hover{background:var(--accent-soft)}
-        .recent-name{font-weight:600;flex:1;min-width:0}
-        .recent-rating{color:var(--muted);font-size:0.85em;white-space:nowrap}
-        .recent-badge{font-size:0.7em;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;background:var(--green-bg);color:var(--green)}
-        .recent-list::-webkit-scrollbar{width:5px}
-        .recent-list::-webkit-scrollbar-track{background:transparent}
-        .recent-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
         .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:24px;border-top:1px solid var(--border);margin-top:40px}
-        .game-popup,.setup-popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999;justify-content:center;align-items:flex-start;padding-top:40px}
-        .game-popup.active,.setup-popup.active{display:flex}
-        .game-popup-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:420px;width:90%;max-height:80vh;overflow-y:auto}
-        .game-popup-inner h3{margin:0 0 12px 0;font-size:1.1em}
-        .game-popup-inner p{margin:4px 0;font-size:0.88em;color:var(--muted)}
-        .game-popup-inner p strong{color:var(--text);font-weight:600}
-        .game-popup-inner a{color:var(--accent)}
+        .setup-popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999;justify-content:center;align-items:flex-start;padding-top:40px}
+        .setup-popup.active{display:flex}
         .popup-close{background:var(--border);border:none;color:var(--text);padding:6px 14px;border-radius:4px;cursor:pointer;margin-top:14px;font-family:var(--font);font-size:0.85em;width:100%}
         .popup-close:hover{background:var(--accent)}
         .setup-popup-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;max-width:580px;width:92%;max-height:60vh;overflow-y:auto}
@@ -125,47 +65,30 @@
         .setup-item:nth-child(even){background:var(--surface-alt)}
         .setup-item strong{color:var(--accent);font-weight:700;white-space:nowrap;min-width:120px}
         .setup-item span{color:var(--muted);font-family:var(--mono);font-size:0.9em;font-weight:600}
-        .text-na{color:var(--muted);font-style:italic}
-        @media(max-width:600px){
-            .nav-bar{padding:8px 12px}
-            .nav-logo{font-size:1em}
-            .nav-link{padding:5px 10px;font-size:0.72em}
-            .container{padding:16px 8px 32px}
-            .social-btn{padding:8px 14px;font-size:0.8em}
-            .recent-games{max-width:100%}
-        }
+        @media(max-width:600px){.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:16px 8px 32px}.social-btn{padding:8px 14px;font-size:0.8em}}
     </style>
 </head>
 <body data-view-transition="home">
     <nav class="nav-bar">
         <div class="nav-left"><a href="/" class="nav-logo">GRIM_CYANIDE</a></div>
-        <div class="nav-links">
-            <a href="/" class="nav-link active">Home</a>
-            <a href="/vods" class="nav-link">VODs &amp; Ratings</a>
-            <a href="/steam" class="nav-link">Steam Games</a>
-        </div>
+        <div class="nav-links"><a href="/" class="nav-link active">Home</a><a href="/vods" class="nav-link">VODs &amp; Ratings</a><a href="/steam" class="nav-link">Steam Games</a></div>
         <div class="nav-right"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
     </nav>
     <div class="status-bar" id="statusBar"><span class="status-dot offline" id="twitchDot"></span><span id="twitchStatus">loading status...</span><span style="margin:0 8px;color:var(--border)">|</span><span class="status-dot offline" id="steamDot"></span><span id="steamStatus">loading status...</span></div>
     <div class="container">
         <div class="twitch-wrap"><iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe></div>
         <div class="social-row">
-            <a href="https://www.twitch.tv/grim_cyanide" class="social-btn" target="_blank"><span class="icon">twitch</span> stream</a>
-            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-btn" target="_blank"><span class="icon">youtube</span> videos</a>
-            <a href="https://discord.gg/kUpgQmuDPh" class="social-btn" target="_blank"><span class="icon">discord</span> server</a>
-            <a href="https://x.com/GrimCyanide" class="social-btn" target="_blank"><span class="icon">x</span> posts</a>
-            <a href="https://www.tiktok.com/@grim_cyanide" class="social-btn" target="_blank"><span class="icon">tiktok</span> clips</a>
-            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-btn" target="_blank"><span class="icon">steam</span> profile</a>
-            <a href="#" class="social-btn" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="icon">pc</span> specs</a>
-            <a href="https://open.spotify.com/playlist/47Mz3t3vwuAT37djS0Eozy" class="social-btn" target="_blank"><span class="icon">spotify</span> playlist</a>
-        </div>
-        <div class="recent-games">
-            <div class="recent-games-header"><span>Recently Finished Games</span><a href="/vods">see all →</a></div>
-            <div class="recent-list" id="recentList"><div class="recent-row"><span class="recent-name">loading...</span><span class="recent-rating"></span><span class="recent-badge"></span></div></div>
+            <a href="https://www.twitch.tv/grim_cyanide" class="social-btn" target="_blank"><span class="icon">Twitch</span></a>
+            <a href="https://www.youtube.com/@Grim_Cyanide" class="social-btn" target="_blank"><span class="icon">YouTube</span></a>
+            <a href="https://discord.gg/kUpgQmuDPh" class="social-btn" target="_blank"><span class="icon">My Discord Server</span></a>
+            <a href="https://x.com/GrimCyanide" class="social-btn" target="_blank"><span class="icon">Twitter</span></a>
+            <a href="https://www.tiktok.com/@grim_cyanide" class="social-btn" target="_blank"><span class="icon">TikTok</span></a>
+            <a href="https://steamcommunity.com/id/GrimCyanide" class="social-btn" target="_blank"><span class="icon">My Steam Profile</span></a>
+            <a href="#" class="social-btn" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="icon">My PC Specs</span></a>
+            <a href="https://open.spotify.com/playlist/47Mz3t3vwuAT37djS0Eozy" class="social-btn" target="_blank"><span class="icon">My Spotify Playlist</span></a>
         </div>
         <div class="footer">© 2026 grimcyanide.com</div>
     </div>
-    <div class="game-popup" id="gamePopup"><div class="game-popup-inner" id="gamePopupInner"></div></div>
     <div class="setup-popup" id="setupPopup">
         <div class="setup-popup-inner">
             <h3>my specs</h3>
@@ -192,19 +115,10 @@
         </div>
     </div>
     <script>
-        var allVODs=[];
-        function loadVODsData(){var e=document.getElementById("recentList");fetch("https://grimcyanide-github-io.vercel.app/api/vods-sheet").then(function(e){if(!e.ok)throw new Error("API "+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allVODs=t.games,renderVODs()):e.innerHTML='<div class="recent-row"><span class="recent-name">nothing here yet</span><span class="recent-rating"></span><span class="recent-badge"></span></div>'}).catch(function(t){console.error(t),e.innerHTML='<div class="recent-row"><span class="recent-name">couldn\'t load</span><span class="recent-rating"></span><span class="recent-badge"></span></div>'})}
-        function esc(e){var t=document.createElement("div");return t.textContent=e,t.innerHTML}
-        function parseDate(e){if(!e)return null;var t=e.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(t)return new Date(t[3],t[2]-1,t[1]);var o=new Date(e);return isNaN(o.getTime())?null:o}
-        function cleanPartsText(e,t){if(e&&e.trim()){var o=e.trim().toLowerCase();if(o.indexOf("so far")>-1){e=e.replace(/so far/i,"").trim();var n=parseInt(e,10);return isNaN(n)?e+" so far":n+" part"+(1!==n?"s":"")+" so far"}if("full playthrough"===o||"full"===o)return"full playthrough";if(o.indexOf("part")===-1){var a=parseInt(e,10);return isNaN(a)?e:a+" part"+(1!==a?"s":"")}return e}return t&&t>0?t+" part"+(1!==t?"s":""):""}
-        function getPartCount(e,t){if(e&&e.trim()){var o=e.trim(),n=parseInt(o,10);if(!isNaN(n))return n;var a=o.match(/(\d+)\s*part/);if(a)return parseInt(a[1],10)}return t||0}
-        function renderVODs(){var e=document.getElementById("recentList"),t=allVODs.filter(function(e){return"Finished"===e.isFinished});t.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return!o&&!n?0:!o?1:!n?-1:n-o});var o=t.slice(0,10);o.length?(e.innerHTML=o.map(function(e,t){var o=e.rating&&e.rating>0?e.rating+"/10":'<span class="text-na">N/A</span>';return'<div class="recent-row" onclick="showGamePopup('+t+')"><span class="recent-name">'+esc(e.game)+'</span><span class="recent-rating">'+o+'</span><span class="recent-badge">finished</span></div>'}).join(""),window._recentGames=o):e.innerHTML='<div class="recent-row"><span class="recent-name">no finished games yet</span><span class="recent-rating"></span><span class="recent-badge"></span></div>'}
-        function showGamePopup(e){var t=window._recentGames[e];if(t){var o=document.getElementById("gamePopup"),n=document.getElementById("gamePopupInner"),a=cleanPartsText(t.partsDisplay,t.parts),i=getPartCount(t.partsDisplay,t.parts),s=t.rating&&t.rating>0?t.rating+"/10":"N/A",l=t.dateStarted||"TBD",r=t.dateFinished||"TBD",d=a||"—",c="";if(t.linkUrl){var p=a.toLowerCase(),u="full playthrough"===p||"full"===p?"click here to watch the full playthrough":i>1?"click here to watch the playlist":"click here to watch";c='<a href="'+esc(t.linkUrl)+'" target="_blank" rel="noopener">'+u+"</a>"}n.innerHTML="<h3>"+esc(t.game)+"</h3><p><strong>rating</strong> "+s+"</p><p><strong>started</strong> "+l+"</p><p><strong>finished</strong> "+r+"</p><p><strong>parts</strong> "+d+"</p>"+(c?"<p>"+c+"</p>":"")+'<p><a href="/vods">view all games →</a></p><button class="popup-close" onclick="closePopup()">close</button>',o.classList.add("active")}}
-        function closePopup(){document.getElementById("gamePopup").classList.remove("active")}
-        document.getElementById("gamePopup").addEventListener("click",function(e){e.target===this&&closePopup()}),document.getElementById("setupPopup").addEventListener("click",function(e){e.target===this&&document.getElementById("setupPopup").classList.remove("active")});
+        document.getElementById("setupPopup").addEventListener("click",function(e){e.target===this&&document.getElementById("setupPopup").classList.remove("active")});
         fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid=76561198066010654').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='steam: '+e.game:o.textContent='steam: online'):(t.className='status-dot offline',o.textContent='steam: offline')}).catch(function(){document.getElementById('steamStatus').textContent='steam: offline'});
         fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');e.isLive?(t.className='status-dot live',o.textContent='twitch: live now'):(t.className='status-dot offline',o.textContent='twitch: offline')}).catch(function(){document.getElementById('twitchStatus').textContent='twitch: offline'});
-        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")}),loadVODsData();
+        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
     </script>
 </body>
 </html>
