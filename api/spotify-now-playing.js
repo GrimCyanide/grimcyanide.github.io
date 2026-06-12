@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'public, max-age=30');
+  res.setHeader('Cache-Control', 'public, max-age=10');
 
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64')
+        'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
       },
       body: 'grant_type=refresh_token&refresh_token=' + refreshToken
     });
