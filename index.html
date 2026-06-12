@@ -39,6 +39,8 @@
         .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
         .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
         .status-bar{display:flex;align-items:center;justify-content:center;gap:16px;padding:12px 24px;font-size:0.85em;color:var(--muted);flex-wrap:wrap}
+        .status-item{min-width:180px;text-align:center;white-space:nowrap}
+        .status-sep{margin:0 8px;color:var(--border)}
         .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
         .status-dot.online{background:var(--green)}
         .status-dot.offline{background:var(--muted)}
@@ -70,7 +72,7 @@
         .setup-item:nth-child(even){background:var(--surface-alt)}
         .setup-item strong{color:var(--accent);font-weight:700;white-space:nowrap;min-width:120px}
         .setup-item span{color:var(--muted);font-family:var(--mono);font-size:0.9em;font-weight:600}
-        @media(max-width:800px){.twitch-row{flex-direction:column}.twitch-chat{display:none}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:16px 8px 32px}.social-btn{padding:7px 12px;font-size:0.78em}}
+        @media(max-width:800px){.twitch-row{flex-direction:column}.twitch-chat{display:none}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:16px 8px 32px}.social-btn{padding:7px 12px;font-size:0.78em}.status-bar{gap:6px}.status-item{min-width:0;white-space:normal}.status-sep{display:none}}
     </style>
 </head>
 <body data-view-transition="home">
@@ -80,11 +82,11 @@
         <div class="nav-right"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
     </nav>
     <div class="status-bar" id="statusBar">
-        <span class="status-dot offline" id="twitchDot"></span><span id="twitchStatus">loading status...</span>
-        <span style="margin:0 8px;color:var(--border)">|</span>
-        <span class="status-dot offline" id="steamDot"></span><span id="steamStatus">loading status...</span>
-        <span style="margin:0 8px;color:var(--border)">|</span>
-        <span class="status-dot spotify" id="spotifyDot"></span><span id="spotifyStatus">loading status...</span>
+        <span class="status-item"><span class="status-dot offline" id="twitchDot"></span> <span id="twitchStatus">loading status...</span></span>
+        <span class="status-sep">|</span>
+        <span class="status-item"><span class="status-dot offline" id="steamDot"></span> <span id="steamStatus">loading status...</span></span>
+        <span class="status-sep">|</span>
+        <span class="status-item"><span class="status-dot spotify" id="spotifyDot"></span> <span id="spotifyStatus">loading status...</span></span>
     </div>
     <div class="container">
         <div class="twitch-row">
