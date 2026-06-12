@@ -9,6 +9,7 @@ export default async function handler(req, res) {
                       html.includes('"isLive":true') || 
                       html.includes('"status":"live"');
         res.status(200).json({ isLive });
+        
     } catch (error) {
         console.error('Twitch status error:', error);
         res.status(500).json({ error: 'Failed to check status' });
