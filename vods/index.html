@@ -21,34 +21,73 @@
     <meta name="twitter:title" content="VODs & Playthroughs - GRIM_CYANIDE">
     <meta name="twitter:description" content="Complete list of game playthroughs, VODs, and ratings">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
-    <link rel="stylesheet" href="/style.css">
     <style>
-        .filters-section { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: center; }
-        .filter-group { display: flex; align-items: center; gap: 6px; }
-        .filter-group label { color: var(--muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; white-space: nowrap; }
-        .filter-group select, .filter-group input { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 14px; font-family: var(--font); font-size: 0.92em; outline: none; transition: border 0.2s, box-shadow 0.2s; min-width: 130px; cursor: pointer; }
-        .filter-group select:hover, .filter-group input:hover { border-color: var(--accent); }
-        .filter-group select:focus, .filter-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-        .filter-group select option { background: var(--surface); color: var(--text); }
-        .search-input { min-width: 200px!important; flex: 1; max-width: 280px; }
-        .result-count { color: var(--muted); font-size: 0.88em; margin-bottom: 12px; font-family: var(--mono); }
-        .game-name { font-weight: 600; display: block; }
-        .game-rating { font-family: var(--mono); white-space: nowrap; }
-        .game-date { font-family: var(--mono); color: var(--muted); font-size: 0.9em; white-space: nowrap; }
-        .game-link { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9em; white-space: nowrap; transition: opacity 0.2s; }
-        .game-link:hover { opacity: 0.7; text-decoration: underline; }
-        .game-parts-sub { font-family: var(--mono); color: var(--muted); font-size: 0.75em; display: block; margin-top: 2px; }
-        @media (max-width: 600px) { .filters-section { flex-direction: column; align-items: stretch; } .filter-group select, .filter-group input { width: 100%; max-width: none; } .search-input { max-width: none!important; } }
+        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--amber:#d2991d;--badge-bg:rgba(48,54,61,0.8);--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
+        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#6b7280;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--amber:#92400e;--badge-bg:rgba(209,213,219,0.6)}
+        *{box-sizing:border-box}
+        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;line-height:1.5;font-size:15px}
+        html{overflow-y:scroll;scrollbar-gutter:stable}
+        .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+        .nav-left{display:flex;align-items:center;gap:8px}
+        .nav-logo{font-weight:700;font-size:1.1em;color:var(--accent);text-decoration:none;letter-spacing:-0.5px}
+        .nav-links{display:flex;gap:4px;flex-wrap:wrap}
+        .nav-link{background:transparent;border:1px solid transparent;border-radius:var(--radius);padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
+        .nav-link:hover{border-color:var(--border);color:var(--text)}
+        .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+        .nav-right{display:flex;align-items:center;gap:10px}
+        .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
+        .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+        .container{max-width:1100px;margin:0 auto;padding:24px 24px 40px}
+        .header{text-align:center;margin-bottom:24px}
+        .header h1{font-size:2em;margin:0 0 4px 0;font-weight:700;letter-spacing:-0.5px}
+        .header .subtitle{color:var(--muted);font-size:0.95em;margin:0}
+        .filters-section{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;align-items:center}
+        .filter-group{display:flex;align-items:center;gap:6px}
+        .filter-group label{color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;white-space:nowrap}
+        .filter-group select,.filter-group input{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;min-width:120px;cursor:pointer}
+        .filter-group select:hover,.filter-group input:hover{border-color:var(--accent)}
+        .filter-group select:focus,.filter-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+        .filter-group select option{background:var(--surface);color:var(--text)}
+        .search-input{min-width:180px!important;flex:1;max-width:260px}
+        .result-count{color:var(--muted);font-size:0.82em;margin-bottom:10px;font-family:var(--mono)}
+        .table-wrapper{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--border)}
+        table{width:100%;border-collapse:collapse}
+        thead th{background:var(--surface);color:var(--muted);font-size:0.78em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;padding:10px 8px;text-align:center;cursor:pointer;user-select:none;white-space:nowrap;border-bottom:1px solid var(--border);transition:color 0.15s}
+        thead th:hover{color:var(--accent)}
+        thead th .arrow{margin-left:3px;font-size:0.65em;opacity:0.5}
+        thead th.sorted{color:var(--accent)}
+        thead th.sorted .arrow{opacity:1;color:var(--accent)}
+        tbody td{padding:12px 8px;font-size:0.9em;font-weight:500;border-bottom:1px solid var(--border);vertical-align:middle;word-break:break-word;text-align:center}
+        tbody tr td{background:var(--surface)}
+        tbody tr:nth-child(even) td{background:var(--surface-alt)}
+        tbody tr:hover td{background:var(--badge-bg)}
+        tbody tr:last-child td{border-bottom:none}
+        .game-name{font-weight:600;display:block}
+        .game-rating{font-family:var(--mono);white-space:nowrap}
+        .game-date{font-family:var(--mono);color:var(--muted);font-size:0.85em;white-space:nowrap}
+        .game-link{color:var(--accent);text-decoration:none;font-weight:600;font-size:0.85em;white-space:nowrap;transition:opacity 0.2s}
+        .game-link:hover{opacity:0.7;text-decoration:underline}
+        .game-parts-sub{font-family:var(--mono);color:var(--muted);font-size:0.7em;display:block;margin-top:2px}
+        .text-coming{color:var(--amber);font-style:italic;font-size:0.75em;font-weight:600;letter-spacing:0.5px}
+        .no-results{text-align:center;color:var(--muted);padding:40px 16px;font-size:0.95em}
+        .loading-container{text-align:center;padding:40px 16px}
+        .loading-spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-text{color:var(--muted);margin-top:10px;font-size:0.9em}
+        .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:32px}
+        .footer a{color:var(--muted);text-decoration:none}
+        .footer a:hover{color:var(--accent)}
+        @media(max-width:860px){.container{padding:16px 6px}thead th{font-size:0.6em;padding:8px 4px}tbody td{font-size:0.7em;padding:10px 4px}}
+        @media(max-width:600px){.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.container{padding:12px 4px}thead th{font-size:0.52em;padding:6px 2px}tbody td{font-size:0.62em;padding:8px 2px}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}}
     </style>
 </head>
 <body data-view-transition="vods">
+    <nav class="nav-bar">
+        <div class="nav-left"><a href="/" class="nav-logo">GRIM_CYANIDE</a></div>
+        <div class="nav-links"><a href="/" class="nav-link">Home</a><a href="/vods" class="nav-link active">VODs &amp; Ratings</a><a href="/steam" class="nav-link">Steam Games</a></div>
+        <div class="nav-right"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
+    </nav>
     <div class="container">
-        <div class="top-bar"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
-        <div class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/vods" class="nav-link active">VODs &amp; Ratings</a>
-            <a href="/steam" class="nav-link">My Steam Games</a>
-        </div>
         <div class="header"><h1>VODs &amp; Playthroughs</h1><p class="subtitle">Every game played, rated and catalogued.</p></div>
         <div class="filters-section">
             <div class="filter-group"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">All</option><option value="Finished">Finished</option><option value="Unfinished">Unfinished</option></select></div>
