@@ -19,7 +19,13 @@ export default async function handler(req, res) {
       },
       body: 'grant_type=refresh_token&refresh_token=' + refreshToken
     });
-    const tokenData = await tokenRes.json();
+    const tokenText = await tokenRes.text();
+    let tokenData;
+    try {
+      tokenData = JSON.parse(tokenText);
+    } catch(e) {
+      return res.status(500).json({ error: 'Token parse failed', raw: tokenText.substring(0,200) });
+    }
 
     if (tokenData.error) {
       return res.status(500).json({ error: 'Token refresh failed', details: tokenData.error });
@@ -29,12 +35,16 @@ export default async function handler(req, res) {
       headers: { 'Authorization': 'Bearer ' + tokenData.access_token }
     });
 
-    if (playbackRes.status === 204 || playbackRes.status === 200 && !playbackRes.body) {
+    if (playbackRes.status === 204) {
       return res.status(200).json({ playing: false });
     }
 
-    const playback = await playbackRes.json();
+    const playbackText = await playbackRes.text();
+    if (!playbackText) {
+      return res.status(200).json({ playing: false });
+    }
 
+    const playback = JSON.parse(playbackText);
     if (!playback.item) {
       return res.status(200).json({ playing: false });
     }
