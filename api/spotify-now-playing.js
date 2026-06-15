@@ -36,11 +36,13 @@ export default async function handler(req, res) {
     }
 
     res.status(200).json({
-      playing: true,
+      playing: playback.is_playing,
       track: playback.item.name,
       artist: playback.item.artists.map(a => a.name).join(', '),
       url: playback.item.external_urls.spotify,
-      albumArt: playback.item.album.images[0]?.url || ''
+      albumArt: playback.item.album.images[0]?.url || '',
+      progress: playback.progress_ms,
+      duration: playback.item.duration_ms
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch' });
