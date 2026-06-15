@@ -26,13 +26,13 @@ export default async function handler(req, res) {
     });
 
     if (playbackRes.status === 204) {
-      return res.status(200).json({ playing: false });
+      return res.status(200).json({ playing: false, track: null });
     }
 
     const playback = await playbackRes.json();
 
     if (!playback.item) {
-      return res.status(200).json({ playing: false });
+      return res.status(200).json({ playing: false, track: null });
     }
 
     res.status(200).json({
