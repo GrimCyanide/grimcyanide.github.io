@@ -46,6 +46,10 @@
         .status-dot.offline{background:var(--muted)}
         .status-dot.live{background:#f87171}
         .status-dot.spotify{background:#1db954}
+        .status-spotify-wrap{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}
+        #spotifyArt{width:24px;height:24px;border-radius:3px;object-fit:cover;display:none;flex-shrink:0}
+        .spotify-bar-wrap{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:4px;display:none}
+        .spotify-bar{height:100%;background:var(--green);border-radius:2px;width:0%;transition:width 0.3s linear}
         .status-bar span a{display:inline-block;max-width:65ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
         .container{max-width:1300px;margin:0 auto;padding:24px 24px 40px}
         .twitch-row{display:flex;gap:12px;margin-bottom:24px;min-height:0;justify-content:center}
@@ -86,7 +90,7 @@
         <span class="status-sep">|</span>
         <span class="status-item"><span class="status-dot offline" id="steamDot"></span> <span id="steamStatus">loading status...</span></span>
         <span class="status-sep">|</span>
-        <span class="status-item"><span class="status-dot spotify" id="spotifyDot"></span> <span id="spotifyStatus">loading status...</span></span>
+        <span class="status-item"><span class="status-dot spotify" id="spotifyDot"></span> <span class="status-spotify-wrap"><img id="spotifyArt" src="" alt=""><span id="spotifyStatus">loading status...</span></span><div class="spotify-bar-wrap" id="spotifyBarWrap"><div class="spotify-bar" id="spotifyBar"></div></div></span>
     </div>
     <div class="container">
         <div class="twitch-row">
@@ -136,8 +140,12 @@
         updateSteam();setInterval(updateSteam,600000);
         function updateTwitch(){fetch('https://grimcyanide-github-io.vercel.app/api/twitch-status?channel=grim_cyanide').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('twitchDot'),o=document.getElementById('twitchStatus');if(e.isLive){t.className='status-dot live';o.textContent='twitch: live now'}else{t.className='status-dot offline';if(e.lastStreamDate){var n=new Date(e.lastStreamDate);var a=Math.floor((Date.now()-n.getTime())/86400000);var i=a>0?a+' days ago':a===0?'today':'unknown';o.textContent='twitch: last live '+i}else{o.textContent='twitch: offline'}}}).catch(function(){document.getElementById('twitchStatus').textContent='twitch: offline'})}
         updateTwitch();setInterval(updateTwitch,600000);
-        function updateSpotify(){fetch('https://grimcyanide-github-io.vercel.app/api/spotify-now-playing').then(function(e){return e.json()}).then(function(e){var t=document.getElementById('spotifyDot'),o=document.getElementById('spotifyStatus');if(e.playing){t.className='status-dot spotify';var pct=e.duration>0?Math.round((e.progress/e.duration)*100):0;o.innerHTML='currently listening to <a href="'+e.url+'" target="_blank" style="color:var(--green);text-decoration:none">'+e.track+' by '+e.artist+'</a> <span style="font-size:0.7em;color:var(--muted)">['+pct+'%]</span>'}else if(e.track){t.className='status-dot offline';o.innerHTML='paused: <a href="'+e.url+'" target="_blank" style="color:var(--muted);text-decoration:none">'+e.track+' by '+e.artist+'</a>'}else{t.className='status-dot offline';o.textContent='currently listening to: nothing'}}).catch(function(){document.getElementById('spotifyStatus').textContent='currently listening to: offline'})}
-        updateSpotify();setInterval(updateSpotify,10000);
+        var spotifyState={progress:0,duration:0,lastUpdate:0,playing:!1,track:'',artist:'',url:'',albumArt:''};
+        function tickProgress(){if(spotifyState.playing&&spotifyState.duration>0){var e=Date.now(),t=spotifyState.progress+(e-spotifyState.lastUpdate);t>spotifyState.duration&&(t=spotifyState.duration);var o=Math.round(t/spotifyState.duration*100),n=document.getElementById('spotifyBar');n&&(n.style.width=o+'%')}}
+        setInterval(tickProgress,200);
+        function updateSpotifyDisplay(){var e=document.getElementById('spotifyDot'),t=document.getElementById('spotifyStatus'),o=document.getElementById('spotifyArt'),n=document.getElementById('spotifyBarWrap'),a=document.getElementById('spotifyBar');if(spotifyState.playing){e.className='status-dot spotify';t.innerHTML='currently listening to <a href="'+spotifyState.url+'" target="_blank" style="color:var(--green);text-decoration:none">'+spotifyState.track+' by '+spotifyState.artist+'</a>';spotifyState.albumArt?(o.src=spotifyState.albumArt,o.style.display='inline'):o.style.display='none';n.style.display='block';a.style.width='0%'}else{e.className='status-dot offline';t.textContent='currently listening to: nothing';o.style.display='none';n.style.display='none'}}
+        function fetchSpotify(){fetch('https://grimcyanide-github-io.vercel.app/api/spotify-now-playing').then(function(e){return e.json()}).then(function(e){if(e.playing&&e.track){spotifyState.playing=!0;spotifyState.track=e.track;spotifyState.artist=e.artist;spotifyState.url=e.url;spotifyState.albumArt=e.albumArt||'';spotifyState.progress=e.progress||0;spotifyState.duration=e.duration||0;spotifyState.lastUpdate=Date.now()}else{spotifyState.playing=!1;spotifyState.track='';spotifyState.artist='';spotifyState.url='';spotifyState.albumArt='';spotifyState.progress=0;spotifyState.duration=0}updateSpotifyDisplay()}).catch(function(){spotifyState.playing=!1;spotifyState.track='';updateSpotifyDisplay()})}
+        fetchSpotify();setInterval(fetchSpotify,10000);
         var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
     </script>
 </body>
