@@ -22,8 +22,8 @@
     <meta name="twitter:description" content="Complete list of game playthroughs, VODs, and ratings">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <style>
-        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--amber:#d2991d;--badge-bg:rgba(48,54,61,0.8);--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
-        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#6b7280;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--amber:#92400e;--badge-bg:rgba(209,213,219,0.6)}
+        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--amber:#d2991d;--green:#4ade80;--badge-bg:rgba(48,54,61,0.8);--radius:8px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
+        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#6b7280;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--amber:#92400e;--green:#15803d;--badge-bg:rgba(209,213,219,0.6)}
         *{box-sizing:border-box}
         body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
@@ -31,54 +31,71 @@
         .nav-left{display:flex;align-items:center;gap:8px}
         .nav-logo{font-weight:700;font-size:1.1em;color:var(--accent);text-decoration:none;letter-spacing:-0.5px}
         .nav-links{display:flex;gap:4px;flex-wrap:wrap}
-        .nav-link{background:transparent;border:1px solid transparent;border-radius:var(--radius);padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
+        .nav-link{background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
         .nav-right{display:flex;align-items:center;gap:10px}
         .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
         .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
-        .container{max-width:1100px;margin:0 auto;padding:24px 24px 40px}
+        .container{max-width:1400px;margin:0 auto;padding:24px 24px 40px}
         .header{text-align:center;margin-bottom:24px}
         .header h1{font-size:2em;margin:0 0 4px 0;font-weight:700;letter-spacing:-0.5px}
         .header .subtitle{color:var(--muted);font-size:0.95em;margin:0}
-        .filters-section{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;align-items:center}
+        .filters-section{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;align-items:center;justify-content:center}
         .filter-group{display:flex;align-items:center;gap:6px}
         .filter-group label{color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;white-space:nowrap}
-        .filter-group select,.filter-group input{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;min-width:120px;cursor:pointer}
+        .filter-group select,.filter-group input{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;min-width:120px;cursor:pointer}
         .filter-group select:hover,.filter-group input:hover{border-color:var(--accent)}
         .filter-group select:focus,.filter-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
         .filter-group select option{background:var(--surface);color:var(--text)}
-        .search-input{min-width:180px!important;flex:1;max-width:260px}
-        .result-count{color:var(--muted);font-size:0.82em;margin-bottom:10px;font-family:var(--mono)}
-        .table-wrapper{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--border)}
-        table{width:100%;border-collapse:collapse}
-        thead th{background:var(--surface);color:var(--muted);font-size:0.78em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;padding:10px 8px;text-align:center;cursor:pointer;user-select:none;white-space:nowrap;border-bottom:1px solid var(--border);transition:color 0.15s}
-        thead th:hover{color:var(--accent)}
-        thead th .arrow{margin-left:3px;font-size:0.65em;opacity:0.5}
-        thead th.sorted{color:var(--accent)}
-        thead th.sorted .arrow{opacity:1;color:var(--accent)}
-        tbody td{padding:12px 8px;font-size:0.9em;font-weight:500;border-bottom:1px solid var(--border);vertical-align:middle;word-break:break-word;text-align:center}
-        tbody tr td{background:var(--surface)}
-        tbody tr:nth-child(even) td{background:var(--surface-alt)}
-        tbody tr:hover td{background:var(--badge-bg)}
-        tbody tr:last-child td{border-bottom:none}
-        .game-name{font-weight:600;display:block}
-        .game-rating{font-family:var(--mono);white-space:nowrap}
-        .game-date{font-family:var(--mono);color:var(--muted);font-size:0.85em;white-space:nowrap}
-        .game-link{color:var(--accent);text-decoration:none;font-weight:600;font-size:0.85em;white-space:nowrap;transition:opacity 0.2s}
-        .game-link:hover{opacity:0.7;text-decoration:underline}
-        .game-parts-sub{font-family:var(--mono);color:var(--muted);font-size:0.7em;display:block;margin-top:2px}
-        .text-coming{color:var(--amber);font-style:italic;font-size:0.75em;font-weight:600;letter-spacing:0.5px}
-        .no-results{text-align:center;color:var(--muted);padding:40px 16px;font-size:0.95em}
-        .loading-container{text-align:center;padding:40px 16px}
-        .loading-spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
+        .search-input{min-width:200px!important;flex:1;max-width:280px}
+        .sort-group{display:flex;align-items:center;gap:6px}
+        .sort-group label{color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;white-space:nowrap}
+        .sort-group select{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;cursor:pointer;min-width:140px}
+        .sort-group select:hover{border-color:var(--accent)}
+        .sort-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+        .sort-group select option{background:var(--surface);color:var(--text)}
+        .result-count{color:var(--muted);font-size:0.82em;margin-bottom:16px;font-family:var(--mono);text-align:center}
+        .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+        .game-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.2s,transform 0.2s;display:flex;flex-direction:column;cursor:pointer}
+        .game-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .card-poster{width:100%;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden;position:relative}
+        .card-poster img{width:100%;height:100%;object-fit:cover;display:block}
+        .card-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;color:var(--border);background:var(--surface-alt)}
+        .card-rating-badge{position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;padding:2px 7px;border-radius:4px;font-size:0.7em;font-weight:700;font-family:var(--mono)}
+        .card-rating-badge.na{background:var(--amber);color:#000}
+        .card-body{padding:10px 12px;display:flex;flex-direction:column;justify-content:center;min-height:50px}
+        .card-title{font-weight:700;font-size:0.85em;line-height:1.2;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .no-results{text-align:center;color:var(--muted);padding:48px 16px;font-size:0.95em;grid-column:1/-1}
+        .loading-container{text-align:center;padding:48px 16px;grid-column:1/-1}
+        .loading-spinner{display:inline-block;width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
         .loading-text{color:var(--muted);margin-top:10px;font-size:0.9em}
-        .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:32px}
+        .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:40px}
         .footer a{color:var(--muted);text-decoration:none}
         .footer a:hover{color:var(--accent)}
-        @media(max-width:860px){.container{padding:16px 6px}thead th{font-size:0.6em;padding:8px 4px}tbody td{font-size:0.7em;padding:10px 4px}}
-        @media(max-width:600px){.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.container{padding:12px 4px}thead th{font-size:0.52em;padding:6px 2px}tbody td{font-size:0.62em;padding:8px 2px}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}}
+        .popup-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:flex-start;padding-top:40px}
+        .popup-overlay.active{display:flex}
+        .popup-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:800px;width:92%;max-height:80vh;overflow-y:auto}
+        .popup-inner h2{margin:0 0 4px 0;font-size:1.3em}
+        .popup-meta{color:var(--muted);font-size:0.85em;margin-bottom:16px}
+        .popup-meta span{margin-right:16px}
+        .popup-parts-count{font-size:0.9em;color:var(--muted);margin-bottom:12px}
+        .parts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+        .part-card{background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;overflow:hidden;text-decoration:none;color:var(--text);transition:border-color 0.2s;display:block}
+        .part-card:hover{border-color:var(--accent)}
+        .part-thumb{width:100%;aspect-ratio:16/9;background:var(--border);overflow:hidden}
+        .part-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+        .part-info{padding:8px 10px}
+        .part-title{font-size:0.78em;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .popup-close{background:var(--border);border:none;color:var(--text);padding:8px 16px;border-radius:4px;cursor:pointer;margin-top:16px;font-family:var(--font);font-size:0.85em;width:100%}
+        .popup-close:hover{background:var(--accent)}
+        .popup-inner::-webkit-scrollbar{width:5px}
+        .popup-inner::-webkit-scrollbar-track{background:transparent}
+        .popup-inner::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+        @media(max-width:1100px){.games-grid{grid-template-columns:repeat(4,1fr);gap:12px}}
+        @media(max-width:860px){.games-grid{grid-template-columns:repeat(3,1fr);gap:10px}.container{padding:16px 8px 32px}.card-body{padding:8px 10px}.card-title{font-size:0.78em}}
+        @media(max-width:600px){.games-grid{grid-template-columns:repeat(2,1fr);gap:8px}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.parts-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
     </style>
 </head>
 <body data-view-transition="vods">
@@ -92,28 +109,35 @@
         <div class="filters-section">
             <div class="filter-group"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">All</option><option value="Finished">Finished</option><option value="Unfinished">Unfinished</option></select></div>
             <div class="filter-group"><label for="searchInput">Search</label><input type="text" id="searchInput" class="search-input" placeholder="Filter games..."></div>
+            <div class="sort-group"><label for="sortSelect">Sort</label><select id="sortSelect"><option value="recent-started">Recently Started</option><option value="oldest-started">Oldest Started</option><option value="recent-finished">Recently Finished</option><option value="oldest-finished">Oldest Finished</option><option value="az">Name A-Z</option><option value="za">Name Z-A</option><option value="rating-high">Rating High-Low</option><option value="rating-low">Rating Low-High</option></select></div>
         </div>
         <div class="result-count" id="resultCount"></div>
-        <div class="table-wrapper"><table><thead><tr><th style="width:32%" data-col="game" id="thGame">Game <span class="arrow"></span></th><th style="width:13%" data-col="rating" id="thRating">Rating <span class="arrow"></span></th><th style="width:16%" class="sorted" data-col="started" id="thStarted">Started <span class="arrow">▼</span></th><th style="width:16%" data-col="finished" id="thFinished">Finished <span class="arrow"></span></th><th style="width:23%" id="thLink">Link</th></tr></thead><tbody id="gamesBody"><tr><td colspan="5"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading...</p></div></td></tr></tbody></table></div>
+        <div class="games-grid" id="gamesGrid"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading...</p></div></div>
         <div class="footer">© 2026 <a href="https://grimcyanide.com">grimcyanide.com</a></div>
     </div>
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-inner" id="popupInner"></div>
+    </div>
     <script>
-        var allGames=[],currentSort='recent-started',sortDirections={game:'az',rating:'rating-high',started:'recent-started',finished:'recent-finished'},sortToggles={'az':'za','za':'az','rating-high':'rating-low','rating-low':'rating-high','recent-started':'oldest-started','oldest-started':'recent-started','recent-finished':'oldest-finished','oldest-finished':'recent-finished'},columnIds=['game','rating','started','finished'],apiURL='https://grimcyanide-github-io.vercel.app/api/vods-sheet';
-        function loadGamesData(){var e=document.getElementById('gamesBody'),t=apiURL+'?t='+Date.now();fetch(t).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games,currentSort='recent-started',sortDirections={game:'az',rating:'rating-high',started:'recent-started',finished:'recent-finished'},updateAllArrows(),renderGames(),updateResultCount()):e.innerHTML='<tr><td colspan="5"><div class="no-results">No games found.</div></td></tr>'}).catch(function(t){console.error('Error:',t),e.innerHTML='<tr><td colspan="5"><div class="error-container">Failed to load data. '+t.message+'</div></td></tr>'})}
+        var allGames=[],currentSort='recent-started',apiURL='https://grimcyanide-github-io.vercel.app/api/vods-sheet',posterBase='https://data.grimcyanide.com/posters/';
+        function loadGamesData(){var e=document.getElementById('gamesGrid'),t=apiURL+'?t='+Date.now();fetch(t).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games,renderGames(),updateResultCount()):e.innerHTML='<div class="no-results">No games found.</div>'}).catch(function(t){e.innerHTML='<div class="no-results">Failed to load data. '+t.message+'</div>'})}
         function parseDate(e){if(!e)return null;var t=e.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(t)return new Date(t[3],t[2]-1,t[1]);var o=new Date(e);return isNaN(o.getTime())?null:o}
         function sortGames(e,t){var o=e.slice();switch(t){case'az':return o.sort(function(e,t){return e.game.localeCompare(t.game)});case'za':return o.sort(function(e,t){return t.game.localeCompare(e.game)});case'recent-started':return o.sort(function(e,t){var o=parseDate(e.dateStarted),n=parseDate(t.dateStarted);return!o&&!n?0:!o?1:!n?-1:n-o});case'oldest-started':return o.sort(function(e,t){var o=parseDate(e.dateStarted),n=parseDate(t.dateStarted);return!o&&!n?0:!o?-1:!n?1:o-n});case'recent-finished':return o.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return!o&&!n?0:!o?1:!n?-1:n-o});case'oldest-finished':return o.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return!o&&!n?0:!o?-1:!n?1:o-n});case'rating-high':return o.sort(function(e,t){return(t.rating||0)-(e.rating||0)});case'rating-low':return o.sort(function(e,t){return(e.rating||0)-(t.rating||0)});default:return o}}
         function filterGames(e,t,o){var n=e;return'all'!==t&&(n=n.filter(function(e){return e.isFinished===t})),o.trim()&&(o=o.toLowerCase().trim(),n=n.filter(function(e){return e.game.toLowerCase().indexOf(o)>-1})),n}
         function hasValue(e){return null!==e&&void 0!==e&&e.toString().trim().length>0}
-        function getPartCount(e,t){if(hasValue(e)){var o=e.toString().trim(),n=parseInt(o,10);if(!isNaN(n))return n;var a=o.match(/(\d+)\s*part/);if(a)return parseInt(a[1],10)}return t||0}
-        function formatParts(e,t){if(hasValue(e)){var o=e.toString().trim();if(o.toLowerCase().indexOf('so far')>-1){o=o.replace(/so far/i,'').trim();return o.toLowerCase().indexOf('part')===-1&&(o+=o?' parts so far':'parts so far'),o}return o.toLowerCase().indexOf('part')===-1&&(o+=' part'+(t&&1!==t?'s':'')),o}return''}
-        function updateAllArrows(){columnIds.forEach(function(e){var t=document.getElementById('th'+e.charAt(0).toUpperCase()+e.slice(1));if(t){var o=t.querySelector('.arrow');if(o){t.classList.remove('sorted'),o.textContent='';var n=sortDirections[e];n===currentSort&&(t.classList.add('sorted'),n.indexOf('low')>-1||'za'===n||n.indexOf('oldest')>-1?o.textContent='▲':o.textContent='▼')}}})}
-        function setSort(e){var t=sortDirections[e],o=sortToggles[t];sortDirections[e]=o,currentSort=o,updateAllArrows(),renderGames()}
-        function renderGames(){var e=document.getElementById('gamesBody'),t=document.getElementById('statusFilter').value,o=document.getElementById('searchInput').value,n=sortGames(allGames,currentSort),a=filterGames(n,t,o);if(updateResultCount(a.length),!a.length){e.innerHTML='<tr><td colspan="5"><div class="no-results">No games match.</div></td></tr>';return}e.innerHTML=a.map(function(e){var t=formatParts(e.partsDisplay,e.parts),o=getPartCount(e.partsDisplay,e.parts),n=e.rating&&e.rating>0?e.rating+'/10':'<span class="text-coming">COMING SOON</span>',a=hasValue(e.dateStarted)?e.dateStarted:'<span class="text-coming">COMING SOON</span>',i=hasValue(e.dateFinished)?e.dateFinished:'<span class="text-coming">COMING SOON</span>',s=hasValue(e.linkUrl),l=e.linkText||'Watch',r=s?'<a href="'+escapeHtml(e.linkUrl)+'" target="_blank" rel="noopener" class="game-link">▶ '+escapeHtml(l)+'</a>':'<span class="text-coming">COMING SOON</span>',d=t&&o>1?'<span class="game-parts-sub">'+t+'</span>':'';return'<tr><td><span class="game-name">'+escapeHtml(e.game)+'</span></td><td><span class="game-rating">'+n+'</span></td><td><span class="game-date">'+a+'</span></td><td><span class="game-date">'+i+'</span></td><td>'+r+d+'</td></tr>'}).join('')}
+        function getPosterUrl(e){if(!e||e==='0'||e==='N/A')return null;return posterBase+e+'.jpg'}
+        function getRatingDisplay(e,t){return e&&e>0?e+'/10':null}
+        function renderGames(){var e=document.getElementById('gamesGrid'),t=document.getElementById('statusFilter').value,o=document.getElementById('searchInput').value,n=sortGames(allGames,currentSort),a=filterGames(n,t,o);if(updateResultCount(a.length),!a.length){e.innerHTML='<div class="no-results">No games match.</div>';return}e.innerHTML=a.map(function(e,t){var o=getPosterUrl(e.poster),n=getRatingDisplay(e.rating,e.ratingDisplay),a=n?'card-rating-badge':'card-rating-badge na',i=n||'N/A';return'<div class="game-card" onclick=\'openPopup('+t+')\'><div class="card-poster">'+(o?'<img src="'+o+'" alt="'+escapeHtml(e.game)+'" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=\\'\''+'poster-fallback\\'">'+escapeHtml(e.game.charAt(0))+'</div><span class=\\''+a+'\\'>'+i+'</span>\'">':'<div class="poster-fallback">'+escapeHtml(e.game.charAt(0))+'</div>')+'<span class="'+a+'">'+i+'</span></div><div class="card-body"><div class="card-title">'+escapeHtml(e.game)+'</div></div></div>'}).join('')}
+        function openPopup(e){var t=allGames[e],o=document.getElementById('popupOverlay'),n=document.getElementById('popupInner');if(!t){return}var a=getRatingDisplay(t.rating,t.ratingDisplay)||'N/A';var i=hasValue(t.dateStarted)?t.dateStarted:'TBD';var s=hasValue(t.dateFinished)?t.dateFinished:'TBD';var l=hasValue(t.linkUrl)&&t.linkUrl!=='N/A';var r=t.linkText||'Watch';var d=t.parts||0;var p='';if(l){var u=t.linkUrl;if(t.parts&&t.parts>1&&u.indexOf('playlist')>-1){var h=u.match(/[&?]list=([^&]+)/);if(h){var c=h[1];p='<div class="parts-grid">';for(var m=1;m<=t.parts;m++){var g='https://img.youtube.com/vi/VIDEO_ID/mqdefault.jpg';p+='<a href="'+u+'&index='+m+'" target="_blank" class="part-card"><div class="part-thumb"><img src="'+g+'" alt="Part '+m+'" loading="lazy"></div><div class="part-info"><div class="part-title">Part '+m+'</div></div></a>'}p+='</div>'}else{p='<a href="'+escapeHtml(u)+'" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">▶ Watch on YouTube</a>'}}else{p='<a href="'+escapeHtml(u)+'" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">▶ Watch on YouTube</a>'}}else{p='<span style="color:var(--amber);font-style:italic">No link available</span>'}n.innerHTML='<h2>'+escapeHtml(t.game)+'</h2><div class="popup-meta"><span>Rating: '+a+'</span><span>Started: '+i+'</span><span>Finished: '+s+'</span><span>Status: '+t.isFinished+'</span></div>'+(d>1?'<div class="popup-parts-count">'+d+' Parts</div>':'')+p+'<button class="popup-close" onclick="closePopup()">close</button>';o.classList.add('active')}
+        function closePopup(){document.getElementById('popupOverlay').classList.remove('active')}
         function escapeHtml(e){var t=document.createElement('div');return t.textContent=e,t.innerHTML}
         function updateResultCount(e){var t=document.getElementById('resultCount');allGames.length&&(void 0!==e?t.textContent=e+' of '+allGames.length+' games':t.textContent=allGames.length+' games')}
-        document.getElementById('thGame').addEventListener('click',function(){setSort('game')}),document.getElementById('thRating').addEventListener('click',function(){setSort('rating')}),document.getElementById('thStarted').addEventListener('click',function(){setSort('started')}),document.getElementById('thFinished').addEventListener('click',function(){setSort('finished')}),document.getElementById('statusFilter').addEventListener('change',renderGames);
+        document.getElementById('popupOverlay').addEventListener('click',function(e){e.target===this&&closePopup()});
+        document.getElementById('statusFilter').addEventListener('change',renderGames);
+        document.getElementById('sortSelect').addEventListener('change',function(){currentSort=this.value;renderGames()});
         var searchTimeout;document.getElementById('searchInput').addEventListener('input',function(){clearTimeout(searchTimeout),searchTimeout=setTimeout(renderGames,200)});
-        var themeToggle=document.getElementById('themeToggle');themeToggle.addEventListener('click',function(){document.body.classList.toggle('light-mode'),localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark')}),loadGamesData();
+        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
+        loadGamesData();
     </script>
 </body>
 </html>
