@@ -28,6 +28,7 @@ export default async function handler(req, res) {
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
             videoId: item.snippet.resourceId.videoId,
+            publishedAt: item.snippet.publishedAt,
             url: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}&list=${playlistId}`
           })));
         }
@@ -48,6 +49,7 @@ export default async function handler(req, res) {
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
             videoId: videoId,
+            publishedAt: item.snippet.publishedAt,
             url: `https://www.youtube.com/watch?v=${videoId}`
           }]
         });
