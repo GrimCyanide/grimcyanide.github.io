@@ -21,8 +21,8 @@
     <meta name="twitter:description" content="My full Steam game library">
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <style>
-        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--amber:#d2991d;--green:#4ade80;--blue:#58a6ff;--badge-bg:rgba(48,54,61,0.8);--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
-        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#6b7280;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--amber:#92400e;--green:#15803d;--blue:#0969da;--badge-bg:rgba(209,213,219,0.6)}
+        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--blue:#58a6ff;--radius:8px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
+        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#6b7280;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--green:#15803d;--blue:#0969da}
         *{box-sizing:border-box}
         body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
@@ -30,83 +30,97 @@
         .nav-left{display:flex;align-items:center;gap:8px}
         .nav-logo{font-weight:700;font-size:1.1em;color:var(--accent);text-decoration:none;letter-spacing:-0.5px}
         .nav-links{display:flex;gap:4px;flex-wrap:wrap}
-        .nav-link{background:transparent;border:1px solid transparent;border-radius:var(--radius);padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
+        .nav-link{background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
         .nav-right{display:flex;align-items:center;gap:10px}
         .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
         .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
-        .status-bar{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 24px;font-size:0.85em;color:var(--muted);flex-wrap:wrap}
-        .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+        .status-bar{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 24px;font-size:0.82em;color:var(--muted);flex-wrap:wrap}
+        .status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
         .status-dot.online{background:var(--green)}
         .status-dot.offline{background:var(--muted)}
-        .status-bar a{color:var(--blue);text-decoration:none;font-size:0.9em}
-        .status-bar a:hover{opacity:0.7}
-        .container{max-width:1100px;margin:0 auto;padding:24px 24px 40px}
+        .container{width:95%;margin:0 auto;padding:20px 0 40px}
         .header{text-align:center;margin-bottom:20px}
         .header h1{font-size:2em;margin:0 0 4px 0;font-weight:700;letter-spacing:-0.5px}
         .header .subtitle{color:var(--muted);font-size:0.95em;margin:0}
-        .stats-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:24px}
-        .stat-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;text-align:center;min-width:110px}
-        .stat-value{font-size:1.3em;font-weight:700;font-family:var(--mono);color:var(--accent)}
-        .stat-label{font-size:0.68em;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-top:2px}
-        .filters-section{display:flex;justify-content:center;margin-bottom:20px}
-        .filter-group input{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s,box-shadow 0.2s;width:260px}
-        .filter-group input:hover{border-color:var(--accent)}
-        .filter-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-        .result-count{color:var(--muted);font-size:0.82em;margin-bottom:10px;font-family:var(--mono);text-align:center}
-        .table-wrapper{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--border)}
-        table{width:100%;border-collapse:collapse}
-        thead th{background:var(--surface);color:var(--muted);font-size:0.78em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;padding:10px 8px;text-align:center;cursor:pointer;user-select:none;white-space:nowrap;border-bottom:1px solid var(--border);transition:color 0.15s}
-        thead th:hover{color:var(--accent)}
-        thead th .arrow{margin-left:3px;font-size:0.65em;opacity:0.5}
-        thead th.sorted{color:var(--accent)}
-        thead th.sorted .arrow{opacity:1;color:var(--accent)}
-        tbody td{padding:10px 8px;font-size:0.88em;font-weight:500;border-bottom:1px solid var(--border);vertical-align:middle;word-break:break-word;text-align:center}
-        tbody tr td{background:var(--surface)}
-        tbody tr:nth-child(even) td{background:var(--surface-alt)}
-        tbody tr:hover td{background:var(--badge-bg)}
-        tbody tr:last-child td{border-bottom:none}
-        .game-name{font-weight:600;text-align:left}
-        .game-name a{color:inherit;text-decoration:none;cursor:pointer}
-        .game-name a:hover{color:var(--accent)}
-        .game-playtime{font-family:var(--mono);color:var(--muted);font-size:0.82em;white-space:nowrap}
-        .game-recent{font-family:var(--mono);color:var(--green);font-size:0.74em;white-space:nowrap;display:block}
-        .game-lastplayed{font-family:var(--mono);color:var(--muted);font-size:0.78em;white-space:nowrap}
-        .game-logo{width:28px;height:28px;border-radius:4px;object-fit:cover}
-        .ach-btn{background:var(--surface);border:1px solid var(--blue);border-radius:4px;color:var(--blue);cursor:pointer;font-size:0.7em;padding:3px 8px;font-family:var(--font);font-weight:600;transition:all 0.15s;white-space:nowrap}
-        .ach-btn:hover{background:rgba(88,166,255,0.1);border-color:var(--blue)}
-        .loading-container{text-align:center;padding:40px 16px}
-        .loading-spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .loading-text{color:var(--muted);margin-top:10px;font-size:0.9em}
-        .error-container{text-align:center;padding:28px 16px;color:#f85149;font-size:0.9em}
-        .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:32px}
+        .stats-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:20px}
+        .stat-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 16px;text-align:center;min-width:90px}
+        .stat-value{font-size:1.2em;font-weight:700;font-family:var(--mono);color:var(--accent)}
+        .stat-value.green{color:var(--green)}
+        .stat-value.blue{color:var(--blue)}
+        .stat-label{font-size:0.65em;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-top:2px}
+        .filters-section{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;align-items:center;justify-content:center}
+        .filter-group{display:flex;align-items:center;gap:6px}
+        .filter-group label{color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;white-space:nowrap}
+        .filter-group select,.filter-group input{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;min-width:120px;cursor:pointer}
+        .filter-group select:hover,.filter-group input:hover{border-color:var(--accent)}
+        .filter-group select:focus,.filter-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+        .filter-group select option{background:var(--surface);color:var(--text)}
+        .search-input{min-width:200px!important;flex:1;max-width:280px}
+        .sort-group{display:flex;align-items:center;gap:6px}
+        .sort-group label{color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;white-space:nowrap}
+        .sort-group select{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;cursor:pointer;min-width:140px}
+        .sort-group select:hover{border-color:var(--accent)}
+        .sort-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+        .sort-group select option{background:var(--surface);color:var(--text)}
+        .view-toggle{display:flex;align-items:center;gap:4px}
+        .view-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 12px;cursor:pointer;font-family:var(--font);font-size:0.78em;font-weight:500;border-radius:4px;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px}
+        .view-btn:hover{border-color:var(--accent);color:var(--text)}
+        .view-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+        .result-count{color:var(--muted);font-size:0.82em;margin-bottom:16px;font-family:var(--mono);text-align:center}
+        .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+        .games-grid.compact{grid-template-columns:repeat(7,1fr);gap:10px}
+        .games-grid.compact .card-body{padding:6px 8px}
+        .games-grid.compact .card-title{font-size:0.72em}
+        .games-grid.compact .sb-left,.games-grid.compact .sb-center,.games-grid.compact .sb-right{font-size:0.68em}
+        .games-grid.compact .card-status-bar{padding:0 6px;height:7%}
+        .game-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.2s,transform 0.2s;cursor:pointer}
+        .game-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .game-card.skeleton{cursor:default;pointer-events:none}
+        .game-card.skeleton:hover{border-color:var(--border);transform:none}
+        .card-poster{width:100%;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden;position:relative}
+        .card-poster img{width:100%;height:100%;object-fit:cover;display:block}
+        .card-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;color:var(--border);background:var(--surface-alt)}
+        .card-poster .skeleton-shimmer{width:100%;height:100%;background:linear-gradient(90deg,var(--surface-alt) 25%,var(--border) 50%,var(--surface-alt) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .card-status-bar{position:absolute;bottom:0;left:0;right:0;height:8%;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none;background:rgba(0,0,0,0.7)}
+        .card-status-bar .sb-left{text-align:left;flex:1}
+        .card-status-bar .sb-center{text-align:center;flex:1}
+        .card-status-bar .sb-right{text-align:right;flex:1}
+        .sb-left{font-size:0.86em;font-weight:700;font-family:var(--mono);color:var(--blue)}
+        .sb-center{font-size:0.86em;font-weight:700;font-family:var(--mono);color:#fff}
+        .sb-right{font-size:0.86em;font-weight:700;font-family:var(--mono);color:var(--muted)}
+        .card-body{padding:10px 12px}
+        .card-title{font-weight:700;font-size:0.85em;line-height:1.2;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .card-body .skeleton-line{height:12px;background:var(--border);border-radius:4px;width:70%;margin:0 auto;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{opacity:0.4}50%{opacity:0.8}}
+        .no-results{text-align:center;color:var(--muted);padding:48px 16px;font-size:0.95em;grid-column:1/-1}
+        .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:40px}
         .footer a{color:var(--muted);text-decoration:none}
         .footer a:hover{color:var(--accent)}
-        .popup-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999;justify-content:center;align-items:center}
+        .popup-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:flex-start;padding-top:20px}
         .popup-overlay.active{display:flex}
-        .popup-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:500px;width:90%;max-height:65vh;overflow-y:auto;text-align:center}
-        .popup-inner h3{margin:0 0 10px 0;font-size:1.05em}
-        .popup-inner p{color:var(--muted);margin-bottom:16px;font-size:0.88em}
-        .ach-summary{color:var(--muted);margin-bottom:14px;font-size:0.85em}
-        .popup-buttons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-        .popup-btn{padding:8px 16px;border-radius:var(--radius);font-family:var(--font);font-size:0.85em;font-weight:600;cursor:pointer;transition:all 0.15s;text-decoration:none}
-        .popup-btn-primary{background:var(--blue);border:none;color:#fff}
-        .popup-btn-primary:hover{opacity:0.85}
-        .popup-btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}
-        .popup-btn-secondary:hover{border-color:var(--accent)}
-        .popup-close{background:var(--border);border:none;color:var(--text);padding:6px 14px;border-radius:4px;cursor:pointer;margin-top:14px;font-family:var(--font);font-size:0.8em;width:100%}
+        .popup-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;max-width:800px;width:95%;max-height:85vh;overflow-y:auto}
+        .popup-inner h2{margin:0 0 6px 0;font-size:1.5em}
+        .popup-meta{color:var(--muted);font-size:1.1em;margin-bottom:16px}
+        .popup-meta span{margin-right:24px;font-weight:700;color:var(--text)}
+        .popup-detail{font-size:0.95em;color:var(--muted);margin-bottom:8px}
+        .popup-detail strong{color:var(--text)}
+        .popup-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+        .popup-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 18px;border-radius:4px;cursor:pointer;font-family:var(--font);font-size:0.88em;font-weight:600;text-decoration:none;transition:all 0.15s;display:inline-block}
+        .popup-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
+        .popup-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+        .popup-btn.primary:hover{opacity:0.85}
+        .popup-close{background:var(--border);border:none;color:var(--text);padding:12px 16px;border-radius:4px;cursor:pointer;margin-top:20px;font-family:var(--font);font-size:0.9em;width:100%}
         .popup-close:hover{background:var(--accent)}
-        .ach-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.84em;text-align:left}
-        .ach-row:nth-child(odd){background:rgba(255,255,255,0.01)}
-        .ach-icon{font-size:1em;flex-shrink:0;width:18px;text-align:center}
-        .ach-icon.unlocked{color:var(--green)}
-        .ach-icon.locked{color:var(--muted);opacity:0.3}
-        .ach-info{flex:1;min-width:0}
-        .ach-name{font-weight:600;font-size:0.9em}
-        .ach-desc{color:var(--muted);font-size:0.76em;margin-top:1px}
-        @media(max-width:700px){.container{padding:12px 2px}.stats-bar{gap:6px}.stat-item{padding:8px 10px;min-width:65px}.stat-value{font-size:1em}.filter-group input{width:200px}.game-logo{width:16px;height:16px}.game-playtime{font-size:0.7em}.game-lastplayed{font-size:0.68em}.game-recent{font-size:0.64em}.ach-btn{font-size:0.62em;padding:2px 6px}.popup-inner{max-width:95%;padding:14px}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}thead th{padding:6px 2px;font-size:0.52em}tbody td{padding:8px 2px;font-size:0.62em}.game-name{white-space:normal;word-break:break-word}}
+        .popup-inner::-webkit-scrollbar{width:5px}
+        .popup-inner::-webkit-scrollbar-track{background:transparent}
+        .popup-inner::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+        @media(min-width:1800px){.games-grid{grid-template-columns:repeat(7,1fr)}.games-grid.compact{grid-template-columns:repeat(10,1fr)}}
+        @media(max-width:1100px){.games-grid{grid-template-columns:repeat(4,1fr);gap:12px}.games-grid.compact{grid-template-columns:repeat(5,1fr);gap:8px}}
+        @media(max-width:860px){.games-grid{grid-template-columns:repeat(3,1fr);gap:10px}.games-grid.compact{grid-template-columns:repeat(4,1fr);gap:8px}.container{padding:16px 0 32px}.card-body{padding:8px 10px}.card-title{font-size:0.78em}.sb-left,.sb-center,.sb-right{font-size:0.72em}}
+        @media(max-width:600px){.container{width:100%;padding:12px 6px 24px}.games-grid{grid-template-columns:repeat(2,1fr);gap:8px}.games-grid.compact{grid-template-columns:repeat(3,1fr);gap:6px}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.popup-inner{padding:18px}.sb-left,.sb-center,.sb-right{font-size:0.65em}}
     </style>
 </head>
 <body data-view-transition="steam">
@@ -115,33 +129,46 @@
         <div class="nav-links"><a href="/" class="nav-link">Home</a><a href="/vods" class="nav-link">VODs &amp; Ratings</a><a href="/steam" class="nav-link active">Steam Games</a></div>
         <div class="nav-right"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
     </nav>
-    <div class="status-bar" id="steamStatusBar"><span class="status-dot offline" id="steamStatusDot"></span><span id="steamStatusText">loading...</span><a href="https://steamcommunity.com/id/GrimCyanide" target="_blank" id="steamProfileLink">view profile →</a></div>
+    <div class="status-bar" id="steamStatusBar"><span class="status-dot offline" id="steamDot"></span> <span id="steamStatus">loading...</span></div>
     <div class="container">
         <div class="header"><h1>My Steam Library</h1><p class="subtitle">Every game I own on Steam</p></div>
         <div class="stats-bar" id="statsBar"></div>
-        <div class="filters-section"><div class="filter-group"><input type="text" id="searchInput" placeholder="Filter games..."></div></div>
+        <div class="filters-section">
+            <div class="filter-group"><label for="searchInput">Search</label><input type="text" id="searchInput" class="search-input" placeholder="Filter games..."></div>
+            <div class="sort-group"><label for="sortSelect">Sort</label><select id="sortSelect"><option value="az">Name A-Z</option><option value="za">Name Z-A</option><option value="playtime">Playtime High-Low</option><option value="playtime-low">Playtime Low-High</option><option value="recent">Recently Played</option><option value="oldest">Least Recently Played</option></select></div>
+            <div class="view-toggle"><button class="view-btn active" id="viewDefault" onclick="setView(5)">Default</button><button class="view-btn" id="viewCompact" onclick="setView(7)">Compact</button></div>
+        </div>
         <div class="result-count" id="resultCount"></div>
-        <div class="table-wrapper"><table><thead><tr><th style="width:32px"></th><th style="text-align:left" data-col="name" id="thName">Game <span class="arrow"></span></th><th style="width:85px" data-col="playtime" id="thPlaytime">Playtime <span class="arrow"></span></th><th style="width:95px" data-col="lastplayed" class="sorted" id="thLastPlayed">Last Played <span class="arrow">▼</span></th><th style="width:75px"></th></tr></thead><tbody id="gamesBody"><tr><td colspan="5"><div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading library...</p></div></td></tr></tbody></table></div>
+        <div class="games-grid" id="gamesGrid"></div>
         <div class="footer">© 2026 <a href="https://grimcyanide.com">grimcyanide.com</a> — data from Steam</div>
     </div>
-    <div class="popup-overlay" id="popupOverlay"><div class="popup-inner" id="popupInner"></div></div>
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-inner" id="popupInner"></div>
+    </div>
     <script>
-        var allGames=[],currentSort='recent',sortDirections={name:'name-az',playtime:'playtime-desc',lastplayed:'recent'},sortToggles={'name-az':'name-za','name-za':'name-az','playtime-desc':'playtime-asc','playtime-asc':'playtime-desc','recent':'oldest','oldest':'recent'},columnIds={name:'thName',playtime:'thPlaytime',lastplayed:'thLastPlayed'},steamId='76561198066010654',gamesApiURL='https://grimcyanide-github-io.vercel.app/api/steam-games',achApiURL='https://grimcyanide-github-io.vercel.app/api/steam-achievements',excludeIds=[629520,1009850,1125480,914690,2687190,1587560,1773890,2776810,1493300,2013900,1446330,2667970,2743080,1471530];
-        function loadData(){var e=document.getElementById('gamesBody'),t=gamesApiURL+'?steamid='+steamId+'&type=owned&t='+Date.now();fetch(t).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games.filter(function(e){return-1===excludeIds.indexOf(e.appid)}),renderStats(),updateAllArrows(),renderGames(),updateResultCount()):e.innerHTML='<tr><td colspan="5"><div class="error-container">No games found. Make sure your Steam profile is public.</div></td></tr>'}).catch(function(t){console.error(t),e.innerHTML='<tr><td colspan="5"><div class="error-container">Failed to load: '+t.message+'</div></td></tr>'}),fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid='+steamId).then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamStatusDot'),o=document.getElementById('steamStatusText');e.online?(t.className='status-dot online',e.game?o.textContent='steam: currently playing '+e.game:o.textContent='steam: online'):(t.className='status-dot offline',o.textContent='steam: offline')}).catch(function(){document.getElementById('steamStatusText').textContent='steam: offline'})}
-        function renderStats(){var e=allGames.length,t=0;allGames.forEach(function(e){t+=e.playtime_forever||0});var o=(t/60).toFixed(0),n=e>0?(t/60/e).toFixed(1):'0';document.getElementById('statsBar').innerHTML='<div class="stat-item"><div class="stat-value">'+e+'</div><div class="stat-label">Games</div></div><div class="stat-item"><div class="stat-value">'+o+'h</div><div class="stat-label">Total Playtime</div></div><div class="stat-item"><div class="stat-value">'+n+'h</div><div class="stat-label">Avg Per Game</div></div>'}
-        function timeAgo(e){if(!e||0===e)return'Never';var t=Math.floor(Date.now()/1e3),o=t-e;return o<60?'Just now':o<3600?Math.floor(o/60)+'m ago':o<86400?Math.floor(o/3600)+'h ago':o<604800?Math.floor(o/86400)+'d ago':o<2592e3?Math.floor(o/604800)+'w ago':o<31536e3?Math.floor(o/2592e3)+'mo ago':Math.floor(o/31536e3)+'y ago'}
-        function updateAllArrows(){Object.keys(columnIds).forEach(function(e){var t=document.getElementById(columnIds[e]);if(t){var o=t.querySelector('.arrow');o&&(t.classList.remove('sorted'),o.textContent='',sortDirections[e]===currentSort&&(t.classList.add('sorted'),currentSort.includes('za')||currentSort.includes('asc')||currentSort.includes('oldest')?o.textContent='▲':o.textContent='▼'))}})}
-        function setSort(e){var t=sortDirections[e],o=sortToggles[t];sortDirections[e]=o,currentSort=o,updateAllArrows(),renderGames()}
-        function renderGames(){var e=document.getElementById('gamesBody'),t=document.getElementById('searchInput').value.toLowerCase().trim(),o=allGames.slice();switch(currentSort){case'name-az':o.sort(function(e,t){return e.name.localeCompare(t.name)});break;case'name-za':o.sort(function(e,t){return t.name.localeCompare(e.name)});break;case'playtime-desc':o.sort(function(e,t){return(t.playtime_forever||0)-(e.playtime_forever||0)});break;case'playtime-asc':o.sort(function(e,t){return(e.playtime_forever||0)-(t.playtime_forever||0)});break;case'recent':o.sort(function(e,t){return(t.rtime_last_played||0)-(e.rtime_last_played||0)});break;case'oldest':o.sort(function(e,t){return(e.rtime_last_played||0)-(t.rtime_last_played||0)})}t&&(o=o.filter(function(e){return e.name.toLowerCase().indexOf(t)>-1})),updateResultCount(o.length),o.length?e.innerHTML=o.map(function(e){var t=(e.playtime_forever/60).toFixed(1),o=t>=1?t+'h':Math.round(e.playtime_forever)+'m',n=e.playtime_2weeks?(e.playtime_2weeks/60).toFixed(1):0,a=n>0?'<span class="game-recent">'+n+'h recent</span>':'',i=timeAgo(e.rtime_last_played),s=e.img_icon_url?'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/'+e.appid+'/'+e.img_icon_url+'.jpg':'';return'<tr><td>'+(s?'<img src="'+s+'" class="game-logo" loading="lazy" onerror="this.style.display=\'none\'">':'')+'</td><td class="game-name"><a onclick="openStorePopup('+e.appid+',\''+escapeHtml(e.name).replace(/'/g,"\\'")+'\')" title="view on Steam store">'+escapeHtml(e.name)+'</a></td><td class="game-playtime">'+o+a+'</td><td class="game-lastplayed">'+i+'</td><td><button class="ach-btn" onclick="loadAchievements('+e.appid+',\''+escapeHtml(e.name).replace(/'/g,"\\'")+'\')">achievements</button></td></tr>'}).join(''):e.innerHTML='<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--muted);">No games match.</td></tr>'}
-        function openStorePopup(e,t){var o=document.getElementById('popupOverlay'),n=document.getElementById('popupInner');n.innerHTML='<h3>'+t+'</h3><p>open this game in the Steam store?</p><div class="popup-buttons"><a href="https://store.steampowered.com/app/'+e+'" target="_blank" class="popup-btn popup-btn-primary">open store page</a><button class="popup-btn popup-btn-secondary" onclick="closePopup()">cancel</button></div>',o.classList.add('active')}
-        function loadAchievements(e,t){var o=document.getElementById('popupOverlay'),n=document.getElementById('popupInner');n.innerHTML='<h3>'+t+'</h3><div style="text-align:center;padding:16px;color:var(--muted);">Loading achievements...</div>',o.classList.add('active'),fetch(achApiURL+'?steamid='+steamId+'&appid='+e).then(function(e){if(!e.ok)throw new Error('Failed');return e.json()}).then(function(e){if(!e.achievements||!e.achievements.length){n.innerHTML='<h3>'+t+'</h3><p style="color:var(--muted);text-align:center;padding:16px;">No achievements available.</p><button class="popup-close" onclick="closePopup()">close</button>';return}var o=e.achievements.filter(function(e){return 1===e.achieved}).length,a=e.achievements.length,i=Math.round(o/a*100),s='<h3>'+t+'</h3><div class="ach-summary">'+o+'/'+a+' ('+i+'%)</div>';e.achievements.forEach(function(e){var t=1===e.achieved;s+='<div class="ach-row"><span class="ach-icon '+(t?'unlocked':'locked')+'">'+(t?'✓':'○')+'</span><div class="ach-info"><div class="ach-name">'+escapeHtml(e.name)+'</div><div class="ach-desc">'+escapeHtml(e.description||'')+'</div></div></div>'}),s+='<button class="popup-close" onclick="closePopup()">close</button>',n.innerHTML=s}).catch(function(){n.innerHTML='<h3>'+t+'</h3><p style="color:#f85149;text-align:center;padding:16px;">Failed to load achievements.</p><button class="popup-close" onclick="closePopup()">close</button>'})}
+        var allGames=[],currentSort='playtime',apiURL='https://grimcyanide-github-io.vercel.app/api/steam-games',achApiURL='https://grimcyanide-github-io.vercel.app/api/steam-achievements',steamId='76561198066010654',currentView=5;
+        function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<20;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
+        renderSkeletons();
+        function setView(e){currentView=e;document.getElementById('gamesGrid').classList.toggle('compact',e===7);document.getElementById('viewDefault').classList.toggle('active',e===5);document.getElementById('viewCompact').classList.toggle('active',e===7);renderGames()}
+        function loadData(){var e=document.getElementById('gamesGrid');fetch(apiURL+'?steamid='+steamId+'&type=owned&t='+Date.now()).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games,renderStats(),renderGames(),updateResultCount()):e.innerHTML='<div class="no-results">No games found. Make sure your Steam profile is public.</div>'}).catch(function(t){e.innerHTML='<div class="no-results">Failed to load: '+t.message+'</div>'});fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid='+steamId).then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='Currently playing: '+e.game:o.textContent='Online'):(t.className='status-dot offline',o.textContent='Offline')}).catch(function(){document.getElementById('steamStatus').textContent='Offline'})}
+        function timeAgo(e){if(!e||0===e)return'Never';var t=Math.floor(Date.now()/1e3),o=t-e;return o<60?'Just now':o<3600?Math.floor(o/60)+'m ago':o<86400?Math.floor(o/3600)+'h ago':o<604800?Math.floor(o/86400)+'d ago':o<2592e3?Math.floor(o/604800)+'w ago':Math.floor(o/2592e3)+'mo ago'}
+        function sortGames(e,t){var o=e.slice();switch(t){case'az':return o.sort(function(e,t){return e.name.localeCompare(t.name)});case'za':return o.sort(function(e,t){return t.name.localeCompare(e.name)});case'playtime':return o.sort(function(e,t){return(t.playtime_forever||0)-(e.playtime_forever||0)});case'playtime-low':return o.sort(function(e,t){return(e.playtime_forever||0)-(t.playtime_forever||0)});case'recent':return o.sort(function(e,t){return(t.rtime_last_played||0)-(e.rtime_last_played||0)});case'oldest':return o.sort(function(e,t){return(e.rtime_last_played||0)-(t.rtime_last_played||0)});default:return o}}
+        function getGridUrl(e){return'https://cdn.cloudflare.steamstatic.com/steam/apps/'+e+'/library_600x900.jpg'}
+        function formatPlaytime(e){var t=(e/60).toFixed(1);return t>=1?t+'h':Math.round(e)+'m'}
+        function renderStats(){var e=allGames.length,t=0,o=0;allGames.forEach(function(e){t+=e.playtime_forever||0;if(e.rtime_last_played){var a=Math.floor(Date.now()/1e3)-e.rtime_last_played;if(a<1209600)o++}});var n=(t/60).toFixed(0);var i=e>0?(t/60/e).toFixed(1):'0';document.getElementById('statsBar').innerHTML='<div class="stat-item"><div class="stat-value">'+e+'</div><div class="stat-label">Games</div></div><div class="stat-item"><div class="stat-value green">'+n+'h</div><div class="stat-label">Total Playtime</div></div><div class="stat-item"><div class="stat-value">'+i+'h</div><div class="stat-label">Avg Per Game</div></div><div class="stat-item"><div class="stat-value blue">'+o+'</div><div class="stat-label">Played Recently</div></div>'}
+        var currentGameIndexes=[];
+        function renderGames(){var e=document.getElementById('gamesGrid'),t=document.getElementById('searchInput').value.toLowerCase().trim(),o=sortGames(allGames,currentSort),n=t?o.filter(function(e){return e.name.toLowerCase().indexOf(t)>-1}):o;updateResultCount(n.length);currentGameIndexes=[];if(!n.length){e.innerHTML='<div class="no-results">No games match.</div>';return}var a='';for(var i=0;i<n.length;i++){var s=n[i];currentGameIndexes.push(allGames.indexOf(s));var l=getGridUrl(s.appid),r=formatPlaytime(s.playtime_forever||0);var d=s.playtime_2weeks?(s.playtime_2weeks/60).toFixed(1):0;var p=d>0?'+'+d+'h':' ';var u=timeAgo(s.rtime_last_played);var h=escapeHtml(s.name),c=escapeHtml(s.name.charAt(0));a+='<div class="game-card" data-idx="'+i+'"><div class="card-poster"><img src="'+l+'" alt="'+h+'" loading="lazy" onerror="var f=this.parentNode;var b=f.querySelector(\'.card-status-bar\')?f.querySelector(\'.card-status-bar\').outerHTML:\'\';f.innerHTML=\'<div class=&quot;poster-fallback&quot;>'+c+'</div>\'+b"><div class="card-status-bar"><span class="sb-left">'+p+'</span><span class="sb-center">'+r+'</span><span class="sb-right">'+u+'</span></div></div><div class="card-body"><div class="card-title">'+h+'</div></div></div>'}e.innerHTML=a;document.querySelectorAll('.game-card').forEach(function(e){e.addEventListener('click',function(){openPopup(parseInt(this.getAttribute('data-idx')))})})}
+        function openPopup(e){var t=allGames[currentGameIndexes[e]];var o=document.getElementById('popupOverlay'),n=document.getElementById('popupInner');if(!t){return}var a=formatPlaytime(t.playtime_forever||0);var i=t.playtime_2weeks?(t.playtime_2weeks/60).toFixed(1):'0';var s=timeAgo(t.rtime_last_played);var l=getGridUrl(t.appid);n.innerHTML='<h2>'+escapeHtml(t.name)+'</h2><img src="'+l+'" alt="'+escapeHtml(t.name)+'" style="width:200px;border-radius:6px;margin:12px 0;display:block" onerror="this.style.display=\'none\'"><div class="popup-meta"><span>Total: '+a+'</span><span>Recent: '+i+'h</span><span>Last: '+s+'</span></div><div class="popup-detail"><strong>App ID:</strong> '+t.appid+'</div><div class="popup-buttons"><a href="https://store.steampowered.com/app/'+t.appid+'" target="_blank" class="popup-btn primary">Steam Store</a><button class="popup-btn" onclick="loadAchievements('+t.appid+',\''+escapeHtml(t.name).replace(/'/g,"\\'")+'\')">Achievements</button></div><div id="achContainer"></div><button class="popup-close" onclick="closePopup()">close</button>';o.classList.add('active')}
+        function loadAchievements(e,t){var o=document.getElementById('achContainer');o.innerHTML='<div style="text-align:center;padding:12px;color:var(--muted);">Loading achievements...</div>';fetch(achApiURL+'?steamid='+steamId+'&appid='+e).then(function(e){if(!e.ok)throw new Error('Failed');return e.json()}).then(function(e){if(!e.achievements||!e.achievements.length){o.innerHTML='<p style="color:var(--muted);text-align:center;padding:12px;">No achievements available.</p>';return}var t=e.achievements.filter(function(e){return 1===e.achieved}).length,n=e.achievements.length,a=Math.round(t/n*100);var i='<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);"><div style="font-weight:700;margin-bottom:8px;font-size:0.95em">Achievements: '+t+'/'+n+' ('+a+'%)</div>';e.achievements.forEach(function(e){var t=1===e.achieved;i+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:0.82em;border-bottom:1px solid var(--border)"><span style="color:'+(t?'var(--green)':'var(--muted)')+';opacity:'+(t?'1':'0.3')+'">'+(t?'✓':'○')+'</span><div><div style="font-weight:600">'+escapeHtml(e.name)+'</div><div style="color:var(--muted);font-size:0.85em">'+escapeHtml(e.description||'')+'</div></div></div>'});i+='</div>';o.innerHTML=i}).catch(function(){o.innerHTML='<p style="color:#f85149;text-align:center;padding:12px;">Failed to load achievements.</p>'})}
         function closePopup(){document.getElementById('popupOverlay').classList.remove('active')}
-        document.getElementById('popupOverlay').addEventListener('click',function(e){e.target===this&&closePopup()});
         function escapeHtml(e){var t=document.createElement('div');return t.textContent=e,t.innerHTML}
-        function updateResultCount(e){var t=document.getElementById('resultCount');void 0!==e?t.textContent=e+' of '+allGames.length+' games':t.textContent=allGames.length+' games'}
-        document.getElementById('thName').addEventListener('click',function(){setSort('name')}),document.getElementById('thPlaytime').addEventListener('click',function(){setSort('playtime')}),document.getElementById('thLastPlayed').addEventListener('click',function(){setSort('lastplayed')});
+        function updateResultCount(e){var t=document.getElementById('resultCount');allGames.length&&(void 0!==e?t.textContent=e+' of '+allGames.length+' games':t.textContent=allGames.length+' games')}
+        document.getElementById('popupOverlay').addEventListener('click',function(e){e.target===this&&closePopup()});
+        document.addEventListener('keydown',function(e){e.key==='Escape'&&closePopup()});
+        document.getElementById('sortSelect').addEventListener('change',function(){currentSort=this.value;renderGames()});
         var searchTimeout;document.getElementById('searchInput').addEventListener('input',function(){clearTimeout(searchTimeout),searchTimeout=setTimeout(renderGames,200)});
-        var themeToggle=document.getElementById('themeToggle');themeToggle.addEventListener('click',function(){document.body.classList.toggle('light-mode'),localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark')}),loadData();
+        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
+        loadData();
     </script>
 </body>
 </html>
