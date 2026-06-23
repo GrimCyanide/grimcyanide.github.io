@@ -9,24 +9,48 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
   try {
-    const url = `https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&appid=${appid}&l=en`;
-    const response = await fetch(url);
-    const data = await response.json();
+    const [playerRes, schemaRes] = await Promise.all([
+      fetch(`https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&appid=${appid}&l=en`),
+      fetch(`https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${STEAM_API_KEY}&appid=${appid}&l=english&format=json`)
+    ]);
 
-    if (data.playerstats && data.playerstats.achievements) {
-      res.status(200).json({ 
-        gameName: data.playerstats.gameName || 'Unknown',
-        achievements: data.playerstats.achievements 
-      });
-    } else {
-      res.status(200).json({ gameName: 'Unknown', achievements: [] });
-    }
+    const playerData = await playerRes.json();
+    const schemaData = await schemaRes.json();
+
+    const playerAchievements = playerData.playerstats?.achievements || [];
+    const schemaAchievements = schemaData.game?.availableGameStats?.achievements || [];
+
+    const schemaMap = {};
+    schemaAchievements.forEach(a => {
+      schemaMap[a.name] = {
+        displayName: a.displayName,
+        description: a.description,
+        icon: a.icon,
+        icongray: a.icongray
+      };
+    });
+
+    const achievements = playerAchievements.map(a => ({
+      apiname: a.apiname,
+      achieved: a.achieved,
+      unlocktime: a.unlocktime,
+      name: schemaMap[a.apiname]?.displayName || a.name,
+      description: schemaMap[a.apiname]?.description || a.description,
+      icon: schemaMap[a.apiname]?.icon || '',
+      icongray: schemaMap[a.apiname]?.icongray || ''
+    }));
+
+    res.status(200).json({
+      gameName: playerData.playerstats?.gameName || 'Unknown',
+      achievements
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
