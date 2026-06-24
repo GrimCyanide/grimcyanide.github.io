@@ -24,11 +24,23 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (data.items) {
+          const videoIds = data.items.map(item => item.snippet.resourceId.videoId).join(',');
+          const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${YOUTUBE_API_KEY}`;
+          const detailsRes = await fetch(detailsUrl);
+          const detailsData = await detailsRes.json();
+          const durationMap = {};
+          if (detailsData.items) {
+            detailsData.items.forEach(item => {
+              durationMap[item.id] = item.contentDetails.duration;
+            });
+          }
+
           allVideos = allVideos.concat(data.items.map(item => ({
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
             videoId: item.snippet.resourceId.videoId,
             publishedAt: item.snippet.publishedAt,
+            duration: durationMap[item.snippet.resourceId.videoId] || '',
             url: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}&list=${playlistId}`
           })));
         }
@@ -38,7 +50,7 @@ export default async function handler(req, res) {
       res.status(200).json({ parts: allVideos });
     } else if (videoMatch) {
       const videoId = videoMatch[1];
-      const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+      const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${videoId}&key=${YOUTUBE_API_KEY}`;
       const response = await fetch(apiUrl);
       const data = await response.json();
 
@@ -50,6 +62,7 @@ export default async function handler(req, res) {
             thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
             videoId: videoId,
             publishedAt: item.snippet.publishedAt,
+            duration: item.contentDetails.duration,
             url: `https://www.youtube.com/watch?v=${videoId}`
           }]
         });
