@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       const parts = row[6]?.trim() || '';
       const linkUrl = row[7]?.trim() || '';
       const poster = row[8]?.trim() || '';
+      const notes = row[9]?.trim() || '';
       if (!gameName) return null;
       return {
         game: gameName,
@@ -40,7 +41,8 @@ export default async function handler(req, res) {
         linkText: linkText || '',
         parts: parts ? (parseInt(parts) || 0) : 0,
         partsDisplay: parts || '',
-        poster: poster
+        poster: poster,
+        notes: notes
       };
     }).filter(game => game !== null);
     const result = { 
