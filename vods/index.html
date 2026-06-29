@@ -174,8 +174,8 @@
                 <span class="view-toggle-label" id="columnLabel">5</span>
             </div>
             <div class="view-toggle view-toggle-mobile">
-                <button class="view-btn active" id="viewDefault" onclick="setColumns(5)">Default</button>
-                <button class="view-btn" id="viewCompact" onclick="setColumns(7)">Compact</button>
+                <button class="view-btn active" id="viewDefault" onclick="setColumns(2)">Default</button>
+                <button class="view-btn" id="viewCompact" onclick="setColumns(3)">Compact</button>
             </div>
         </div>
         <div class="result-count" id="resultCount"></div>
@@ -200,12 +200,12 @@
         function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<20;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
         renderSkeletons();
         function updateCardSizes(){var e=currentCols;var t=Math.max(0.45,1.1-(e-2)*0.08);var o=Math.max(0.5,0.82-(e-2)*0.05);var n=Math.max(0.42,0.68-(e-2)*0.04);var a=Math.max(0.42,0.9-(e-2)*0.06);document.documentElement.style.setProperty('--rating-font-size',t+'em');document.documentElement.style.setProperty('--title-font-size',o+'em');document.documentElement.style.setProperty('--status-font-size',n+'em');document.documentElement.style.setProperty('--badge-font-size',a+'em')}
-        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('vodsCols',currentCols);document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===5);document.getElementById('viewCompact').classList.toggle('active',currentCols===7);updateCardSizes();updateURL()}
+        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('vodsCols',currentCols);document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
         document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';
         document.getElementById('columnSlider').value=currentCols;
         document.getElementById('columnLabel').textContent=currentCols;
-        document.getElementById('viewDefault').classList.toggle('active',currentCols===5);
-        document.getElementById('viewCompact').classList.toggle('active',currentCols===7);
+        document.getElementById('viewDefault').classList.toggle('active',currentCols===2);
+        document.getElementById('viewCompact').classList.toggle('active',currentCols===3);
         updateCardSizes();
         function loadGamesData(){var e=document.getElementById('gamesGrid'),t=apiURL+'?t='+Date.now();fetch(t).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games,renderStats(),restoreFilters(),loadCachedVideoData(),renderGames(),updateResultCount()):e.innerHTML='<div class="no-results">No games found.</div>'})}
         function restoreFilters(){if(savedStatus){document.getElementById('statusFilter').value=savedStatus;updateStatActive()}if(savedSearch){document.getElementById('searchInput').value=savedSearch}document.getElementById('sortSelect').value=currentSort;updateURL()}
