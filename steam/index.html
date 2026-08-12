@@ -22,9 +22,8 @@
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <style>
         :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--blue:#58a6ff;--radius:8px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
-        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#6b7280;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--green:#15803d;--blue:#0969da}
         *{box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;line-height:1.5;font-size:15px}
+        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
         .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
         .nav-left{display:flex;align-items:center;gap:8px}
@@ -34,8 +33,7 @@
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
         .nav-right{display:flex;align-items:center;gap:10px}
-        .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
-        .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+        .page-title{text-align:center;padding:24px 24px 8px;font-size:1.5em;font-weight:700;letter-spacing:-0.5px}
         .status-bar{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 24px;font-size:0.82em;color:var(--muted);flex-wrap:wrap}
         .status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
         .status-dot.online{background:var(--green)}
@@ -144,12 +142,13 @@
         @media(max-width:600px){.container{width:100%;padding:12px 6px 24px}.games-grid{grid-template-columns:repeat(2,1fr);gap:8px}.games-grid.compact{grid-template-columns:repeat(3,1fr);gap:6px}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.popup-inner{padding:18px}.sb-left,.sb-center,.sb-right{font-size:0.65em}.ach-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}}
     </style>
 </head>
-<body data-view-transition="steam">
+<body>
     <nav class="nav-bar">
         <div class="nav-left"><a href="/" class="nav-logo">GRIM_CYANIDE</a></div>
         <div class="nav-links"><a href="/" class="nav-link">Home</a><a href="/vods" class="nav-link">VODs &amp; Ratings</a><a href="/steam" class="nav-link active">Steam Games</a></div>
-        <div class="nav-right"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
+        <div class="nav-right"></div>
     </nav>
+    <div class="page-title">GRIM_CYANIDE</div>
     <div class="status-bar" id="steamStatusBar"><span class="status-dot offline" id="steamDot"></span> <span id="steamStatus">loading...</span></div>
     <div class="container">
         <div class="header"><h1>My Steam Library</h1><p class="subtitle">Every game I own on Steam</p></div>
@@ -201,7 +200,6 @@
         document.addEventListener('keydown',function(e){e.key==='Escape'&&closePopup()});
         document.getElementById('sortSelect').addEventListener('change',function(){currentSort=this.value;renderGames();updateURL()});
         var searchTimeout;document.getElementById('searchInput').addEventListener('input',function(){clearTimeout(searchTimeout),searchTimeout=setTimeout(function(){renderGames();updateURL()},400)});
-        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
         loadData();
     </script>
 </body>
