@@ -24,9 +24,8 @@
     <meta name="twitter:image" content="https://grimcyanide.com/android-chrome-512x512.png">
     <style>
         :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--green-bg:rgba(74,222,128,0.15);--blue:#58a6ff;--radius:6px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
-        body.light-mode{--bg:#f3f4f6;--surface:#ffffff;--surface-alt:#f9fafb;--border:#d1d5db;--text:#1f2937;--muted:#4b5563;--accent:#b91c1c;--accent-soft:rgba(185,28,28,0.1);--green:#15803d;--green-bg:#4ade80;--blue:#0969da}
         *{box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;transition:background 0.3s,color 0.3s;line-height:1.5;font-size:15px}
+        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
         .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
         .nav-left{display:flex;align-items:center;gap:8px}
@@ -35,9 +34,6 @@
         .nav-link{background:transparent;border:1px solid transparent;border-radius:var(--radius);padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
-        .nav-right{display:flex;align-items:center;gap:10px}
-        .theme-toggle{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--font);font-size:0.7em;padding:4px 8px;cursor:pointer;transition:all 0.15s}
-        .theme-toggle:hover{border-color:var(--accent);color:var(--text)}
         .status-bar{display:flex;align-items:flex-end;justify-content:center;gap:16px;padding:12px 24px;font-size:0.85em;color:var(--muted);flex-wrap:wrap}
         .status-item{min-width:180px;text-align:center;white-space:nowrap;display:inline-flex;flex-direction:column;align-items:center}
         .status-row{display:flex;align-items:center;gap:6px;height:20px}
@@ -53,16 +49,11 @@
         .spotify-bar-wrap{width:100%;height:2px;background:var(--border);border-radius:1px;margin-top:4px;overflow:hidden}
         .spotify-bar{height:100%;background:var(--green);border-radius:1px;width:0%}
         .spotify-placeholder{height:2px;margin-top:4px}
-        .container{max-width:1300px;margin:0 auto;padding:24px 24px 40px}
-        .twitch-row{display:flex;gap:12px;margin-bottom:24px;min-height:0;justify-content:center}
-        .twitch-stream{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;flex:2;min-width:0;max-width:800px}
-        .twitch-stream iframe{display:block;width:100%;height:100%;border:none;position:absolute;top:0;left:0}
-        .twitch-chat{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#0b0e11;flex:1;min-width:240px;max-width:380px}
-        .twitch-chat iframe{display:block;width:100%;height:100%;border:none}
-        .social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
-        .social-btn{background:var(--surface);border:1px solid var(--border);padding:8px 14px;text-decoration:none;color:var(--text);font-size:0.82em;font-weight:500;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;border-left:2px solid var(--accent)}
-        .social-btn:hover{background:var(--surface-alt);border-color:var(--accent);padding-left:18px}
-        .social-btn .icon{font-weight:700;color:var(--accent)}
+        .container{max-width:600px;margin:0 auto;padding:40px 24px 40px;text-align:center}
+        .social-links{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:32px}
+        .social-btn{background:var(--surface);border:1px solid var(--border);padding:10px 20px;text-decoration:none;color:var(--text);font-size:0.88em;font-weight:500;transition:all 0.15s;display:flex;align-items:center;gap:8px;white-space:nowrap;border-left:3px solid var(--accent);width:100%;max-width:360px;justify-content:flex-start}
+        .social-btn:hover{background:var(--surface-alt);border-color:var(--accent);padding-left:28px}
+        .social-btn .icon{font-weight:700;color:var(--accent);min-width:80px;text-align:left}
         .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:24px;border-top:1px solid var(--border);margin-top:40px}
         .setup-popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999;justify-content:center;align-items:flex-start;padding-top:40px}
         .setup-popup.active{display:flex}
@@ -78,14 +69,13 @@
         .setup-item:nth-child(even){background:var(--surface-alt)}
         .setup-item strong{color:var(--accent);font-weight:700;white-space:nowrap;min-width:120px}
         .setup-item span{color:var(--muted);font-family:var(--mono);font-size:0.9em;font-weight:600}
-        @media(max-width:800px){.twitch-row{flex-direction:column}.twitch-chat{display:none}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:16px 8px 32px}.social-btn{padding:7px 12px;font-size:0.78em}.status-bar{gap:6px}.status-item{min-width:0;white-space:normal}.status-sep{display:none}}
+        @media(max-width:600px){.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.container{padding:24px 12px 32px}.social-btn{padding:8px 14px;font-size:0.8em}.status-bar{gap:6px}.status-item{min-width:0;white-space:normal}.status-sep{display:none}}
     </style>
 </head>
-<body data-view-transition="home">
+<body>
     <nav class="nav-bar">
         <div class="nav-left"><a href="/" class="nav-logo">GRIM_CYANIDE</a></div>
         <div class="nav-links"><a href="/" class="nav-link active">Home</a><a href="/vods" class="nav-link">VODs &amp; Ratings</a><a href="/steam" class="nav-link">Steam Games</a></div>
-        <div class="nav-right"><button class="theme-toggle" id="themeToggle">light/dark</button></div>
     </nav>
     <div class="status-bar" id="statusBar">
         <span class="status-item"><span class="status-row"><span class="status-dot offline" id="twitchDot"></span> <span id="twitchStatus">loading status...</span></span><span class="spotify-placeholder"></span></span>
@@ -95,19 +85,15 @@
         <span class="status-item" id="spotifyItem"><span class="status-row"><span class="status-dot spotify" id="spotifyDot"></span> <span id="spotifyStatus">loading status...</span></span><span class="spotify-placeholder"></span></span>
     </div>
     <div class="container">
-        <div class="twitch-row">
-            <div class="twitch-stream"><iframe src="https://player.twitch.tv/?channel=grim_cyanide&parent=grimcyanide.com" allowfullscreen></iframe></div>
-            <div class="twitch-chat"><iframe src="https://www.twitch.tv/embed/grim_cyanide/chat?parent=grimcyanide.com&darkpopout"></iframe></div>
-        </div>
-        <div class="social-row">
-            <a href="https://twitch.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">Twitch</span></a>
-            <a href="https://youtube.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">YouTube</span></a>
-            <a href="https://discord.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">My Discord Server</span></a>
-            <a href="https://twitter.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">Twitter</span></a>
-            <a href="https://tiktok.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">TikTok</span></a>
-            <a href="https://steam.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">My Steam Profile</span></a>
-            <a href="#" class="social-btn" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="icon">My PC Specs</span></a>
-            <a href="https://spotify.grimcyanide.com" class="social-btn" target="_blank"><span class="icon">My Spotify Playlist</span></a>
+        <div class="social-links">
+            <a href="https://twitch.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">Twitch</span> <span>Watch me live</span></a>
+            <a href="https://youtube.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">YouTube</span> <span>Watch my VODs</span></a>
+            <a href="https://discord.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">Discord</span> <span>Join my server</span></a>
+            <a href="https://twitter.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">Twitter</span> <span>Follow me</span></a>
+            <a href="https://tiktok.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">TikTok</span> <span>Follow me</span></a>
+            <a href="https://steam.grimcyanide.com/" class="social-btn" target="_blank"><span class="icon">Steam</span> <span>My profile</span></a>
+            <a href="#" class="social-btn" onclick="document.getElementById('setupPopup').classList.add('active');return false;"><span class="icon">My PC</span> <span>View my specs</span></a>
+            <a href="https://spotify.grimcyanide.com" class="social-btn" target="_blank"><span class="icon">Spotify</span> <span>My playlist</span></a>
         </div>
         <div class="footer">© 2026 grimcyanide.com</div>
     </div>
@@ -148,7 +134,6 @@
         updateSpotify();setInterval(updateSpotify,10000);
         function startProgressLoop(){stopProgressLoop();function e(){if(spotifyDuration>0){var t=spotifyProgress+(Date.now()-spotifyLastUpdate);var o=Math.min((t/spotifyDuration)*100,100);var n=document.getElementById('spotifyBar');if(n)n.style.width=o+'%';if(o<100){spotifyAnimFrame=requestAnimationFrame(e)}}}spotifyAnimFrame=requestAnimationFrame(e)}
         function stopProgressLoop(){if(spotifyAnimFrame){cancelAnimationFrame(spotifyAnimFrame);spotifyAnimFrame=null}}
-        var themeToggle=document.getElementById("themeToggle");themeToggle.addEventListener("click",function(){document.body.classList.toggle("light-mode"),localStorage.setItem("theme",document.body.classList.contains("light-mode")?"light":"dark")});
     </script>
 </body>
 </html>
