@@ -28,15 +28,12 @@
         *{box-sizing:border-box}
         body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
-        .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-        .nav-left{display:flex;align-items:center;gap:8px}
-        .nav-logo{font-weight:700;font-size:1.1em;color:var(--accent);text-decoration:none;letter-spacing:-0.5px}
+        .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
         .nav-links{display:flex;gap:4px;flex-wrap:wrap}
         .nav-link{background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
-        .nav-right{display:flex;align-items:center;gap:10px}
-        .page-title{text-align:center;padding:24px 24px 8px;font-size:1.5em;font-weight:700;letter-spacing:-0.5px}
+        .page-title{text-align:center;padding:24px 24px 8px;font-size:1.5em;font-weight:700;letter-spacing:-0.5px;color:var(--accent)}
         .container{width:95%;margin:0 auto;padding:20px 0 40px}
         .header{text-align:center;margin-bottom:20px}
         .header h1{font-size:2em;margin:0 0 4px 0;font-weight:700;letter-spacing:-0.5px}
@@ -147,7 +144,7 @@
         .popup-close-bottom{background:var(--border);border:none;color:var(--text);padding:10px 16px;border-radius:4px;cursor:pointer;font-family:var(--font);font-size:0.88em;width:100%;margin-top:12px;flex-shrink:0}
         .popup-close-bottom:hover{background:var(--accent)}
         @media(max-width:860px){.container{padding:16px 0 32px}.card-rating-parts{height:10%}.parts-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}.parts-grid.single{grid-template-columns:minmax(180px,1fr)}.parts-grid.double{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:600px){.container{width:100%;padding:12px 4px 24px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-logo{font-size:1em}.nav-link{padding:5px 10px;font-size:0.72em}.card-rating-parts{height:11%}.card-rating-parts .rp-left,.card-rating-parts .rp-right{font-size:0.55em;letter-spacing:0}.card-status-new{font-size:0.5em}.card-body{padding:0.3em 0.4em}.card-title{font-size:0.62em}.recent-badge{font-size:0.55em!important;padding:1.2% 2.5%!important;top:1.5%!important;left:1.5%!important}.total-duration{font-size:0.85em!important;padding:1.2% 2.5%!important;bottom:12%!important;right:1.5%!important}.parts-grid{grid-template-columns:1fr}.parts-grid.single{grid-template-columns:1fr}.parts-grid.double{grid-template-columns:1fr}.popup-inner{padding:16px}}
+        @media(max-width:600px){.container{width:100%;padding:12px 4px 24px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.card-rating-parts{height:11%}.card-rating-parts .rp-left,.card-rating-parts .rp-right{font-size:0.55em;letter-spacing:0}.card-status-new{font-size:0.5em}.card-body{padding:0.3em 0.4em}.card-title{font-size:0.62em}.recent-badge{font-size:0.55em!important;padding:1.2% 2.5%!important;top:1.5%!important;left:1.5%!important}.total-duration{font-size:0.85em!important;padding:1.2% 2.5%!important;bottom:12%!important;right:1.5%!important}.parts-grid{grid-template-columns:1fr}.parts-grid.single{grid-template-columns:1fr}.parts-grid.double{grid-template-columns:1fr}.popup-inner{padding:16px}}
     </style>
 </head>
 <body>
