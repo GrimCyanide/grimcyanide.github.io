@@ -182,7 +182,7 @@
         <div class="popup-inner" id="popupInner"></div>
     </div>
     <script>
-        var allGames=[],currentSort='az',apiURL='https://grimcyanide-github-io.vercel.app/api/vods-sheet',posterBase='https://data.grimcyanide.com/posters/',currentCols=5,gameVideoCache={},gameDurationCache={},cacheLoaded=false;
+        var allGames=[],currentSort='az',apiURL='https://grimcyanide-github-io.vercel.app/api/vods-sheet',posterBase='https://data.grimcyanide.com/posters/',currentCols=8,gameVideoCache={},gameDurationCache={},cacheLoaded=false;
         var params=new URLSearchParams(window.location.search);
         if(params.get('status')){var savedStatus=params.get('status')}
         if(params.get('sort')){currentSort=params.get('sort')}
