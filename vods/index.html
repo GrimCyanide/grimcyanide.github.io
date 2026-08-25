@@ -70,9 +70,9 @@
         .view-toggle-mobile{display:none;align-items:center;gap:4px}
         .view-toggle-label{font-size:0.68em;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:500;white-space:nowrap}
         .column-slider{-webkit-appearance:none;appearance:none;width:100px;height:6px;background:var(--border);border-radius:0;outline:none;cursor:pointer}
-        .column-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:0;background:var(--accent);cursor:pointer}
-        .column-slider::-moz-range-thumb{width:18px;height:18px;border-radius:0;background:var(--accent);cursor:pointer;border:none}
-        .view-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 12px;cursor:pointer;font-family:var(--font);font-size:0.78em;font-weight:500;border-radius:0;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px}
+        .column-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer}
+        .column-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+        .view-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 12px;cursor:pointer;font-family:var(--font);font-size:0.78em;font-weight:500;border-radius:4px;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px}
         .view-btn:hover{border-color:var(--accent);color:var(--text)}
         .view-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
         .result-count{color:var(--muted);font-size:0.82em;margin-bottom:16px;font-family:var(--mono);text-align:center}
@@ -83,11 +83,8 @@
         .game-card:hover{border-color:var(--accent)}
         .game-card.skeleton{cursor:default;pointer-events:none;min-height:200px}
         .game-card.skeleton:hover{border-color:var(--border)}
-        .game-card.finished-card{border-color:var(--green)}
         .game-card.finished-card:hover{border-color:var(--green)}
-        .game-card.unfinished-card{border-color:var(--red)}
         .game-card.unfinished-card:hover{border-color:var(--red)}
-        .game-card.backlog-card{border-color:var(--blue)}
         .game-card.backlog-card:hover{border-color:var(--blue)}
         .card-poster{width:100%;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden;position:relative}
         .card-poster img{width:100%;height:100%;object-fit:cover;display:block}
