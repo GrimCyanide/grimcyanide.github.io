@@ -62,7 +62,7 @@
     }
     </script>
     <style>
-        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#959ba5;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--blue:#58a6ff;--radius:0px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace}
+        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#959ba5;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--blue:#58a6ff;--radius:0px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace;--title-font-size:0.85em;--sb-font-size:0.86em}
         *{box-sizing:border-box}
         body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
@@ -76,6 +76,8 @@
         .status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
         .status-dot.online{background:var(--green)}
         .status-dot.offline{background:var(--muted)}
+        .status-bar a{color:var(--muted);text-decoration:none;transition:color 0.15s}
+        .status-bar a:hover{color:var(--accent)}
         .container{width:95%;margin:0 auto;padding:20px 0 40px}
         .header{text-align:center;margin-bottom:20px}
         .header h1{font-size:2em;margin:0 0 4px 0;font-weight:700;letter-spacing:-0.5px}
@@ -94,23 +96,23 @@
         .search-input{min-width:200px!important;flex:1;max-width:280px}
         .sort-group{display:flex;align-items:center;gap:6px}
         .sort-group label{color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;white-space:nowrap}
-        .sort-group select{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:0;padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;cursor:pointer;min-width:140px}
+        .sort-group select{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:0;padding:8px 12px;font-family:var(--font);font-size:0.88em;outline:none;transition:border 0.2s;cursor:pointer;min-width:160px}
         .sort-group select:hover{border-color:var(--accent)}
         .sort-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
         .sort-group select option{background:var(--surface);color:var(--text)}
-        .view-toggle{display:flex;align-items:center;gap:4px}
+        .view-toggle-desktop{display:flex;align-items:center;gap:8px}
+        .view-toggle-mobile{display:none;align-items:center;gap:4px}
+        .view-toggle-label{font-size:0.68em;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:500;white-space:nowrap}
+        .column-slider{-webkit-appearance:none;appearance:none;width:100px;height:6px;background:var(--border);border-radius:0;outline:none;cursor:pointer}
+        .column-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer}
+        .column-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
         .view-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 12px;cursor:pointer;font-family:var(--font);font-size:0.78em;font-weight:500;border-radius:4px;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px}
         .view-btn:hover{border-color:var(--accent);color:var(--text)}
         .view-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
         .result-count{color:var(--muted);font-size:0.82em;margin-bottom:16px;font-family:var(--mono);text-align:center}
         .section-divider{grid-column:1/-1;text-align:center;color:var(--muted);font-family:var(--mono);font-size:0.75em;padding:8px 0 4px 0;margin-top:8px;border-top:1px solid var(--border);letter-spacing:1px;text-transform:uppercase}
         .section-divider:first-child{margin-top:0;border-top:none}
-        .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-        .games-grid.compact{grid-template-columns:repeat(7,1fr);gap:10px}
-        .games-grid.compact .card-body{padding:6px 8px}
-        .games-grid.compact .card-title{font-size:0.72em}
-        .games-grid.compact .sb-left,.games-grid.compact .sb-center,.games-grid.compact .sb-right{font-size:0.68em}
-        .games-grid.compact .card-status-bar{padding:0 6px;height:7%}
+        .games-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:16px;justify-content:center}
         .game-card{background:var(--surface);border:1px solid var(--border);border-radius:0;overflow:hidden;transition:border-color 0.2s;cursor:pointer}
         .game-card:hover{border-color:var(--accent)}
         .game-card.skeleton{cursor:default;pointer-events:none}
@@ -123,11 +125,11 @@
         .card-status-bar .sb-left{text-align:left;flex:1}
         .card-status-bar .sb-center{text-align:center;flex:1}
         .card-status-bar .sb-right{text-align:right;flex:1}
-        .sb-left{font-size:0.86em;font-weight:700;font-family:var(--mono);color:var(--blue)}
-        .sb-center{font-size:0.86em;font-weight:700;font-family:var(--mono);color:#fff}
-        .sb-right{font-size:0.86em;font-weight:700;font-family:var(--mono);color:var(--muted)}
+        .sb-left{font-size:var(--sb-font-size);font-weight:700;font-family:var(--mono);color:var(--blue)}
+        .sb-center{font-size:var(--sb-font-size);font-weight:700;font-family:var(--mono);color:#fff}
+        .sb-right{font-size:var(--sb-font-size);font-weight:700;font-family:var(--mono);color:var(--muted)}
         .card-body{padding:10px 12px}
-        .card-title{font-weight:700;font-size:0.85em;line-height:1.2;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .card-title{font-weight:700;font-size:var(--title-font-size);line-height:1.2;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
         .card-body .skeleton-line{height:12px;background:var(--border);border-radius:0;width:70%;margin:0 auto}
         .no-results{text-align:center;color:var(--muted);padding:48px 16px;font-size:0.95em;grid-column:1/-1}
         .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:40px}
@@ -172,10 +174,9 @@
         .ach-tooltip .ach-desc{color:var(--muted);font-size:0.85em;margin-top:4px;line-height:1.3;font-weight:500}
         .popup-close-bottom{background:transparent;border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:0;cursor:pointer;font-family:var(--font);font-size:0.9em;width:100%;margin-top:16px;flex-shrink:0;transition:border-color 0.15s,background 0.15s}
         .popup-close-bottom:hover{border-color:var(--accent);background:var(--accent-soft)}
-        @media(min-width:1800px){.games-grid{grid-template-columns:repeat(7,1fr)}.games-grid.compact{grid-template-columns:repeat(10,1fr)}}
-        @media(max-width:1100px){.games-grid{grid-template-columns:repeat(4,1fr);gap:12px}.games-grid.compact{grid-template-columns:repeat(5,1fr);gap:8px}}
-        @media(max-width:860px){.games-grid{grid-template-columns:repeat(3,1fr);gap:10px}.games-grid.compact{grid-template-columns:repeat(4,1fr);gap:8px}.container{padding:16px 0 32px}.card-body{padding:8px 10px}.card-title{font-size:0.78em}.sb-left,.sb-center,.sb-right{font-size:0.72em}.popup-flex{flex-direction:column;align-items:center}.popup-grid-art{width:150px}}
-        @media(max-width:600px){.container{width:100%;padding:12px 6px 24px}.games-grid{grid-template-columns:repeat(2,1fr);gap:8px}.games-grid.compact{grid-template-columns:repeat(3,1fr);gap:6px}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.popup-inner{padding:18px}.sb-left,.sb-center,.sb-right{font-size:0.65em}.ach-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}}
+        @media(max-width:1100px){.games-grid{grid-template-columns:repeat(4,1fr);gap:12px}}
+        @media(max-width:860px){.games-grid{grid-template-columns:repeat(3,1fr);gap:10px}.container{padding:16px 0 32px}.card-body{padding:8px 10px}.card-title{font-size:0.78em}.sb-left,.sb-center,.sb-right{font-size:0.72em}.popup-flex{flex-direction:column;align-items:center}.popup-grid-art{width:150px}}
+        @media(max-width:600px){.container{width:100%;padding:12px 6px 24px}.games-grid{grid-template-columns:repeat(2,1fr);gap:8px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.popup-inner{padding:18px}.sb-left,.sb-center,.sb-right{font-size:0.65em}.ach-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}}
     </style>
 </head>
 <body>
@@ -183,14 +184,22 @@
         <div class="nav-links"><a href="/" class="nav-link">Home</a><a href="/vods" class="nav-link">VODs &amp; Ratings</a><a href="/steam" class="nav-link active">Steam Games</a></div>
     </nav>
     <div class="page-title">GRIM_CYANIDE</div>
-    <div class="status-bar" id="steamStatusBar"><span class="status-dot offline" id="steamDot"></span> <span id="steamStatus">loading...</span></div>
+    <div class="status-bar" id="steamStatusBar"><span class="status-dot offline" id="steamDot"></span> <span id="steamStatus">loading...</span> <a href="https://steam.grimcyanide.com/" target="_blank">(click here to view profile)</a></div>
     <div class="container">
         <div class="header"><h1>My Steam Library</h1><p class="subtitle">Every game I own on Steam</p></div>
         <div class="stats-bar" id="statsBar"></div>
         <div class="filters-section">
             <div class="filter-group"><label for="searchInput">Search</label><input type="text" id="searchInput" class="search-input" placeholder="Filter games..."></div>
             <div class="sort-group"><label for="sortSelect">Sort</label><select id="sortSelect"><option value="playtime">Playtime High-Low</option><option value="playtime-low">Playtime Low-High</option><option value="recent">Recently Played</option><option value="oldest">Least Recently Played</option><option value="az">Name A-Z</option><option value="za">Name Z-A</option></select></div>
-            <div class="view-toggle"><button class="view-btn active" id="viewDefault" onclick="setView(5)">Default</button><button class="view-btn" id="viewCompact" onclick="setView(7)">Compact</button></div>
+            <div class="view-toggle-desktop">
+                <span class="view-toggle-label">Grid Size</span>
+                <input type="range" class="column-slider" id="columnSlider" min="2" max="12" value="8" oninput="setColumns(this.value)" aria-label="Number of columns">
+                <span class="view-toggle-label" id="columnLabel">8</span>
+            </div>
+            <div class="view-toggle-mobile">
+                <button class="view-btn active" id="viewDefault" onclick="setColumns(2)">Default</button>
+                <button class="view-btn" id="viewCompact" onclick="setColumns(3)">Compact</button>
+            </div>
         </div>
         <div class="result-count" id="resultCount"></div>
         <div class="games-grid" id="gamesGrid"></div>
@@ -200,19 +209,26 @@
         <div class="popup-inner" id="popupInner"></div>
     </div>
     <script>
-        var allGames=[],currentSort='playtime',apiURL='https://grimcyanide-github-io.vercel.app/api/steam-games',achApiURL='https://grimcyanide-github-io.vercel.app/api/steam-achievements',assetsApiURL='https://grimcyanide-github-io.vercel.app/api/steam-assets',storeApiURL='https://grimcyanide-github-io.vercel.app/api/steam-store',steamId='76561198066010654',currentView=5,totalUnlocked=0,totalAchievements=0,perfectGames=0,gameAssets={};
+        var allGames=[],currentSort='playtime',apiURL='https://grimcyanide-github-io.vercel.app/api/steam-games',achApiURL='https://grimcyanide-github-io.vercel.app/api/steam-achievements',assetsApiURL='https://grimcyanide-github-io.vercel.app/api/steam-assets',storeApiURL='https://grimcyanide-github-io.vercel.app/api/steam-store',steamId='76561198066010654',currentCols=8,totalUnlocked=0,totalAchievements=0,perfectGames=0,gameAssets={};
         var excludeIds=[629520,1009850,1125480,914690,2687190,1587560,1773890,2776810,1493300,2013900,1446330,2667970,2743080,1471530];
         var params=new URLSearchParams(window.location.search);
         if(params.get('sort')){currentSort=params.get('sort')}
         if(params.get('search')){var savedSearch=params.get('search')}
-        if(params.get('view')){currentView=parseInt(params.get('view'))}
-        var savedView=localStorage.getItem('steamView');
-        if(!params.get('view')&&savedView){currentView=parseInt(savedView)}
-        function updateURL(){var e=new URLSearchParams();var t=document.getElementById('searchInput').value.trim();if(t)e.set('search',t);if(currentSort!=='playtime')e.set('sort',currentSort);if(currentView===7)e.set('view','7');var o=window.location.pathname+(e.toString()?'?'+e.toString():'');history.replaceState(null,'',o)}
-        function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<20;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
+        if(params.get('cols')){currentCols=parseInt(params.get('cols'))}
+        var savedCols=localStorage.getItem('steamCols');
+        if(!params.get('cols')&&savedCols){currentCols=parseInt(savedCols)}
+        if(currentCols<2)currentCols=2;if(currentCols>12)currentCols=12;
+        function updateURL(){var e=new URLSearchParams();var t=document.getElementById('searchInput').value.trim();if(t)e.set('search',t);if(currentSort!=='playtime')e.set('sort',currentSort);if(currentCols!==8)e.set('cols',currentCols);var o=window.location.pathname+(e.toString()?'?'+e.toString():'');history.replaceState(null,'',o)}
+        function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<24;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
         renderSkeletons();
-        function setView(e){currentView=e;localStorage.setItem('steamView',e);document.getElementById('gamesGrid').classList.toggle('compact',e===7);document.getElementById('viewDefault').classList.toggle('active',e===5);document.getElementById('viewCompact').classList.toggle('active',e===7);renderGames();updateURL()}
-        if(currentView===7){document.getElementById('gamesGrid').classList.add('compact');document.getElementById('viewDefault').classList.remove('active');document.getElementById('viewCompact').classList.add('active')}
+        function updateCardSizes(){var e=currentCols;var t=Math.max(0.5,0.85-(e-2)*0.04);var o=Math.max(0.5,0.86-(e-2)*0.04);document.documentElement.style.setProperty('--title-font-size',t+'em');document.documentElement.style.setProperty('--sb-font-size',o+'em')}
+        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('steamCols',currentCols);document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
+        document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';
+        document.getElementById('columnSlider').value=currentCols;
+        document.getElementById('columnLabel').textContent=currentCols;
+        document.getElementById('viewDefault').classList.toggle('active',currentCols===2);
+        document.getElementById('viewCompact').classList.toggle('active',currentCols===3);
+        updateCardSizes();
         function loadData(){var e=document.getElementById('gamesGrid');fetch(apiURL+'?steamid='+steamId+'&type=owned&t='+Date.now()).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games.filter(function(e){return excludeIds.indexOf(e.appid)===-1}),restoreFilters(),loadAllAssets(),renderStats(),updateResultCount(),loadAllAchievementStats()):e.innerHTML='<div class="no-results">No games found.</div>'}).catch(function(t){e.innerHTML='<div class="no-results">Failed to load: '+t.message+'</div>'});fetch('https://grimcyanide-github-io.vercel.app/api/steam-status?steamid='+steamId).then(function(e){return e.json()}).then(function(e){var t=document.getElementById('steamDot'),o=document.getElementById('steamStatus');e.online?(t.className='status-dot online',e.game?o.textContent='Currently playing: '+e.game:o.textContent='Online'):(t.className='status-dot offline',o.textContent='Offline')}).catch(function(){document.getElementById('steamStatus').textContent='Offline'})}
         function restoreFilters(){if(savedSearch){document.getElementById('searchInput').value=savedSearch}document.getElementById('sortSelect').value=currentSort;updateURL()}
         function loadAllAssets(){var e=allGames.map(function(e){return e.appid});var t=[];for(var o=0;o<e.length;o+=50){t.push(e.slice(o,o+50))}var n=0;t.forEach(function(e){fetch(assetsApiURL+'?appids='+e.join(',')).then(function(e){return e.json()}).then(function(e){Object.assign(gameAssets,e);n++;if(n>=t.length){renderGames()}}).catch(function(){n++;if(n>=t.length){renderGames()}})});setTimeout(function(){renderGames()},5000)}
