@@ -51,10 +51,21 @@
             "type": 1,
             "components": [
               { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=playtime", "label": "Most Played" },
-              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=playtime-low", "label": "Least Played" },
+              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=playtime-low", "label": "Least Played" }
+            ]
+          },
+          {
+            "type": 1,
+            "components": [
               { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=recent", "label": "Recently Played" },
-              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=oldest", "label": "Least Recently Played" },
-              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=az", "label": "A-Z" }
+              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=oldest", "label": "Least Recently Played" }
+            ]
+          },
+          {
+            "type": 1,
+            "components": [
+              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=az", "label": "Title A-Z" },
+              { "type": 2, "style": 5, "url": "https://grimcyanide.com/steam?sort=za", "label": "Title Z-A" }
             ]
           }
         ]
@@ -62,7 +73,7 @@
     }
     </script>
     <style>
-        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#959ba5;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--blue:#58a6ff;--radius:0px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace;--title-font-size:0.85em;--sb-font-size:0.86em}
+        :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#959ba5;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--green:#4ade80;--blue:#58a6ff;--radius:0px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace;--title-font-size:0.85em;--sb-font-size:0.86em;--card-width:220px}
         *{box-sizing:border-box}
         body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px}
         html{overflow-y:scroll;scrollbar-gutter:stable}
@@ -112,7 +123,7 @@
         .result-count{color:var(--muted);font-size:0.82em;margin-bottom:16px;font-family:var(--mono);text-align:center}
         .section-divider{grid-column:1/-1;text-align:center;color:var(--muted);font-family:var(--mono);font-size:0.75em;padding:8px 0 4px 0;margin-top:8px;border-top:1px solid var(--border);letter-spacing:1px;text-transform:uppercase}
         .section-divider:first-child{margin-top:0;border-top:none}
-        .games-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:16px;justify-content:center}
+        .games-grid{display:grid;grid-template-columns:repeat(8,var(--card-width));gap:16px;justify-content:center}
         .game-card{background:var(--surface);border:1px solid var(--border);border-radius:0;overflow:hidden;transition:border-color 0.2s;cursor:pointer}
         .game-card:hover{border-color:var(--accent)}
         .game-card.skeleton{cursor:default;pointer-events:none}
@@ -174,9 +185,11 @@
         .ach-tooltip .ach-desc{color:var(--muted);font-size:0.85em;margin-top:4px;line-height:1.3;font-weight:500}
         .popup-close-bottom{background:transparent;border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:0;cursor:pointer;font-family:var(--font);font-size:0.9em;width:100%;margin-top:16px;flex-shrink:0;transition:border-color 0.15s,background 0.15s}
         .popup-close-bottom:hover{border-color:var(--accent);background:var(--accent-soft)}
-        @media(max-width:1100px){.games-grid{grid-template-columns:repeat(4,1fr);gap:12px}}
-        @media(max-width:860px){.games-grid{grid-template-columns:repeat(3,1fr);gap:10px}.container{padding:16px 0 32px}.card-body{padding:8px 10px}.card-title{font-size:0.78em}.sb-left,.sb-center,.sb-right{font-size:0.72em}.popup-flex{flex-direction:column;align-items:center}.popup-grid-art{width:150px}}
-        @media(max-width:600px){.container{width:100%;padding:12px 6px 24px}.games-grid{grid-template-columns:repeat(2,1fr);gap:8px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.popup-inner{padding:18px}.sb-left,.sb-center,.sb-right{font-size:0.65em}.ach-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}}
+        @media(max-width:1800px){:root{--card-width:200px}}
+        @media(max-width:1400px){:root{--card-width:180px}}
+        @media(max-width:1100px){:root{--card-width:160px}.games-grid{gap:12px}}
+        @media(max-width:860px){:root{--card-width:140px}.games-grid{gap:10px}.container{padding:16px 0 32px}.card-body{padding:8px 10px}.card-title{font-size:0.78em}.sb-left,.sb-center,.sb-right{font-size:0.72em}.popup-flex{flex-direction:column;align-items:center}.popup-grid-art{width:150px}}
+        @media(max-width:600px){:root{--card-width:140px}.container{width:100%;padding:12px 6px 24px}.games-grid{gap:8px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.popup-inner{padding:18px}.sb-left,.sb-center,.sb-right{font-size:0.65em}.ach-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}}
     </style>
 </head>
 <body>
@@ -222,8 +235,8 @@
         function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<24;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
         renderSkeletons();
         function updateCardSizes(){var e=currentCols;var t=Math.max(0.5,0.85-(e-2)*0.04);var o=Math.max(0.5,0.86-(e-2)*0.04);document.documentElement.style.setProperty('--title-font-size',t+'em');document.documentElement.style.setProperty('--sb-font-size',o+'em')}
-        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('steamCols',currentCols);document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
-        document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',1fr)';
+        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('steamCols',currentCols);document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',var(--card-width))';document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
+        document.getElementById('gamesGrid').style.gridTemplateColumns='repeat('+currentCols+',var(--card-width))';
         document.getElementById('columnSlider').value=currentCols;
         document.getElementById('columnLabel').textContent=currentCols;
         document.getElementById('viewDefault').classList.toggle('active',currentCols===2);
