@@ -233,9 +233,10 @@
         function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<24;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
         renderSkeletons();
         function updateCardSizes(){var e=currentCols;var t=Math.max(0.5,0.85-(e-2)*0.04);var o=Math.max(0.5,0.86-(e-2)*0.04);document.documentElement.style.setProperty('--title-font-size',t+'em');document.documentElement.style.setProperty('--sb-font-size',o+'em')}
-        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('steamCols',currentCols);var w=Math.max(120,Math.round(1760/currentCols));document.documentElement.style.setProperty('--card-width',w+'px');document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
-        var initW=Math.max(120,Math.round(1760/currentCols));
-        document.documentElement.style.setProperty('--card-width',initW+'px');
+        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('steamCols',currentCols);var isMobile=window.innerWidth<=600;var w=isMobile?(currentCols===2?'calc(50% - 8px)':'calc(33.333% - 8px)'):(Math.max(120,Math.round(1760/currentCols))+'px');document.documentElement.style.setProperty('--card-width',w);document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
+        var isMobileInit=window.innerWidth<=600;
+        var initW=isMobileInit?(currentCols===2?'calc(50% - 8px)':'calc(33.333% - 8px)'):(Math.max(120,Math.round(1760/currentCols))+'px');
+        document.documentElement.style.setProperty('--card-width',initW);
         document.getElementById('columnSlider').value=currentCols;
         document.getElementById('columnLabel').textContent=currentCols;
         document.getElementById('viewDefault').classList.toggle('active',currentCols===2);
