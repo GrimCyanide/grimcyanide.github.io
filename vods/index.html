@@ -66,19 +66,32 @@
     </script>
     <style>
         :root{--bg:#0b0e11;--surface:#14181d;--surface-alt:#181c22;--border:#252a30;--text:#c8cdd2;--muted:#959ba5;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.15);--amber:#d2991d;--green:#4ade80;--red:#e85d75;--blue:#1d5cc2;--teal:#2dd4bf;--badge-bg:rgba(48,54,61,0.8);--radius:0px;--font:system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',monospace;--rating-font-size:1.1em;--title-font-size:0.82em;--status-font-size:0.68em;--badge-font-size:1.0em;--card-width:220px}
+        :root[data-theme="light"]{--bg:#f4f5f7;--surface:#ffffff;--surface-alt:#eef0f3;--border:#dde1e6;--text:#1c2024;--muted:#6b7280;--accent:#e85d75;--accent-soft:rgba(232,93,117,0.12);--amber:#a3690a;--green:#15803d;--red:#dc2626;--blue:#1d5cc2;--teal:#0d9488;--badge-bg:rgba(220,224,229,0.9)}
         *{box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px}
+        body{background:var(--bg);color:var(--text);font-family:var(--font);margin:0;padding:0;min-height:100vh;line-height:1.5;font-size:15px;transition:background 0.2s,color 0.2s}
         html{overflow-y:scroll;scrollbar-gutter:stable}
         .nav-bar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
         .nav-links{display:flex;gap:4px;flex-wrap:wrap}
         .nav-link{background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 14px;text-decoration:none;color:var(--muted);font-size:0.8em;font-weight:500;transition:all 0.15s}
         .nav-link:hover{border-color:var(--border);color:var(--text)}
         .nav-link.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+        .theme-toggle-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center;transition:border-color 0.15s;flex-shrink:0}
+        .theme-toggle-btn:hover{border-color:var(--accent)}
         .page-title{text-align:center;padding:24px 24px 8px;font-size:1.5em;font-weight:700;letter-spacing:-0.5px;color:var(--accent)}
         .container{width:95%;margin:0 auto;padding:20px 0 40px}
         .header{text-align:center;margin-bottom:20px}
         .header h1{font-size:2em;margin:0 0 4px 0;font-weight:700;letter-spacing:-0.5px}
         .header .subtitle{color:var(--muted);font-size:0.95em;margin:0}
+        .featured-strip{max-width:640px;margin:0 auto 22px;display:none}
+        .featured-strip.visible{display:block}
+        .featured-card{display:flex;gap:14px;background:var(--surface);border:1px solid var(--accent);padding:12px;cursor:pointer;transition:background 0.15s}
+        .featured-card:hover{background:var(--accent-soft)}
+        .featured-poster{width:60px;flex-shrink:0;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden}
+        .featured-poster img{width:100%;height:100%;object-fit:cover;display:block}
+        .featured-info{display:flex;flex-direction:column;justify-content:center;min-width:0}
+        .featured-label{font-size:0.68em;text-transform:uppercase;letter-spacing:0.6px;color:var(--accent);font-weight:700;margin-bottom:4px}
+        .featured-title{font-size:1.05em;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .featured-meta{font-size:0.8em;color:var(--muted)}
         .key-bar{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:18px;font-size:0.72em;color:var(--muted)}
         .key-item{display:flex;align-items:center;gap:6px}
         .key-badge{font-size:0.75em;font-weight:700;font-family:var(--mono);padding:3px 8px;border-radius:0;text-transform:uppercase;letter-spacing:0.4px;white-space:nowrap;flex-shrink:0}
@@ -107,6 +120,7 @@
         .sort-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
         .sort-group select option,.sort-group optgroup{background:var(--surface);color:var(--text)}
         .sort-group optgroup{font-weight:700;color:var(--muted);font-style:normal}
+        .surprise-btn{white-space:nowrap}
         .view-toggle-desktop{display:flex;align-items:center;gap:8px}
         .view-toggle-mobile{display:none;align-items:center;gap:4px}
         .view-toggle-label{font-size:0.68em;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:500;white-space:nowrap}
@@ -131,10 +145,13 @@
         .game-card.backlog-card:hover{border-color:var(--blue)}
         .card-poster{width:100%;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden;position:relative;flex-shrink:0}
         .card-poster img{width:100%;height:100%;object-fit:cover;display:block}
-        .card-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;color:var(--border);background:var(--surface-alt)}
+        .card-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;color:var(--accent);background:linear-gradient(135deg,var(--surface-alt),var(--accent-soft))}
         .card-poster .skeleton-shimmer{width:100%;height:100%;background:var(--border)}
         .card-rating{position:absolute;bottom:0;left:0;right:0;height:8%;display:flex;align-items:center;justify-content:center;padding:0 2%;pointer-events:none;background:rgba(0,0,0,0.7)}
         .card-rating span{font-size:var(--rating-font-size);font-weight:700;font-family:var(--mono);color:#fff;white-space:nowrap}
+        .card-rating span.rating-high{color:var(--green)}
+        .card-rating span.rating-mid{color:var(--amber)}
+        .card-rating span.rating-low{color:var(--red)}
         .card-status-new{background:var(--surface-alt);display:flex;align-items:center;justify-content:center;gap:8px;height:1.5em;padding:0 0.5em;font-size:var(--status-font-size);font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;flex-shrink:0;box-sizing:border-box}
         .card-status-new .notes-prefix{color:var(--blue);font-size:1.15em;line-height:1;display:inline-flex;align-items:center}
         .card-status-new.finished{color:var(--green)}
@@ -142,6 +159,9 @@
         .card-status-new.backlog{color:var(--blue)}
         .recent-badge{position:absolute;top:2%;left:2%;background:rgba(0,0,0,0.7);color:#fff;padding:1.5% 3%;border-radius:0;font-size:var(--badge-font-size);font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px;pointer-events:none}
         .recent-badge.new-video{background:rgba(45,212,191,0.8);color:#000}
+        .favorite-btn{position:absolute;top:2%;right:2%;width:26px;height:26px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;color:#fff;font-size:0.95em;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;transition:transform 0.1s;line-height:1;padding:0}
+        .favorite-btn:hover{transform:scale(1.15)}
+        .favorite-btn.active{color:var(--accent)}
         .total-duration{position:absolute;bottom:9%;right:2%;background:rgba(0,0,0,0.65);color:#fff;padding:1.5% 3%;border-radius:0;font-size:var(--badge-font-size);font-weight:700;font-family:var(--mono);pointer-events:none;z-index:5}
         .part-duration{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.8);color:#fff;padding:2px 6px;border-radius:0;font-size:0.65em;font-weight:700;font-family:var(--mono)}
         .part-new-badge{position:absolute;top:6px;left:6px;background:rgba(45,212,191,0.85);color:#000;padding:2px 7px;border-radius:0;font-size:0.6em;font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
@@ -163,11 +183,19 @@
         .popup-inner h2{margin:0 0 4px 0;font-size:1.4em}
         .popup-close-top{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--muted);font-size:1.4em;cursor:pointer;padding:4px 8px;line-height:1;z-index:10;transition:color 0.15s}
         .popup-close-top:hover{color:var(--accent)}
-        .popup-meta{color:var(--muted);font-size:1.05em;margin-bottom:18px}
+        .popup-meta{color:var(--muted);font-size:1.05em;margin-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 0}
         .popup-meta span{margin-right:20px;font-weight:700;color:var(--text)}
+        .copy-link-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;font-size:0.72em;border-radius:0;cursor:pointer;font-family:var(--font);transition:border-color 0.15s,color 0.15s;text-transform:uppercase;letter-spacing:0.4px}
+        .copy-link-btn:hover{border-color:var(--accent);color:var(--accent)}
         .popup-notes{color:var(--muted);font-size:0.95em;margin-bottom:16px;line-height:1.5;padding:10px 14px;background:var(--surface-alt);border-radius:0;border-left:3px solid var(--accent)}
         .popup-notes strong{color:var(--text)}
         .popup-parts-count{font-size:0.95em;color:var(--muted);margin-bottom:14px}
+        .popup-video-embed{margin-bottom:16px;display:none}
+        .popup-video-embed.active{display:block}
+        .video-embed-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000}
+        .video-embed-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+        .video-embed-close{display:block;margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--text);padding:6px 10px;font-size:0.78em;cursor:pointer;font-family:var(--font)}
+        .video-embed-close:hover{border-color:var(--accent)}
         .parts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;justify-content:center}
         .parts-grid.single{grid-template-columns:minmax(280px,400px);justify-content:center}
         .parts-grid.double{grid-template-columns:repeat(2,minmax(240px,400px));justify-content:center}
@@ -190,10 +218,12 @@
 <body>
     <nav class="nav-bar">
         <div class="nav-links"><a href="/" class="nav-link">Home</a><a href="/vods" class="nav-link active">VODs &amp; Ratings</a><a href="/steam" class="nav-link">Steam Games</a></div>
+        <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to light theme" title="Toggle theme">🌙</button>
     </nav>
     <div class="page-title">GRIM_CYANIDE</div>
     <main class="container">
         <div class="header"><h1>VODs &amp; Playthroughs</h1><p class="subtitle">My streaming archive. Every game I've recorded is here with start and finish dates, ratings out of 10, and full VODs.<br>Click any game for more info and to watch.</p></div>
+        <div class="featured-strip" id="featuredStrip"></div>
         <div class="key-bar">
             <span class="key-item"><span class="key-badge recent">RECENTLY FINISHED</span> Finished in the last 30 days</span>
             <span class="key-item"><span class="key-badge newvid">NEW VIDEO</span> New video added in the last 30 days</span>
@@ -202,8 +232,10 @@
         <div class="stats-bar" id="statsBar"></div>
         <div class="filters-section">
             <div class="filter-group"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">All</option><option value="Finished">Finished</option><option value="Unfinished">Unfinished</option><option value="Backlog">Backlog</option></select></div>
+            <div class="filter-group" id="tagFilterGroup" style="display:none"><label for="tagFilter">Tag</label><select id="tagFilter"><option value="all">All Tags</option></select></div>
             <div class="filter-group"><label for="searchInput">Search</label><input type="text" id="searchInput" class="search-input" placeholder="Filter games..."></div>
             <div class="sort-group"><label for="sortSelect">Sort</label><select id="sortSelect"><optgroup label="Name"><option value="az">Name A-Z</option><option value="za">Name Z-A</option></optgroup><optgroup label="Date Started"><option value="recent-started">Recently Started</option><option value="oldest-started">Oldest Started</option></optgroup><optgroup label="Date Finished"><option value="recent-finished">Recently Finished</option><option value="oldest-finished">Oldest Finished</option></optgroup><optgroup label="Rating"><option value="rating-high">Rating High-Low</option><option value="rating-low">Rating Low-High</option></optgroup><optgroup label="Duration"><option value="duration-long">Longest</option><option value="duration-short">Shortest</option></optgroup></select></div>
+            <button class="view-btn surprise-btn" id="surpriseBtn" type="button">🎲 Surprise Me</button>
             <div class="view-toggle-desktop">
                 <span class="view-toggle-label">Grid Size</span>
                 <input type="range" class="column-slider" id="columnSlider" min="2" max="12" value="6" oninput="setColumns(this.value)" aria-label="Number of columns">
@@ -225,25 +257,33 @@
     (function () {
         'use strict';
 
+        // ---------- Configuration ----------
         var API_URL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
         var PARTS_API_URL = 'https://grimcyanide-github-io.vercel.app/api/youtube-parts';
         var POSTER_BASE = 'https://data.grimcyanide.com/posters/';
         var VIDEO_CACHE_KEY = 'vodsVideoCache';
         var COLUMNS_KEY = 'vodsCols';
-        var VIDEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; 
+        var FAVORITES_KEY = 'vodsFavorites';
+        var THEME_KEY = 'vodsTheme';
+        var VIDEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
         var RECENT_WINDOW_DAYS = 30;
-        var PRELOAD_BATCH_SIZE = 5;
-        var PRELOAD_BATCH_DELAY_MS = 200;
 
+        // ---------- State ----------
         var allGames = [];
         var currentSort = 'az';
         var currentColumns = 6;
         var openGameName = null;
-        var videoPartsCache = {};  
-        var durationCache = {};    
-        var displayedGames = [];   
-        var cardsByLinkUrl = {};   
+        var videoPartsCache = {};  // linkUrl -> parts[] | 'loading'
+        var durationCache = {};    // linkUrl -> seconds
+        var displayedGames = [];   // games currently on screen, in DOM order
+        var cardsByLinkUrl = {};   // linkUrl -> [{card, poster}, ...] for live duration updates
+        var favorites = new Set();
+        var favoritesOnly = false;
+        var allTags = [];
+        var currentTagFilter = 'all';
+        var saveCacheTimer = null;
 
+        // ---------- DOM refs ----------
         var dom = {
             grid: document.getElementById('gamesGrid'),
             statusFilter: document.getElementById('statusFilter'),
@@ -256,14 +296,21 @@
             viewDefaultBtn: document.getElementById('viewDefault'),
             viewCompactBtn: document.getElementById('viewCompact'),
             popupOverlay: document.getElementById('popupOverlay'),
-            popupInner: document.getElementById('popupInner')
+            popupInner: document.getElementById('popupInner'),
+            featuredStrip: document.getElementById('featuredStrip'),
+            tagFilterGroup: document.getElementById('tagFilterGroup'),
+            tagFilterSelect: document.getElementById('tagFilter'),
+            themeToggle: document.getElementById('themeToggle'),
+            surpriseBtn: document.getElementById('surpriseBtn')
         };
 
+        // ---------- Query params / initial state ----------
         var params = new URLSearchParams(window.location.search);
         var savedStatus = params.get('status');
         var savedSearch = params.get('search');
         if (params.get('sort')) currentSort = params.get('sort');
         if (params.get('cols')) currentColumns = parseInt(params.get('cols'), 10);
+        if (params.get('tag')) currentTagFilter = params.get('tag');
         openGameName = params.get('game') ? decodeURIComponent(params.get('game')) : null;
 
         var savedCols = localStorage.getItem(COLUMNS_KEY);
@@ -279,11 +326,13 @@
             if (search) p.set('search', search);
             if (currentSort !== 'az') p.set('sort', currentSort);
             if (currentColumns !== 6) p.set('cols', currentColumns);
+            if (currentTagFilter !== 'all') p.set('tag', currentTagFilter);
             if (openGameName) p.set('game', openGameName);
             var query = p.toString();
             history.replaceState(null, '', window.location.pathname + (query ? '?' + query : ''));
         }
 
+        // ---------- Generic helpers ----------
         function hasValue(v) {
             return v !== null && v !== undefined && v.toString().trim().length > 0;
         }
@@ -294,6 +343,7 @@
             return div.innerHTML;
         }
 
+        // Safe for dropping into an HTML attribute (href, src, alt...)
         function escapeAttr(str) {
             return escapeHtml(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
@@ -364,6 +414,58 @@
             return '1-4';
         }
 
+        function getRatingClass(rating) {
+            if (!rating || rating <= 0) return '';
+            if (rating >= 8) return 'rating-high';
+            if (rating >= 5) return 'rating-mid';
+            return 'rating-low';
+        }
+
+        function getRatingColorVar(rating) {
+            if (!rating || rating <= 0) return null;
+            if (rating >= 8) return 'var(--green)';
+            if (rating >= 5) return 'var(--amber)';
+            return 'var(--red)';
+        }
+
+        function getGameTags(game) {
+            if (!game.tags) return [];
+            if (Array.isArray(game.tags)) return game.tags.map(function (t) { return String(t).trim(); }).filter(Boolean);
+            return String(game.tags).split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+        }
+
+        // ---------- Favorites ----------
+        function loadFavorites() {
+            try {
+                var raw = localStorage.getItem(FAVORITES_KEY);
+                if (raw) JSON.parse(raw).forEach(function (name) { favorites.add(name); });
+            } catch (err) {
+                console.warn('Could not read favorites:', err);
+            }
+        }
+
+        function saveFavorites() {
+            try {
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(Array.from(favorites)));
+            } catch (err) {
+                console.warn('Could not save favorites:', err);
+            }
+        }
+
+        function toggleFavorite(gameName) {
+            if (favorites.has(gameName)) favorites.delete(gameName);
+            else favorites.add(gameName);
+            saveFavorites();
+        }
+
+        // ---------- Theme ----------
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            dom.themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+            dom.themeToggle.setAttribute('aria-label', theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+        }
+
+        // ---------- Video / duration cache ----------
         function computeDurationSeconds(linkUrl) {
             var parts = videoPartsCache[linkUrl];
             if (!parts || parts === 'loading' || !parts.length) return 0;
@@ -398,21 +500,22 @@
                                 durationCache[linkUrl] = computeDurationSeconds(linkUrl);
                             }
                         });
-                        return;
                     }
                 }
             } catch (err) {
                 console.warn('Could not read cached video data:', err);
             }
-            preloadVideoData();
         }
 
-        function saveVideoCacheToStorage() {
-            try {
-                localStorage.setItem(VIDEO_CACHE_KEY, JSON.stringify({ data: videoPartsCache, timestamp: Date.now() }));
-            } catch (err) {
-                console.warn('Could not save video cache:', err);
-            }
+        function queueSaveVideoCache() {
+            clearTimeout(saveCacheTimer);
+            saveCacheTimer = setTimeout(function () {
+                try {
+                    localStorage.setItem(VIDEO_CACHE_KEY, JSON.stringify({ data: videoPartsCache, timestamp: Date.now() }));
+                } catch (err) {
+                    console.warn('Could not save video cache:', err);
+                }
+            }, 1500);
         }
 
         function updateDurationBadgeForLink(linkUrl) {
@@ -437,47 +540,38 @@
             });
         }
 
-        function preloadVideoData() {
-            var gamesToFetch = allGames.filter(function (g) {
-                var cached = videoPartsCache[g.linkUrl];
-                return hasValue(g.linkUrl) && g.linkUrl !== 'N/A' &&
-                    (!cached || cached === 'loading' || (Array.isArray(cached) && cached.length === 0));
-            });
-            if (!gamesToFetch.length) return;
-
-            var index = 0;
-            function runNextBatch() {
-                var batch = gamesToFetch.slice(index, index + PRELOAD_BATCH_SIZE);
-                if (!batch.length) {
-                    saveVideoCacheToStorage();
-                    return;
-                }
-                var remaining = batch.length;
-                batch.forEach(function (game) {
-                    videoPartsCache[game.linkUrl] = 'loading';
-                    fetch(PARTS_API_URL + '?url=' + encodeURIComponent(game.linkUrl) + '&t=' + Date.now())
-                        .then(function (res) { return res.json(); })
-                        .then(function (data) {
-                            videoPartsCache[game.linkUrl] = data.parts || [];
-                        })
-                        .catch(function () {
-                            videoPartsCache[game.linkUrl] = [];
-                        })
-                        .finally(function () {
-                            var seconds = computeDurationSeconds(game.linkUrl);
-                            if (seconds > 0) durationCache[game.linkUrl] = seconds;
-                            updateDurationBadgeForLink(game.linkUrl);
-                            remaining--;
-                            if (remaining === 0) {
-                                index += PRELOAD_BATCH_SIZE;
-                                setTimeout(runNextBatch, PRELOAD_BATCH_DELAY_MS);
-                            }
-                        });
+        // Only fetch a game's video data once its card actually scrolls into view,
+        // instead of eagerly downloading parts for the whole library up front.
+        function fetchPartsForLink(linkUrl) {
+            var cached = videoPartsCache[linkUrl];
+            if (cached && cached !== 'loading' && !(Array.isArray(cached) && cached.length === 0)) return;
+            videoPartsCache[linkUrl] = 'loading';
+            fetch(PARTS_API_URL + '?url=' + encodeURIComponent(linkUrl))
+                .then(function (res) { return res.json(); })
+                .then(function (data) { videoPartsCache[linkUrl] = data.parts || []; })
+                .catch(function () { videoPartsCache[linkUrl] = []; })
+                .finally(function () {
+                    var seconds = computeDurationSeconds(linkUrl);
+                    if (seconds > 0) durationCache[linkUrl] = seconds;
+                    updateDurationBadgeForLink(linkUrl);
+                    updateTotalHoursStat();
+                    queueSaveVideoCache();
                 });
-            }
-            runNextBatch();
         }
 
+        var lazyObserver = ('IntersectionObserver' in window)
+            ? new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        lazyObserver.unobserve(entry.target);
+                        var linkUrl = entry.target.dataset.linkUrl;
+                        if (linkUrl) fetchPartsForLink(linkUrl);
+                    }
+                });
+            }, { rootMargin: '400px 0px' })
+            : null;
+
+        // ---------- Sorting & filtering ----------
         function sortGames(games, sortKey) {
             var list = games.slice();
 
@@ -529,11 +623,31 @@
             } else if (status === 'Backlog') {
                 result = result.filter(function (g) { return g.isFinished !== 'Finished' && !hasValue(g.dateStarted); });
             }
+            if (favoritesOnly) {
+                result = result.filter(function (g) { return favorites.has(g.game); });
+            }
+            if (currentTagFilter !== 'all') {
+                result = result.filter(function (g) { return getGameTags(g).indexOf(currentTagFilter) > -1; });
+            }
             var query = search.trim().toLowerCase();
             if (query) result = result.filter(function (g) { return g.game.toLowerCase().indexOf(query) > -1; });
             return result;
         }
 
+        function setupTagFilter() {
+            var tagSet = new Set();
+            allGames.forEach(function (g) { getGameTags(g).forEach(function (t) { tagSet.add(t); }); });
+            allTags = Array.from(tagSet).sort();
+            if (!allTags.length) {
+                dom.tagFilterGroup.style.display = 'none';
+                return;
+            }
+            dom.tagFilterGroup.style.display = '';
+            dom.tagFilterSelect.innerHTML = '<option value="all">All Tags</option>' +
+                allTags.map(function (t) { return '<option value="' + escapeAttr(t) + '">' + escapeHtml(t) + '</option>'; }).join('');
+        }
+
+        // ---------- Stats bar ----------
         function renderStats() {
             var total = allGames.length, finished = 0, unfinished = 0, backlog = 0;
             allGames.forEach(function (g) {
@@ -546,23 +660,27 @@
             var avgRating = rated.length
                 ? (rated.reduce(function (sum, g) { return sum + (g.rating || 0); }, 0) / rated.length).toFixed(1)
                 : 'N/A';
+            var hoursLabel = getHoursWatchedLabel();
 
             dom.statsBar.innerHTML =
                 '<div class="stat-item" data-filter="all"><div class="stat-value">' + total + '</div><div class="stat-label">Total</div></div>' +
                 '<div class="stat-item" data-filter="Finished"><div class="stat-value">' + finished + '</div><div class="stat-label">Finished</div></div>' +
                 '<div class="stat-item" data-filter="Unfinished"><div class="stat-value">' + unfinished + '</div><div class="stat-label">Unfinished</div></div>' +
                 '<div class="stat-item" data-filter="Backlog"><div class="stat-value">' + backlog + '</div><div class="stat-label">Backlog</div></div>' +
-                '<div class="stat-item" data-filter=""><div class="stat-value">' + avgRating + '</div><div class="stat-label">Avg Rating</div></div>';
+                '<div class="stat-item" data-filter=""><div class="stat-value">' + avgRating + '</div><div class="stat-label">Avg Rating</div></div>' +
+                '<div class="stat-item" data-filter="" id="totalHoursStat" title="Based on videos loaded so far"><div class="stat-value">' + hoursLabel + '</div><div class="stat-label">Hours Watched</div></div>' +
+                '<div class="stat-item" data-filter="__favorites__" id="favoritesStat"><div class="stat-value">' + favorites.size + '</div><div class="stat-label">Favorites</div></div>';
 
             dom.statsBar.querySelectorAll('.stat-item[data-filter]').forEach(function (el) {
-                if (el.dataset.filter) {
-                    el.addEventListener('click', function () {
-                        dom.statusFilter.value = el.dataset.filter;
-                        renderGames();
-                        updateStatActive();
-                        updateURL();
-                    });
-                }
+                var filter = el.dataset.filter;
+                if (!filter) return; // informational pill, not clickable as a filter
+                el.addEventListener('click', function () {
+                    if (filter === '__favorites__') favoritesOnly = !favoritesOnly;
+                    else dom.statusFilter.value = filter;
+                    renderGames();
+                    updateStatActive();
+                    updateURL();
+                });
             });
             updateStatActive();
         }
@@ -570,10 +688,71 @@
         function updateStatActive() {
             var current = dom.statusFilter.value;
             dom.statsBar.querySelectorAll('.stat-item[data-filter]').forEach(function (el) {
-                el.classList.toggle('active', el.dataset.filter === current);
+                if (el.dataset.filter === '__favorites__') el.classList.toggle('active', favoritesOnly);
+                else if (el.dataset.filter) el.classList.toggle('active', el.dataset.filter === current);
             });
         }
 
+        function getHoursWatchedLabel() {
+            var totalSeconds = allGames.reduce(function (sum, g) { return sum + getDurationSeconds(g.linkUrl); }, 0);
+            return totalSeconds > 0 ? ('\u2248' + Math.round(totalSeconds / 3600) + 'h') : '\u2026';
+        }
+
+        function updateTotalHoursStat() {
+            var el = document.querySelector('#totalHoursStat .stat-value');
+            if (el) el.textContent = getHoursWatchedLabel();
+        }
+
+        function updateFavoritesStatCount() {
+            var el = document.querySelector('#favoritesStat .stat-value');
+            if (el) el.textContent = favorites.size;
+        }
+
+        // ---------- Featured strip ----------
+        function computeFeaturedGame() {
+            var unfinishedWithStart = allGames.filter(function (g) {
+                return getDisplayStatus(g) === 'Unfinished' && hasValue(g.dateStarted);
+            });
+            if (unfinishedWithStart.length) {
+                unfinishedWithStart.sort(function (a, b) { return parseDate(b.dateStarted) - parseDate(a.dateStarted); });
+                return { game: unfinishedWithStart[0], label: 'Continue Watching' };
+            }
+            var recentlyFinished = allGames.filter(function (g) {
+                return getDisplayStatus(g) === 'Finished' && hasValue(g.dateFinished);
+            });
+            if (recentlyFinished.length) {
+                recentlyFinished.sort(function (a, b) { return parseDate(b.dateFinished) - parseDate(a.dateFinished); });
+                return { game: recentlyFinished[0], label: 'Recently Finished' };
+            }
+            return null;
+        }
+
+        function renderFeaturedStrip() {
+            var featured = computeFeaturedGame();
+            if (!featured) {
+                dom.featuredStrip.classList.remove('visible');
+                dom.featuredStrip.innerHTML = '';
+                return;
+            }
+            var game = featured.game;
+            var posterUrl = getPosterUrl(game.poster);
+            dom.featuredStrip.innerHTML =
+                '<div class="featured-card" id="featuredCard">' +
+                (posterUrl ? '<div class="featured-poster"><img src="' + escapeAttr(posterUrl) + '" alt="' + escapeAttr(game.game) + '"></div>' : '') +
+                '<div class="featured-info">' +
+                '<div class="featured-label">' + escapeHtml(featured.label) + '</div>' +
+                '<div class="featured-title">' + escapeHtml(game.game) + '</div>' +
+                '<div class="featured-meta">' + getDisplayStatus(game) + (game.rating ? ' \u2022 ' + getRatingDisplay(game) : '') + '</div>' +
+                '</div></div>';
+            dom.featuredStrip.classList.add('visible');
+            document.getElementById('featuredCard').addEventListener('click', function () {
+                openGameName = game.game;
+                renderPopup(game);
+                updateURL();
+            });
+        }
+
+        // ---------- Grid rendering ----------
         function renderSkeletons(count) {
             count = count || 24;
             var fragment = document.createDocumentFragment();
@@ -610,7 +789,7 @@
             return el;
         }
 
-        function createGameCard(game, index) {
+        function createGameCard(game, index, lazyQueue) {
             var status = getDisplayStatus(game);
             var statusClass = status.toLowerCase();
 
@@ -632,6 +811,23 @@
 
             var badge = getCardBadgeElement(game);
             if (badge) poster.appendChild(badge);
+
+            var isFav = favorites.has(game.game);
+            var favBtn = document.createElement('button');
+            favBtn.type = 'button';
+            favBtn.className = 'favorite-btn' + (isFav ? ' active' : '');
+            favBtn.textContent = isFav ? '\u2665' : '\u2661';
+            favBtn.setAttribute('aria-label', isFav ? 'Remove from favorites' : 'Add to favorites');
+            favBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleFavorite(game.game);
+                var nowFav = favorites.has(game.game);
+                favBtn.classList.toggle('active', nowFav);
+                favBtn.textContent = nowFav ? '\u2665' : '\u2661';
+                favBtn.setAttribute('aria-label', nowFav ? 'Remove from favorites' : 'Add to favorites');
+                updateFavoritesStatCount();
+            });
+            poster.appendChild(favBtn);
 
             var seconds = getDurationSeconds(game.linkUrl);
             if (seconds > 0) {
@@ -665,6 +861,8 @@
             var ratingWrap = document.createElement('div');
             ratingWrap.className = 'card-rating';
             var ratingSpan = document.createElement('span');
+            var ratingClass = getRatingClass(game.rating);
+            if (ratingClass) ratingSpan.className = ratingClass;
             ratingSpan.textContent = getRatingDisplay(game);
             ratingWrap.appendChild(ratingSpan);
             poster.appendChild(ratingWrap);
@@ -674,7 +872,7 @@
             if (game.notes && game.notes.trim()) {
                 var notesIcon = document.createElement('span');
                 notesIcon.className = 'notes-prefix';
-                notesIcon.textContent = 'ⓘ';
+                notesIcon.textContent = '\u24d8';
                 statusFooter.appendChild(notesIcon);
             }
             statusFooter.appendChild(document.createTextNode(status.toUpperCase()));
@@ -693,6 +891,12 @@
 
             if (hasValue(game.linkUrl) && game.linkUrl !== 'N/A') {
                 (cardsByLinkUrl[game.linkUrl] = cardsByLinkUrl[game.linkUrl] || []).push({ card: card, poster: poster });
+                var cached = videoPartsCache[game.linkUrl];
+                var needsFetch = !cached || cached === 'loading' || (Array.isArray(cached) && cached.length === 0);
+                if (needsFetch && lazyObserver) {
+                    card.dataset.linkUrl = game.linkUrl;
+                    lazyQueue.push(card);
+                }
             }
 
             return card;
@@ -707,6 +911,7 @@
             updateResultCount(filtered.length);
             displayedGames = filtered;
             cardsByLinkUrl = {};
+            if (lazyObserver) lazyObserver.disconnect();
 
             if (!filtered.length) {
                 dom.grid.innerHTML = '<div class="no-results">No games match.</div>';
@@ -714,6 +919,7 @@
             }
 
             var fragment = document.createDocumentFragment();
+            var lazyQueue = [];
             var usesDateGrouping = currentSort.indexOf('started') > -1 || currentSort.indexOf('finished') > -1;
             var usesRatingGrouping = currentSort.indexOf('rating') > -1;
             var lastGroupLabel = null;
@@ -749,11 +955,12 @@
                     fragment.appendChild(makeYearDivider(groupLabel));
                 }
 
-                fragment.appendChild(createGameCard(game, i));
+                fragment.appendChild(createGameCard(game, i, lazyQueue));
             });
 
             dom.grid.innerHTML = '';
             dom.grid.appendChild(fragment);
+            lazyQueue.forEach(function (card) { lazyObserver.observe(card); });
 
             if (openGameName) {
                 var targetIndex = -1;
@@ -764,6 +971,7 @@
             }
         }
 
+        // ---------- Popup ----------
         function openGameByIndex(index) {
             var game = displayedGames[index];
             if (!game) return;
@@ -772,10 +980,33 @@
             updateURL();
         }
 
+        function extractYouTubeId(url) {
+            var m = url && url.match(/(?:youtu\.be\/|[?&]v=|embed\/)([A-Za-z0-9_-]{6,})/);
+            return m ? m[1] : null;
+        }
+
+        function playEmbeddedVideo(videoId) {
+            var embed = dom.popupInner.querySelector('#popupVideoEmbed');
+            var frame = dom.popupInner.querySelector('#popupVideoFrame');
+            if (!embed || !frame) return;
+            frame.src = 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0';
+            embed.classList.add('active');
+            embed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function stopEmbeddedVideo() {
+            var embed = dom.popupInner.querySelector('#popupVideoEmbed');
+            var frame = dom.popupInner.querySelector('#popupVideoFrame');
+            if (frame) frame.src = '';
+            if (embed) embed.classList.remove('active');
+        }
+
         function renderPopup(game) {
-            var ratingText = 'Rating: ' + getRatingDisplay(game);
-            var started = hasValue(game.dateStarted) ? game.dateStarted : 'TBD';
-            var finished = hasValue(game.dateFinished) ? game.dateFinished : 'TBD';
+            var rating = game.rating || 0;
+            var ratingColor = getRatingColorVar(rating);
+            var ratingText = '<span' + (ratingColor ? ' style="color:' + ratingColor + '"' : '') + '>Rating: ' + getRatingDisplay(game) + '</span>';
+            var started = hasValue(game.dateStarted) ? game.dateStarted : null;
+            var finished = hasValue(game.dateFinished) ? game.dateFinished : null;
             var hasLink = hasValue(game.linkUrl) && game.linkUrl !== 'N/A';
             var partsCount = game.parts || 0;
 
@@ -783,23 +1014,43 @@
                 ? '<div class="popup-notes"><strong>Notes:</strong> ' + escapeHtml(game.notes) + '</div>'
                 : '';
 
+            var metaHtml = '<span>Status: ' + getDisplayStatus(game) + '</span>' + '<span>' + ratingText + '</span>';
+            if (started) metaHtml += '<span>Started: ' + escapeHtml(started) + '</span>';
+            if (finished) metaHtml += '<span>Finished: ' + escapeHtml(finished) + '</span>';
+            metaHtml += '<button class="copy-link-btn" id="popupCopyLink" type="button">\ud83d\udd17 Copy Link</button>';
+
             dom.popupInner.innerHTML =
-                '<button class="popup-close-top" onclick="window.__vodsClosePopup()" aria-label="Close">×</button>' +
+                '<button class="popup-close-top" onclick="window.__vodsClosePopup()" aria-label="Close">\u00d7</button>' +
                 '<div class="popup-scroll">' +
                 '<h2>' + escapeHtml(game.game) + '</h2>' +
-                '<div class="popup-meta">' +
-                '<span>Status: ' + getDisplayStatus(game) + '</span>' +
-                '<span>' + ratingText + '</span>' +
-                '<span>Started: ' + escapeHtml(started) + '</span>' +
-                '<span>Finished: ' + escapeHtml(finished) + '</span>' +
-                '</div>' +
+                '<div class="popup-meta">' + metaHtml + '</div>' +
                 notesHtml +
+                '<div class="popup-video-embed" id="popupVideoEmbed">' +
+                '<div class="video-embed-wrap"><iframe id="popupVideoFrame" src="" title="Video player" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>' +
+                '<button class="video-embed-close" id="popupVideoClose" type="button">\u2715 Close video</button>' +
+                '</div>' +
                 (partsCount > 1 ? '<div class="popup-parts-count">' + partsCount + ' Parts</div>' : '') +
                 '<div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading parts...</p></div>' +
                 '</div>' +
                 '<button class="popup-close-bottom" onclick="window.__vodsClosePopup()">close</button>';
 
             dom.popupOverlay.classList.add('active');
+
+            var copyBtn = dom.popupInner.querySelector('#popupCopyLink');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function () {
+                    var url = new URL(window.location.href);
+                    url.searchParams.set('game', game.game);
+                    navigator.clipboard.writeText(url.toString()).then(function () {
+                        var original = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(function () { copyBtn.textContent = original; }, 1500);
+                    }).catch(function () {});
+                });
+            }
+
+            var videoCloseBtn = dom.popupInner.querySelector('#popupVideoClose');
+            if (videoCloseBtn) videoCloseBtn.addEventListener('click', stopEmbeddedVideo);
 
             if (!hasLink) {
                 var loadingEl = dom.popupInner.querySelector('.loading-container');
@@ -811,12 +1062,15 @@
         }
 
         function fetchAndRenderParts(game) {
-            fetch(PARTS_API_URL + '?url=' + encodeURIComponent(game.linkUrl) + '&t=' + Date.now())
+            fetch(PARTS_API_URL + '?url=' + encodeURIComponent(game.linkUrl))
                 .then(function (res) { return res.json(); })
                 .then(function (data) {
                     var target = dom.popupInner.querySelector('.loading-container');
-                    if (!target) return;
-                    target.outerHTML = buildPartsMarkup(data.parts || [], game.linkUrl);
+                    if (!target) return; // popup moved on already
+                    var parts = data.parts || [];
+                    target.outerHTML = buildPartsMarkup(parts, game.linkUrl);
+                    var container = dom.popupInner.querySelector('.parts-grid') || dom.popupInner;
+                    attachPartCardHandlers(container);
                 })
                 .catch(function () {
                     var target = dom.popupInner.querySelector('.loading-container');
@@ -836,7 +1090,7 @@
         function buildPartsMarkup(parts, linkUrl) {
             if (!parts.length) {
                 return '<a href="' + escapeAttr(linkUrl) + '" target="_blank" rel="noopener" ' +
-                    'style="color:var(--accent);text-decoration:none;font-weight:600;font-size:1.1em">▶ Watch on YouTube</a>';
+                    'style="color:var(--accent);text-decoration:none;font-weight:600;font-size:1.1em">\u25b6 Watch on YouTube</a>';
             }
             var gridClass = 'parts-grid';
             if (parts.length === 1) gridClass += ' single';
@@ -856,13 +1110,28 @@
             return '<div class="' + gridClass + '">' + cardsHtml + '</div>';
         }
 
+        // Clicking a part still allows middle-click / right-click "open in new tab" (the href is real),
+        // but a normal left click plays it inline instead of navigating away from the site.
+        function attachPartCardHandlers(container) {
+            container.querySelectorAll('.part-card').forEach(function (a) {
+                var videoId = extractYouTubeId(a.getAttribute('href'));
+                if (!videoId) return;
+                a.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    playEmbeddedVideo(videoId);
+                });
+            });
+        }
+
         function closePopup() {
+            stopEmbeddedVideo();
             dom.popupOverlay.classList.remove('active');
             openGameName = null;
             updateURL();
         }
-        window.__vodsClosePopup = closePopup;
+        window.__vodsClosePopup = closePopup; // used by inline onclick handlers in the popup markup
 
+        // ---------- Column / grid-size controls ----------
         function updateCardSizes() {
             var c = currentColumns;
             var rating = Math.max(0.65, 1.4 - (c - 2) * 0.09) * 1.2;
@@ -892,8 +1161,9 @@
             updateCardSizes();
             updateURL();
         }
-        window.setColumns = setColumns;
+        window.setColumns = setColumns; // used by inline oninput/onclick handlers
 
+        // ---------- Misc UI helpers ----------
         function restoreFilters() {
             if (savedStatus) {
                 dom.statusFilter.value = savedStatus;
@@ -901,6 +1171,11 @@
             }
             if (savedSearch) dom.searchInput.value = savedSearch;
             dom.sortSelect.value = currentSort;
+            if (dom.tagFilterSelect.querySelector('option[value="' + CSS.escape(currentTagFilter) + '"]')) {
+                dom.tagFilterSelect.value = currentTagFilter;
+            } else {
+                currentTagFilter = 'all';
+            }
             updateURL();
         }
 
@@ -911,6 +1186,26 @@
                 : (allGames.length + ' games');
         }
 
+        function injectStructuredData() {
+            var items = allGames.filter(function (g) { return hasValue(g.linkUrl) && g.linkUrl !== 'N/A'; })
+                .map(function (g, i) { return { '@type': 'ListItem', position: i + 1, name: g.game, url: g.linkUrl }; });
+            if (!items.length) return;
+            var data = {
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                name: 'GRIM_CYANIDE VODs & Playthroughs',
+                itemListElement: items
+            };
+            var existing = document.getElementById('vods-jsonld');
+            if (existing) existing.remove();
+            var script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.id = 'vods-jsonld';
+            script.textContent = JSON.stringify(data);
+            document.head.appendChild(script);
+        }
+
+        // ---------- Data loading ----------
         function loadGamesData() {
             renderSkeletons();
             fetch(API_URL + '?t=' + Date.now())
@@ -926,9 +1221,12 @@
                     }
                     allGames = data.games;
                     renderStats();
+                    setupTagFilter();
                     restoreFilters();
                     loadCachedVideoData();
+                    renderFeaturedStrip();
                     renderGames();
+                    injectStructuredData();
                 })
                 .catch(function (err) {
                     console.error('Failed to load VODs data:', err);
@@ -939,6 +1237,9 @@
                 });
         }
 
+        // ---------- Initial setup ----------
+        applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+        loadFavorites();
         document.documentElement.style.setProperty('--card-width', computeCardWidth(currentColumns));
         dom.columnSlider.value = currentColumns;
         dom.columnLabel.textContent = currentColumns;
@@ -946,6 +1247,25 @@
         dom.viewCompactBtn.classList.toggle('active', currentColumns === 3);
         updateCardSizes();
 
+        // ---------- Event listeners ----------
+        dom.themeToggle.addEventListener('click', function () {
+            var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            localStorage.setItem(THEME_KEY, next);
+            applyTheme(next);
+        });
+        dom.surpriseBtn.addEventListener('click', function () {
+            var pool = displayedGames.length ? displayedGames : allGames;
+            if (!pool.length) return;
+            var randomGame = pool[Math.floor(Math.random() * pool.length)];
+            openGameName = randomGame.game;
+            renderPopup(randomGame);
+            updateURL();
+        });
+        dom.tagFilterSelect.addEventListener('change', function () {
+            currentTagFilter = dom.tagFilterSelect.value;
+            renderGames();
+            updateURL();
+        });
         dom.popupOverlay.addEventListener('click', function (e) {
             if (e.target === dom.popupOverlay) closePopup();
         });
