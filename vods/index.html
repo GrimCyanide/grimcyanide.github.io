@@ -107,6 +107,7 @@
         .sort-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
         .sort-group select option,.sort-group optgroup{background:var(--surface);color:var(--text)}
         .sort-group optgroup{font-weight:700;color:var(--muted);font-style:normal}
+        .surprise-btn{white-space:nowrap}
         .view-toggle-desktop{display:flex;align-items:center;gap:8px}
         .view-toggle-mobile{display:none;align-items:center;gap:4px}
         .view-toggle-label{font-size:0.68em;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:500;white-space:nowrap}
@@ -123,6 +124,7 @@
         .year-divider:first-child{margin-top:0;border-top:none}
         .game-card{background:var(--surface);border:1px solid var(--border);border-radius:0;overflow:hidden;transition:border-color 0.2s;cursor:pointer;display:flex;flex-direction:column;align-self:stretch}
         .game-card:hover{border-color:var(--accent)}
+        .game-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
         .game-card.skeleton{cursor:default;pointer-events:none;min-height:200px}
         .game-card.skeleton:hover{border-color:var(--border)}
         .game-card.finished-card:hover{border-color:var(--green)}
@@ -130,10 +132,13 @@
         .game-card.backlog-card:hover{border-color:var(--blue)}
         .card-poster{width:100%;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden;position:relative;flex-shrink:0}
         .card-poster img{width:100%;height:100%;object-fit:cover;display:block}
-        .card-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;color:var(--border);background:var(--surface-alt)}
+        .card-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;color:var(--accent);background:linear-gradient(135deg,var(--surface-alt),var(--accent-soft))}
         .card-poster .skeleton-shimmer{width:100%;height:100%;background:var(--border)}
         .card-rating{position:absolute;bottom:0;left:0;right:0;height:8%;display:flex;align-items:center;justify-content:center;padding:0 2%;pointer-events:none;background:rgba(0,0,0,0.7)}
         .card-rating span{font-size:var(--rating-font-size);font-weight:700;font-family:var(--mono);color:#fff;white-space:nowrap}
+        .card-rating span.rating-high{color:var(--green)}
+        .card-rating span.rating-mid{color:var(--amber)}
+        .card-rating span.rating-low{color:var(--red)}
         .card-status-new{background:var(--surface-alt);display:flex;align-items:center;justify-content:center;gap:8px;height:1.5em;padding:0 0.5em;font-size:var(--status-font-size);font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;flex-shrink:0;box-sizing:border-box}
         .card-status-new .notes-prefix{color:var(--blue);font-size:1.15em;line-height:1;display:inline-flex;align-items:center}
         .card-status-new.finished{color:var(--green)}
@@ -148,6 +153,7 @@
         .card-title{font-weight:700;font-size:var(--title-font-size);line-height:1.25;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;width:100%;padding:0 0.56em}
         .card-body .skeleton-line{height:12px;background:var(--border);border-radius:0;width:70%;margin:0 auto}
         .no-results{text-align:center;color:var(--muted);padding:48px 16px;font-size:0.95em;flex-basis:100%}
+        .no-results button{cursor:pointer;font-family:var(--font)}
         .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:40px}
         .footer a{color:var(--muted);text-decoration:none}
         .footer a:hover{color:var(--accent)}
@@ -161,11 +167,19 @@
         .popup-inner h2{margin:0 0 4px 0;font-size:1.4em}
         .popup-close-top{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--muted);font-size:1.4em;cursor:pointer;padding:4px 8px;line-height:1;z-index:10;transition:color 0.15s}
         .popup-close-top:hover{color:var(--accent)}
-        .popup-meta{color:var(--muted);font-size:1.05em;margin-bottom:18px}
+        .popup-meta{color:var(--muted);font-size:1.05em;margin-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 0}
         .popup-meta span{margin-right:20px;font-weight:700;color:var(--text)}
+        .copy-link-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;font-size:0.72em;border-radius:0;cursor:pointer;font-family:var(--font);transition:border-color 0.15s,color 0.15s;text-transform:uppercase;letter-spacing:0.4px}
+        .copy-link-btn:hover{border-color:var(--accent);color:var(--accent)}
         .popup-notes{color:var(--muted);font-size:0.95em;margin-bottom:16px;line-height:1.5;padding:10px 14px;background:var(--surface-alt);border-radius:0;border-left:3px solid var(--accent)}
         .popup-notes strong{color:var(--text)}
         .popup-parts-count{font-size:0.95em;color:var(--muted);margin-bottom:14px}
+        .popup-video-embed{margin-bottom:16px;display:none}
+        .popup-video-embed.active{display:block}
+        .video-embed-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000}
+        .video-embed-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+        .video-embed-close{display:block;margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--text);padding:6px 10px;font-size:0.78em;cursor:pointer;font-family:var(--font)}
+        .video-embed-close:hover{border-color:var(--accent)}
         .parts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;justify-content:center}
         .parts-grid.single{grid-template-columns:minmax(280px,400px);justify-content:center}
         .parts-grid.double{grid-template-columns:repeat(2,minmax(240px,400px));justify-content:center}
@@ -177,6 +191,10 @@
         .part-title{font-size:0.82em;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
         .popup-close-bottom{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:0;cursor:pointer;font-family:var(--font);font-size:0.88em;width:100%;margin-top:12px;flex-shrink:0;transition:border-color 0.15s,background 0.15s}
         .popup-close-bottom:hover{border-color:var(--accent);background:var(--accent-soft)}
+        .loading-container{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 0;color:var(--muted)}
+        .loading-spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:vods-spin 0.8s linear infinite;margin-bottom:12px}
+        .loading-text{font-size:0.85em;margin:0}
+        @keyframes vods-spin{to{transform:rotate(360deg)}}
         @media(max-width:860px){.container{padding:16px 0 32px}.card-rating{height:10%}.parts-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}.parts-grid.single{grid-template-columns:minmax(180px,1fr)}.parts-grid.double{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:600px){.container{width:100%;padding:12px 4px 24px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.card-rating{height:11%}.card-rating span{font-size:0.78em;letter-spacing:0}.card-status-new{font-size:0.975em;height:1.5em;padding:0 0.4em}.card-body{height:2.4em;padding:0}.card-title{font-size:0.8em;padding:0 0.32em}.recent-badge{font-size:0.55em!important;padding:1.2% 2.5%!important;top:1.5%!important;left:1.5%!important}.total-duration{font-size:0.5em!important;padding:1% 2%!important;bottom:14%!important;right:1%!important;max-width:95%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.parts-grid{grid-template-columns:1fr}.parts-grid.single{grid-template-columns:1fr}.parts-grid.double{grid-template-columns:1fr}.popup-inner{padding:16px}}
     </style>
@@ -198,6 +216,7 @@
             <div class="filter-group"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">All</option><option value="Finished">Finished</option><option value="Unfinished">Unfinished</option><option value="Backlog">Backlog</option></select></div>
             <div class="filter-group"><label for="searchInput">Search</label><input type="text" id="searchInput" class="search-input" placeholder="Filter games..."></div>
             <div class="sort-group"><label for="sortSelect">Sort</label><select id="sortSelect"><optgroup label="Name"><option value="az">Name A-Z</option><option value="za">Name Z-A</option></optgroup><optgroup label="Date Started"><option value="recent-started">Recently Started</option><option value="oldest-started">Oldest Started</option></optgroup><optgroup label="Date Finished"><option value="recent-finished">Recently Finished</option><option value="oldest-finished">Oldest Finished</option></optgroup><optgroup label="Rating"><option value="rating-high">Rating High-Low</option><option value="rating-low">Rating Low-High</option></optgroup><optgroup label="Duration"><option value="duration-long">Longest</option><option value="duration-short">Shortest</option></optgroup></select></div>
+            <button class="view-btn surprise-btn" id="surpriseBtn" type="button">🎲 Surprise Me</button>
             <div class="view-toggle-desktop">
                 <span class="view-toggle-label">Grid Size</span>
                 <input type="range" class="column-slider" id="columnSlider" min="2" max="12" value="6" oninput="setColumns(this.value)" aria-label="Number of columns">
@@ -208,76 +227,855 @@
                 <button class="view-btn" id="viewCompact" onclick="setColumns(3)">Compact</button>
             </div>
         </div>
-        <div class="result-count" id="resultCount"></div>
+        <div class="result-count" id="resultCount" aria-live="polite"></div>
         <div class="games-grid" id="gamesGrid"></div>
         <div class="footer">© 2026 <a href="https://grimcyanide.com">grimcyanide.com</a></div>
     </main>
     <div class="popup-overlay" id="popupOverlay">
-        <div class="popup-inner" id="popupInner"></div>
+        <div class="popup-inner" id="popupInner" role="dialog" aria-modal="true"></div>
     </div>
     <script>
-        var allGames=[],currentSort='az',apiURL='https://grimcyanide-github-io.vercel.app/api/vods-sheet',posterBase='https://data.grimcyanide.com/posters/',currentCols=6,gameVideoCache={},gameDurationCache={},cacheLoaded=false;
-        var params=new URLSearchParams(window.location.search);
-        if(params.get('status')){var savedStatus=params.get('status')}
-        if(params.get('sort')){currentSort=params.get('sort')}
-        if(params.get('search')){var savedSearch=params.get('search')}
-        if(params.get('cols')){currentCols=parseInt(params.get('cols'))}
-        var openGameName=params.get('game')?decodeURIComponent(params.get('game')):null;
-        var savedCols=localStorage.getItem('vodsCols');
-        if(!params.get('cols')&&savedCols){currentCols=parseInt(savedCols)}
-        if(currentCols<2)currentCols=2;if(currentCols>12)currentCols=12;
-        function updateURL(){var e=new URLSearchParams();var t=document.getElementById('statusFilter').value;if(t!=='all')e.set('status',t);var o=document.getElementById('searchInput').value.trim();if(o)e.set('search',o);if(currentSort!=='az')e.set('sort',currentSort);if(currentCols!==6)e.set('cols',currentCols);if(openGameName)e.set('game',openGameName);var n=window.location.pathname+(e.toString()?'?'+e.toString():'');history.replaceState(null,'',n)}
-        function renderSkeletons(){var e=document.getElementById('gamesGrid');var t='';for(var o=0;o<24;o++){t+='<div class="game-card skeleton"><div class="card-poster"><div class="skeleton-shimmer"></div></div><div class="card-body"><div class="skeleton-line"></div></div></div>'}e.innerHTML=t}
-        renderSkeletons();
-        function updateCardSizes(){var e=currentCols;var t=Math.max(0.65,1.4-(e-2)*0.09)*1.2;var o=Math.max(0.75,1.3-(e-2)*0.07);var n=Math.max(0.65,1.1-(e-2)*0.055)*1.5;var a=Math.max(0.6,1.15-(e-2)*0.07);document.documentElement.style.setProperty('--rating-font-size',t+'em');document.documentElement.style.setProperty('--title-font-size',o+'em');document.documentElement.style.setProperty('--status-font-size',n+'em');document.documentElement.style.setProperty('--badge-font-size',a+'em')}
-        function setColumns(e){currentCols=parseInt(e);localStorage.setItem('vodsCols',currentCols);var isMobile=window.innerWidth<=600;var w=isMobile?(currentCols===2?'calc(50% - 8px)':'calc(33.333% - 8px)'):(Math.max(120,Math.round(1760/currentCols))+'px');document.documentElement.style.setProperty('--card-width',w);document.getElementById('columnLabel').textContent=currentCols;document.getElementById('columnSlider').value=currentCols;document.getElementById('viewDefault').classList.toggle('active',currentCols===2);document.getElementById('viewCompact').classList.toggle('active',currentCols===3);updateCardSizes();updateURL()}
-        var isMobileInit=window.innerWidth<=600;
-        var initW=isMobileInit?(currentCols===2?'calc(50% - 8px)':'calc(33.333% - 8px)'):(Math.max(120,Math.round(1760/currentCols))+'px');
-        document.documentElement.style.setProperty('--card-width',initW);
-        document.getElementById('columnSlider').value=currentCols;
-        document.getElementById('columnLabel').textContent=currentCols;
-        document.getElementById('viewDefault').classList.toggle('active',currentCols===2);
-        document.getElementById('viewCompact').classList.toggle('active',currentCols===3);
+    (function () {
+        'use strict';
+
+        var API_URL = 'https://grimcyanide-github-io.vercel.app/api/vods-sheet';
+        var PARTS_API_URL = 'https://grimcyanide-github-io.vercel.app/api/youtube-parts';
+        var POSTER_BASE = 'https://data.grimcyanide.com/posters/';
+        var VIDEO_CACHE_KEY = 'vodsVideoCache';
+        var COLUMNS_KEY = 'vodsCols';
+        var VIDEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+        var RECENT_WINDOW_DAYS = 30;
+
+        var allGames = [];
+        var currentSort = 'az';
+        var currentColumns = 6;
+        var openGameName = null;
+        var videoPartsCache = {};
+        var durationCache = {};
+        var displayedGames = [];
+        var cardsByLinkUrl = {};
+        var saveCacheTimer = null;
+
+        var dom = {
+            grid: document.getElementById('gamesGrid'),
+            statusFilter: document.getElementById('statusFilter'),
+            searchInput: document.getElementById('searchInput'),
+            sortSelect: document.getElementById('sortSelect'),
+            resultCount: document.getElementById('resultCount'),
+            statsBar: document.getElementById('statsBar'),
+            columnSlider: document.getElementById('columnSlider'),
+            columnLabel: document.getElementById('columnLabel'),
+            viewDefaultBtn: document.getElementById('viewDefault'),
+            viewCompactBtn: document.getElementById('viewCompact'),
+            popupOverlay: document.getElementById('popupOverlay'),
+            popupInner: document.getElementById('popupInner'),
+            surpriseBtn: document.getElementById('surpriseBtn')
+        };
+
+        var params = new URLSearchParams(window.location.search);
+        var savedStatus = params.get('status');
+        var savedSearch = params.get('search');
+        if (params.get('sort')) currentSort = params.get('sort');
+        if (params.get('cols')) currentColumns = parseInt(params.get('cols'), 10);
+        openGameName = params.get('game') ? decodeURIComponent(params.get('game')) : null;
+
+        var savedCols = localStorage.getItem(COLUMNS_KEY);
+        if (!params.get('cols') && savedCols) currentColumns = parseInt(savedCols, 10);
+        if (!currentColumns || isNaN(currentColumns)) currentColumns = 6;
+        currentColumns = Math.min(12, Math.max(2, currentColumns));
+
+        function updateURL() {
+            var p = new URLSearchParams();
+            var status = dom.statusFilter.value;
+            if (status !== 'all') p.set('status', status);
+            var search = dom.searchInput.value.trim();
+            if (search) p.set('search', search);
+            if (currentSort !== 'az') p.set('sort', currentSort);
+            if (currentColumns !== 6) p.set('cols', currentColumns);
+            if (openGameName) p.set('game', openGameName);
+            var query = p.toString();
+            history.replaceState(null, '', window.location.pathname + (query ? '?' + query : ''));
+        }
+
+        function hasValue(v) {
+            return v !== null && v !== undefined && v.toString().trim().length > 0;
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str == null ? '' : String(str);
+            return div.innerHTML;
+        }
+
+        function escapeAttr(str) {
+            return escapeHtml(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function parseDate(value) {
+            if (!value) return null;
+            var m = value.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+            var d = new Date(value);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
+        function getYear(value) {
+            var d = parseDate(value);
+            return d ? d.getFullYear() : null;
+        }
+
+        function isRecent(value) {
+            var d = parseDate(value);
+            if (!d) return false;
+            var cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - RECENT_WINDOW_DAYS);
+            return d >= cutoff;
+        }
+
+        function parseIsoDuration(iso) {
+            if (!iso) return '';
+            var m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+            if (!m) return '';
+            var h = +(m[1] || 0), min = +(m[2] || 0), s = +(m[3] || 0);
+            if (h > 0) return h + ':' + String(min).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            return min + ':' + String(s).padStart(2, '0');
+        }
+
+        function isoDurationToSeconds(iso) {
+            var m = iso && iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+            if (!m) return 0;
+            return (+(m[1] || 0)) * 3600 + (+(m[2] || 0)) * 60 + (+(m[3] || 0));
+        }
+
+        function formatSeconds(totalSeconds) {
+            if (!totalSeconds) return '';
+            var h = Math.floor(totalSeconds / 3600);
+            var m = Math.floor((totalSeconds % 3600) / 60);
+            return h > 0 ? (h + 'h ' + m + 'm') : (m + 'm');
+        }
+
+        function getPosterUrl(poster) {
+            if (!poster || poster === '0' || poster === 'N/A') return null;
+            return POSTER_BASE + poster + '.jpg';
+        }
+
+        function getDisplayStatus(game) {
+            if (game.isFinished === 'Finished') return 'Finished';
+            return hasValue(game.dateStarted) ? 'Unfinished' : 'Backlog';
+        }
+
+        function getRatingDisplay(game) {
+            return game.rating && game.rating > 0 ? (game.rating + '/10') : 'N/A';
+        }
+
+        function getRatingBucket(game) {
+            var r = game.rating || 0;
+            if (r === 0) return 'Unrated';
+            if (r >= 9) return '9-10';
+            if (r >= 7) return '7-8';
+            if (r >= 5) return '5-6';
+            return '1-4';
+        }
+
+        function getRatingClass(rating) {
+            if (!rating || rating <= 0) return '';
+            if (rating >= 8) return 'rating-high';
+            if (rating >= 5) return 'rating-mid';
+            return 'rating-low';
+        }
+
+        function computeDurationSeconds(linkUrl) {
+            var parts = videoPartsCache[linkUrl];
+            if (!parts || parts === 'loading' || !parts.length) return 0;
+            var total = 0;
+            parts.forEach(function (part) { total += isoDurationToSeconds(part.duration); });
+            return total;
+        }
+
+        function getDurationSeconds(linkUrl) {
+            if (!linkUrl || linkUrl === 'N/A') return 0;
+            if (durationCache[linkUrl] != null) return durationCache[linkUrl];
+            return computeDurationSeconds(linkUrl);
+        }
+
+        function hasNewVideo(game) {
+            if (!hasValue(game.linkUrl) || game.linkUrl === 'N/A') return false;
+            var parts = videoPartsCache[game.linkUrl];
+            if (!parts || parts === 'loading') return false;
+            return parts.some(function (p) { return p.publishedAt && isRecent(p.publishedAt); });
+        }
+
+        function loadCachedVideoData() {
+            try {
+                var raw = localStorage.getItem(VIDEO_CACHE_KEY);
+                if (raw) {
+                    var cached = JSON.parse(raw);
+                    if (cached.timestamp && (Date.now() - cached.timestamp) < VIDEO_CACHE_TTL_MS) {
+                        videoPartsCache = cached.data || {};
+                        Object.keys(videoPartsCache).forEach(function (linkUrl) {
+                            var parts = videoPartsCache[linkUrl];
+                            if (parts && parts !== 'loading' && parts.length > 0) {
+                                durationCache[linkUrl] = computeDurationSeconds(linkUrl);
+                            }
+                        });
+                    }
+                }
+            } catch (err) {
+                console.warn('Could not read cached video data:', err);
+            }
+        }
+
+        function queueSaveVideoCache() {
+            clearTimeout(saveCacheTimer);
+            saveCacheTimer = setTimeout(function () {
+                try {
+                    localStorage.setItem(VIDEO_CACHE_KEY, JSON.stringify({ data: videoPartsCache, timestamp: Date.now() }));
+                } catch (err) {
+                    console.warn('Could not save video cache:', err);
+                }
+            }, 1500);
+        }
+
+        function updateDurationBadgeForLink(linkUrl) {
+            var entries = cardsByLinkUrl[linkUrl];
+            if (!entries) return;
+            var seconds = getDurationSeconds(linkUrl);
+            entries.forEach(function (entry) {
+                var el = entry.poster.querySelector('.total-duration');
+                if (seconds > 0) {
+                    var text = 'Total Runtime: ' + formatSeconds(seconds);
+                    if (el) {
+                        el.textContent = text;
+                    } else {
+                        el = document.createElement('div');
+                        el.className = 'total-duration';
+                        el.textContent = text;
+                        entry.poster.appendChild(el);
+                    }
+                } else if (el) {
+                    el.remove();
+                }
+            });
+        }
+
+        function fetchPartsForLink(linkUrl) {
+            var cached = videoPartsCache[linkUrl];
+            if (cached && cached !== 'loading' && !(Array.isArray(cached) && cached.length === 0)) return;
+            videoPartsCache[linkUrl] = 'loading';
+            fetch(PARTS_API_URL + '?url=' + encodeURIComponent(linkUrl))
+                .then(function (res) { return res.json(); })
+                .then(function (data) { videoPartsCache[linkUrl] = data.parts || []; })
+                .catch(function () { videoPartsCache[linkUrl] = []; })
+                .finally(function () {
+                    var seconds = computeDurationSeconds(linkUrl);
+                    if (seconds > 0) durationCache[linkUrl] = seconds;
+                    updateDurationBadgeForLink(linkUrl);
+                    queueSaveVideoCache();
+                });
+        }
+
+        var lazyObserver = ('IntersectionObserver' in window)
+            ? new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        lazyObserver.unobserve(entry.target);
+                        var linkUrl = entry.target.dataset.linkUrl;
+                        if (linkUrl) fetchPartsForLink(linkUrl);
+                    }
+                });
+            }, { rootMargin: '400px 0px' })
+            : null;
+
+        function sortGames(games, sortKey) {
+            var list = games.slice();
+
+            if (sortKey === 'az') return list.sort(function (a, b) { return a.game.localeCompare(b.game); });
+            if (sortKey === 'za') return list.sort(function (a, b) { return b.game.localeCompare(a.game); });
+
+            if (sortKey === 'duration-long' || sortKey === 'duration-short') {
+                var withDuration = [], withoutDuration = [];
+                list.forEach(function (g) {
+                    (getDurationSeconds(g.linkUrl) > 0 ? withDuration : withoutDuration).push(g);
+                });
+                withDuration.sort(function (a, b) {
+                    var diff = getDurationSeconds(b.linkUrl) - getDurationSeconds(a.linkUrl);
+                    return sortKey === 'duration-long' ? diff : -diff;
+                });
+                return withDuration.concat(withoutDuration);
+            }
+
+            var withValue = [], withoutValue = [];
+            list.forEach(function (g) {
+                var missing;
+                if (sortKey.indexOf('started') > -1) missing = !g.dateStarted;
+                else if (sortKey.indexOf('finished') > -1) missing = !g.dateFinished;
+                else if (sortKey.indexOf('rating') > -1) missing = !g.rating;
+                else missing = false;
+                (missing ? withoutValue : withValue).push(g);
+            });
+
+            function byDate(key, dir) {
+                return function (a, b) { return dir * (parseDate(a[key]) - parseDate(b[key])); };
+            }
+
+            if (sortKey === 'recent-started') withValue.sort(byDate('dateStarted', -1));
+            else if (sortKey === 'oldest-started') withValue.sort(byDate('dateStarted', 1));
+            else if (sortKey === 'recent-finished') withValue.sort(byDate('dateFinished', -1));
+            else if (sortKey === 'oldest-finished') withValue.sort(byDate('dateFinished', 1));
+            else if (sortKey === 'rating-high') withValue.sort(function (a, b) { return (b.rating || 0) - (a.rating || 0); });
+            else if (sortKey === 'rating-low') withValue.sort(function (a, b) { return (a.rating || 0) - (b.rating || 0); });
+
+            return withValue.concat(withoutValue);
+        }
+
+        function filterGames(games, status, search) {
+            var result = games;
+            if (status === 'Finished') {
+                result = result.filter(function (g) { return g.isFinished === 'Finished'; });
+            } else if (status === 'Unfinished') {
+                result = result.filter(function (g) { return g.isFinished !== 'Finished' && hasValue(g.dateStarted); });
+            } else if (status === 'Backlog') {
+                result = result.filter(function (g) { return g.isFinished !== 'Finished' && !hasValue(g.dateStarted); });
+            }
+            var query = search.trim().toLowerCase();
+            if (query) result = result.filter(function (g) { return g.game.toLowerCase().indexOf(query) > -1; });
+            return result;
+        }
+
+        function renderStats() {
+            var total = allGames.length, finished = 0, unfinished = 0, backlog = 0;
+            allGames.forEach(function (g) {
+                var status = getDisplayStatus(g);
+                if (status === 'Finished') finished++;
+                else if (status === 'Unfinished') unfinished++;
+                else backlog++;
+            });
+            var rated = allGames.filter(function (g) { return g.rating && g.rating > 0; });
+            var avgRating = rated.length
+                ? (rated.reduce(function (sum, g) { return sum + (g.rating || 0); }, 0) / rated.length).toFixed(1)
+                : 'N/A';
+
+            dom.statsBar.innerHTML =
+                '<div class="stat-item" data-filter="all"><div class="stat-value">' + total + '</div><div class="stat-label">Total</div></div>' +
+                '<div class="stat-item" data-filter="Finished"><div class="stat-value">' + finished + '</div><div class="stat-label">Finished</div></div>' +
+                '<div class="stat-item" data-filter="Unfinished"><div class="stat-value">' + unfinished + '</div><div class="stat-label">Unfinished</div></div>' +
+                '<div class="stat-item" data-filter="Backlog"><div class="stat-value">' + backlog + '</div><div class="stat-label">Backlog</div></div>' +
+                '<div class="stat-item" data-filter=""><div class="stat-value">' + avgRating + '</div><div class="stat-label">Avg Rating</div></div>';
+
+            dom.statsBar.querySelectorAll('.stat-item[data-filter]').forEach(function (el) {
+                var filter = el.dataset.filter;
+                if (!filter) return;
+                el.addEventListener('click', function () {
+                    dom.statusFilter.value = filter;
+                    renderGames();
+                    updateStatActive();
+                    updateURL();
+                });
+            });
+            updateStatActive();
+        }
+
+        function updateStatActive() {
+            var current = dom.statusFilter.value;
+            dom.statsBar.querySelectorAll('.stat-item[data-filter]').forEach(function (el) {
+                if (el.dataset.filter) el.classList.toggle('active', el.dataset.filter === current);
+            });
+        }
+
+        function renderSkeletons(count) {
+            count = count || 24;
+            var fragment = document.createDocumentFragment();
+            for (var i = 0; i < count; i++) {
+                var card = document.createElement('div');
+                card.className = 'game-card skeleton';
+                card.innerHTML = '<div class="card-poster"><div class="skeleton-shimmer"></div></div>' +
+                    '<div class="card-body"><div class="skeleton-line"></div></div>';
+                fragment.appendChild(card);
+            }
+            dom.grid.innerHTML = '';
+            dom.grid.appendChild(fragment);
+        }
+
+        function makeYearDivider(label) {
+            var div = document.createElement('div');
+            div.className = 'year-divider';
+            div.textContent = label;
+            return div;
+        }
+
+        function getCardBadgeElement(game) {
+            var status = getDisplayStatus(game);
+            var el = null;
+            if (status === 'Finished' && isRecent(game.dateFinished)) {
+                el = document.createElement('div');
+                el.className = 'recent-badge';
+                el.textContent = 'Recently Finished';
+            } else if (status === 'Unfinished' && hasNewVideo(game)) {
+                el = document.createElement('div');
+                el.className = 'recent-badge new-video';
+                el.textContent = 'New Video';
+            }
+            return el;
+        }
+
+        function createGameCard(game, index, lazyQueue) {
+            var status = getDisplayStatus(game);
+            var statusClass = status.toLowerCase();
+
+            var card = document.createElement('div');
+            card.className = 'game-card ' + statusClass + '-card';
+            card.tabIndex = 0;
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-label', 'View details for ' + game.game);
+
+            var body = document.createElement('div');
+            body.className = 'card-body';
+            var title = document.createElement('div');
+            title.className = 'card-title';
+            title.textContent = game.game;
+            body.appendChild(title);
+
+            var poster = document.createElement('div');
+            poster.className = 'card-poster';
+
+            var badge = getCardBadgeElement(game);
+            if (badge) poster.appendChild(badge);
+
+            var seconds = getDurationSeconds(game.linkUrl);
+            if (seconds > 0) {
+                var durationEl = document.createElement('div');
+                durationEl.className = 'total-duration';
+                durationEl.textContent = 'Total Runtime: ' + formatSeconds(seconds);
+                poster.appendChild(durationEl);
+            }
+
+            var posterUrl = getPosterUrl(game.poster);
+            if (posterUrl) {
+                var img = document.createElement('img');
+                img.src = posterUrl;
+                img.alt = game.game;
+                img.loading = index < 8 ? 'eager' : 'lazy';
+                if (index === 0) img.setAttribute('fetchpriority', 'high');
+                img.addEventListener('error', function () {
+                    var fallback = document.createElement('div');
+                    fallback.className = 'poster-fallback';
+                    fallback.textContent = game.game.charAt(0);
+                    img.replaceWith(fallback);
+                });
+                poster.appendChild(img);
+            } else {
+                var fallback = document.createElement('div');
+                fallback.className = 'poster-fallback';
+                fallback.textContent = game.game.charAt(0);
+                poster.appendChild(fallback);
+            }
+
+            var ratingWrap = document.createElement('div');
+            ratingWrap.className = 'card-rating';
+            var ratingSpan = document.createElement('span');
+            var ratingClass = getRatingClass(game.rating);
+            if (ratingClass) ratingSpan.className = ratingClass;
+            ratingSpan.textContent = getRatingDisplay(game);
+            ratingWrap.appendChild(ratingSpan);
+            poster.appendChild(ratingWrap);
+
+            var statusFooter = document.createElement('div');
+            statusFooter.className = 'card-status-new ' + statusClass;
+            if (game.notes && game.notes.trim()) {
+                var notesIcon = document.createElement('span');
+                notesIcon.className = 'notes-prefix';
+                notesIcon.textContent = '\u24d8';
+                statusFooter.appendChild(notesIcon);
+            }
+            statusFooter.appendChild(document.createTextNode(status.toUpperCase()));
+
+            card.appendChild(body);
+            card.appendChild(poster);
+            card.appendChild(statusFooter);
+
+            card.addEventListener('click', function () { openGameByIndex(index); });
+            card.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openGameByIndex(index);
+                }
+            });
+
+            if (hasValue(game.linkUrl) && game.linkUrl !== 'N/A') {
+                (cardsByLinkUrl[game.linkUrl] = cardsByLinkUrl[game.linkUrl] || []).push({ card: card, poster: poster });
+                var cached = videoPartsCache[game.linkUrl];
+                var needsFetch = !cached || cached === 'loading' || (Array.isArray(cached) && cached.length === 0);
+                if (needsFetch && lazyObserver) {
+                    card.dataset.linkUrl = game.linkUrl;
+                    lazyQueue.push(card);
+                }
+            }
+
+            return card;
+        }
+
+        function renderGames() {
+            var status = dom.statusFilter.value;
+            var search = dom.searchInput.value;
+            var sorted = sortGames(allGames, currentSort);
+            var filtered = filterGames(sorted, status, search);
+
+            updateResultCount(filtered.length);
+            displayedGames = filtered;
+            cardsByLinkUrl = {};
+            if (lazyObserver) lazyObserver.disconnect();
+
+            if (!filtered.length) {
+                dom.grid.innerHTML = '<div class="no-results">No games match.</div>';
+                return;
+            }
+
+            var fragment = document.createDocumentFragment();
+            var lazyQueue = [];
+            var usesDateGrouping = currentSort.indexOf('started') > -1 || currentSort.indexOf('finished') > -1;
+            var usesRatingGrouping = currentSort.indexOf('rating') > -1;
+            var lastGroupLabel = null;
+            var unassignedGroupShown = false;
+
+            filtered.forEach(function (game, i) {
+                var groupLabel = null;
+                if (usesDateGrouping) {
+                    var dateValue = currentSort.indexOf('started') > -1 ? game.dateStarted : game.dateFinished;
+                    if (!dateValue) {
+                        if (!unassignedGroupShown) {
+                            fragment.appendChild(makeYearDivider('Unfinished'));
+                            unassignedGroupShown = true;
+                            lastGroupLabel = null;
+                        }
+                    } else {
+                        groupLabel = getYear(dateValue);
+                    }
+                } else if (usesRatingGrouping) {
+                    if (!game.rating) {
+                        if (!unassignedGroupShown) {
+                            fragment.appendChild(makeYearDivider('Unrated'));
+                            unassignedGroupShown = true;
+                            lastGroupLabel = null;
+                        }
+                    } else {
+                        groupLabel = getRatingBucket(game);
+                    }
+                }
+
+                if (groupLabel && groupLabel !== lastGroupLabel) {
+                    lastGroupLabel = groupLabel;
+                    fragment.appendChild(makeYearDivider(groupLabel));
+                }
+
+                fragment.appendChild(createGameCard(game, i, lazyQueue));
+            });
+
+            dom.grid.innerHTML = '';
+            dom.grid.appendChild(fragment);
+            lazyQueue.forEach(function (card) { lazyObserver.observe(card); });
+
+            if (openGameName) {
+                var targetIndex = -1;
+                for (var i = 0; i < filtered.length; i++) {
+                    if (filtered[i].game.toLowerCase() === openGameName.toLowerCase()) { targetIndex = i; break; }
+                }
+                if (targetIndex > -1) setTimeout(function () { openGameByIndex(targetIndex); }, 50);
+            }
+        }
+
+        function openGameByIndex(index) {
+            var game = displayedGames[index];
+            if (!game) return;
+            openGameName = game.game;
+            renderPopup(game);
+            updateURL();
+        }
+
+        function extractYouTubeId(url) {
+            var m = url && url.match(/(?:youtu\.be\/|[?&]v=|embed\/)([A-Za-z0-9_-]{6,})/);
+            return m ? m[1] : null;
+        }
+
+        function playEmbeddedVideo(videoId) {
+            var embed = dom.popupInner.querySelector('#popupVideoEmbed');
+            var frame = dom.popupInner.querySelector('#popupVideoFrame');
+            if (!embed || !frame) return;
+            frame.src = 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0';
+            embed.classList.add('active');
+            embed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function stopEmbeddedVideo() {
+            var embed = dom.popupInner.querySelector('#popupVideoEmbed');
+            var frame = dom.popupInner.querySelector('#popupVideoFrame');
+            if (frame) frame.src = '';
+            if (embed) embed.classList.remove('active');
+        }
+
+        function renderPopup(game) {
+            var started = hasValue(game.dateStarted) ? game.dateStarted : null;
+            var finished = hasValue(game.dateFinished) ? game.dateFinished : null;
+            var hasLink = hasValue(game.linkUrl) && game.linkUrl !== 'N/A';
+            var partsCount = game.parts || 0;
+
+            var notesHtml = (game.notes && game.notes.trim())
+                ? '<div class="popup-notes"><strong>Notes:</strong> ' + escapeHtml(game.notes) + '</div>'
+                : '';
+
+            var metaHtml = '<span>Status: ' + getDisplayStatus(game) + '</span>' +
+                '<span>Rating: ' + getRatingDisplay(game) + '</span>';
+            if (started) metaHtml += '<span>Started: ' + escapeHtml(started) + '</span>';
+            if (finished) metaHtml += '<span>Finished: ' + escapeHtml(finished) + '</span>';
+            metaHtml += '<button class="copy-link-btn" id="popupCopyLink" type="button">\ud83d\udd17 Copy Link</button>';
+
+            dom.popupInner.innerHTML =
+                '<button class="popup-close-top" onclick="window.__vodsClosePopup()" aria-label="Close">\u00d7</button>' +
+                '<div class="popup-scroll">' +
+                '<h2>' + escapeHtml(game.game) + '</h2>' +
+                '<div class="popup-meta">' + metaHtml + '</div>' +
+                notesHtml +
+                '<div class="popup-video-embed" id="popupVideoEmbed">' +
+                '<div class="video-embed-wrap"><iframe id="popupVideoFrame" src="" title="Video player" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>' +
+                '<button class="video-embed-close" id="popupVideoClose" type="button">\u2715 Close video</button>' +
+                '</div>' +
+                (partsCount > 1 ? '<div class="popup-parts-count">' + partsCount + ' Parts</div>' : '') +
+                '<div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading parts...</p></div>' +
+                '</div>' +
+                '<button class="popup-close-bottom" onclick="window.__vodsClosePopup()">close</button>';
+
+            dom.popupOverlay.classList.add('active');
+
+            var copyBtn = dom.popupInner.querySelector('#popupCopyLink');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function () {
+                    var url = new URL(window.location.href);
+                    url.searchParams.set('game', game.game);
+                    navigator.clipboard.writeText(url.toString()).then(function () {
+                        var original = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(function () { copyBtn.textContent = original; }, 1500);
+                    }).catch(function () {});
+                });
+            }
+
+            var videoCloseBtn = dom.popupInner.querySelector('#popupVideoClose');
+            if (videoCloseBtn) videoCloseBtn.addEventListener('click', stopEmbeddedVideo);
+
+            if (!hasLink) {
+                var loadingEl = dom.popupInner.querySelector('.loading-container');
+                if (loadingEl) loadingEl.outerHTML = '<span style="color:var(--red);font-style:italic">No link available</span>';
+                return;
+            }
+
+            fetchAndRenderParts(game);
+        }
+
+        function fetchAndRenderParts(game) {
+            fetch(PARTS_API_URL + '?url=' + encodeURIComponent(game.linkUrl))
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    var target = dom.popupInner.querySelector('.loading-container');
+                    if (!target) return;
+                    var parts = data.parts || [];
+                    target.outerHTML = buildPartsMarkup(parts, game.linkUrl);
+                    var container = dom.popupInner.querySelector('.parts-grid') || dom.popupInner;
+                    attachPartCardHandlers(container);
+                })
+                .catch(function () {
+                    var target = dom.popupInner.querySelector('.loading-container');
+                    if (!target) return;
+                    target.outerHTML = '<span style="color:var(--red);font-style:italic">' +
+                        'Failed to load parts. <a href="#" class="vods-retry-parts" style="color:var(--accent)">Retry</a></span>';
+                    var retryLink = dom.popupInner.querySelector('.vods-retry-parts');
+                    if (retryLink) {
+                        retryLink.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            renderPopup(game);
+                        });
+                    }
+                });
+        }
+
+        function buildPartsMarkup(parts, linkUrl) {
+            if (!parts.length) {
+                return '<a href="' + escapeAttr(linkUrl) + '" target="_blank" rel="noopener" ' +
+                    'style="color:var(--accent);text-decoration:none;font-weight:600;font-size:1.1em">\u25b6 Watch on YouTube</a>';
+            }
+            var gridClass = 'parts-grid';
+            if (parts.length === 1) gridClass += ' single';
+            else if (parts.length === 2) gridClass += ' double';
+
+            var cardsHtml = parts.map(function (part) {
+                var newBadge = isRecent(part.publishedAt) ? '<div class="part-new-badge">NEW</div>' : '';
+                var duration = parseIsoDuration(part.duration);
+                var durationBadge = duration ? '<div class="part-duration">' + duration + '</div>' : '';
+                return '<a href="' + escapeAttr(part.url) + '" target="_blank" rel="noopener" class="part-card">' +
+                    newBadge +
+                    '<div class="part-thumb"><img src="' + escapeAttr(part.thumbnail) + '" alt="' + escapeAttr(part.title) + '" loading="lazy">' + durationBadge + '</div>' +
+                    '<div class="part-info"><div class="part-title">' + escapeHtml(part.title) + '</div></div>' +
+                    '</a>';
+            }).join('');
+
+            return '<div class="' + gridClass + '">' + cardsHtml + '</div>';
+        }
+
+        function attachPartCardHandlers(container) {
+            container.querySelectorAll('.part-card').forEach(function (a) {
+                var videoId = extractYouTubeId(a.getAttribute('href'));
+                if (!videoId) return;
+                a.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    playEmbeddedVideo(videoId);
+                });
+            });
+        }
+
+        function closePopup() {
+            stopEmbeddedVideo();
+            dom.popupOverlay.classList.remove('active');
+            openGameName = null;
+            updateURL();
+        }
+        window.__vodsClosePopup = closePopup;
+
+        function updateCardSizes() {
+            var c = currentColumns;
+            var rating = Math.max(0.65, 1.4 - (c - 2) * 0.09) * 1.2;
+            var title = Math.max(0.75, 1.3 - (c - 2) * 0.07);
+            var statusSize = Math.max(0.65, 1.1 - (c - 2) * 0.055) * 1.5;
+            var badge = Math.max(0.6, 1.15 - (c - 2) * 0.07);
+            document.documentElement.style.setProperty('--rating-font-size', rating + 'em');
+            document.documentElement.style.setProperty('--title-font-size', title + 'em');
+            document.documentElement.style.setProperty('--status-font-size', statusSize + 'em');
+            document.documentElement.style.setProperty('--badge-font-size', badge + 'em');
+        }
+
+        function computeCardWidth(cols) {
+            var isMobile = window.innerWidth <= 600;
+            if (isMobile) return cols === 2 ? 'calc(50% - 8px)' : 'calc(33.333% - 8px)';
+            return Math.max(120, Math.round(1760 / cols)) + 'px';
+        }
+
+        function setColumns(value) {
+            currentColumns = parseInt(value, 10);
+            localStorage.setItem(COLUMNS_KEY, currentColumns);
+            document.documentElement.style.setProperty('--card-width', computeCardWidth(currentColumns));
+            dom.columnLabel.textContent = currentColumns;
+            dom.columnSlider.value = currentColumns;
+            dom.viewDefaultBtn.classList.toggle('active', currentColumns === 2);
+            dom.viewCompactBtn.classList.toggle('active', currentColumns === 3);
+            updateCardSizes();
+            updateURL();
+        }
+        window.setColumns = setColumns;
+
+        function restoreFilters() {
+            if (savedStatus) {
+                dom.statusFilter.value = savedStatus;
+                updateStatActive();
+            }
+            if (savedSearch) dom.searchInput.value = savedSearch;
+            dom.sortSelect.value = currentSort;
+            updateURL();
+        }
+
+        function updateResultCount(count) {
+            if (!allGames.length) return;
+            dom.resultCount.textContent = count !== undefined
+                ? (count + ' of ' + allGames.length + ' games')
+                : (allGames.length + ' games');
+        }
+
+        function injectStructuredData() {
+            var items = allGames.filter(function (g) { return hasValue(g.linkUrl) && g.linkUrl !== 'N/A'; })
+                .map(function (g, i) { return { '@type': 'ListItem', position: i + 1, name: g.game, url: g.linkUrl }; });
+            if (!items.length) return;
+            var data = {
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                name: 'GRIM_CYANIDE VODs & Playthroughs',
+                itemListElement: items
+            };
+            var existing = document.getElementById('vods-jsonld');
+            if (existing) existing.remove();
+            var script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.id = 'vods-jsonld';
+            script.textContent = JSON.stringify(data);
+            document.head.appendChild(script);
+        }
+
+        function loadGamesData() {
+            renderSkeletons();
+            fetch(API_URL + '?t=' + Date.now())
+                .then(function (res) {
+                    if (!res.ok) throw new Error('API returned ' + res.status);
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (data.error) throw new Error(data.error);
+                    if (!data.games || !data.games.length) {
+                        dom.grid.innerHTML = '<div class="no-results">No games found.</div>';
+                        return;
+                    }
+                    allGames = data.games;
+                    renderStats();
+                    restoreFilters();
+                    loadCachedVideoData();
+                    renderGames();
+                    injectStructuredData();
+                })
+                .catch(function (err) {
+                    console.error('Failed to load VODs data:', err);
+                    dom.grid.innerHTML = '<div class="no-results">Couldn\'t load games right now.' +
+                        '<br><button class="view-btn" id="retryLoadBtn" style="margin-top:10px">Retry</button></div>';
+                    var retryBtn = document.getElementById('retryLoadBtn');
+                    if (retryBtn) retryBtn.addEventListener('click', loadGamesData);
+                });
+        }
+
+        document.documentElement.style.setProperty('--card-width', computeCardWidth(currentColumns));
+        dom.columnSlider.value = currentColumns;
+        dom.columnLabel.textContent = currentColumns;
+        dom.viewDefaultBtn.classList.toggle('active', currentColumns === 2);
+        dom.viewCompactBtn.classList.toggle('active', currentColumns === 3);
         updateCardSizes();
-        function loadGamesData(){var e=document.getElementById('gamesGrid'),t=apiURL+'?t='+Date.now();fetch(t).then(function(e){if(!e.ok)throw new Error('API returned '+e.status);return e.json()}).then(function(t){if(t.error)throw new Error(t.error);t.games&&t.games.length?(allGames=t.games,renderStats(),restoreFilters(),loadCachedVideoData(),renderGames(),updateResultCount()):e.innerHTML='<div class="no-results">No games found.</div>'})}
-        function restoreFilters(){if(savedStatus){document.getElementById('statusFilter').value=savedStatus;updateStatActive()}if(savedSearch){document.getElementById('searchInput').value=savedSearch}document.getElementById('sortSelect').value=currentSort;updateURL()}
-        function loadCachedVideoData(){try{var e=localStorage.getItem('vodsVideoCache');if(e){var t=JSON.parse(e);if(t.timestamp&&(Date.now()-t.timestamp)<86400000){gameVideoCache=t.data||{};for(var o in gameVideoCache){if(gameVideoCache[o]&&gameVideoCache[o]!=='loading'&&gameVideoCache[o].length>0){gameDurationCache[o]=getDurationSeconds(o)}}cacheLoaded=true;updateAllDurationBadges();return}}}catch(e){}preloadVideoData()}
-        function saveVideoCache(){try{var e={data:gameVideoCache,timestamp:Date.now()};localStorage.setItem('vodsVideoCache',JSON.stringify(e))}catch(e){}}
-        function preloadVideoData(){var e=[];allGames.forEach(function(t){if(hasValue(t.linkUrl)&&t.linkUrl!=='N/A'&&(!gameVideoCache[t.linkUrl]||gameVideoCache[t.linkUrl]==='loading'||(Array.isArray(gameVideoCache[t.linkUrl])&&gameVideoCache[t.linkUrl].length===0))){e.push(t)}});if(e.length===0){if(!cacheLoaded){updateAllDurationBadges()}return}var t=0;var o=5;function n(){var a=Math.min(o,e.length-t);if(a===0){saveVideoCache();return}var i=0;function s(){if(i>=a){t+=a;setTimeout(n,200);return}var l=e[t+i];gameVideoCache[l.linkUrl]='loading';fetch('https://grimcyanide-github-io.vercel.app/api/youtube-parts?url='+encodeURIComponent(l.linkUrl)+'&t='+Date.now()).then(function(e){return e.json()}).then(function(e){gameVideoCache[l.linkUrl]=e.parts||[];var o=getDurationSeconds(l.linkUrl);if(o>0){gameDurationCache[l.linkUrl]=o}updateDurationBadge(l.linkUrl)}).catch(function(){gameVideoCache[l.linkUrl]=[]}).finally(function(){i++;s()})}s()}n()}
-        function getDurationSeconds(e){var t=gameVideoCache[e];if(!t||t==='loading'||!t.length)return 0;var o=0;t.forEach(function(e){var t=e.duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(t){var n=parseInt(t[1]||0),a=parseInt(t[2]||0),i=parseInt(t[3]||0);o+=n*3600+a*60+i}});return o}
-        function formatDurationSeconds(e){if(e===0)return'';var t=Math.floor(e/3600),o=Math.floor(e%3600/60);if(t>0)return t+'h '+o+'m';return o+'m'}
-        function updateDurationBadge(e){var t=document.querySelectorAll('.game-card');for(var o=0;o<t.length;o++){var n=t[o];var a=n.querySelector('.card-title');if(a&&a.textContent){var i=allGames[currentGameIndexes[o]];if(i&&i.linkUrl===e){var s=n.querySelector('.total-duration');var l=getDurationSeconds(e);if(l>0){var r=formatDurationSeconds(l);if(s){s.textContent='Total Runtime: '+r}else{var d=n.querySelector('.card-poster');if(d){var p=document.createElement('div');p.className='total-duration';p.textContent='Total Runtime: '+r;d.appendChild(p)}}}else if(s){s.remove()}break}}}}
-        function updateAllDurationBadges(){var e=document.querySelectorAll('.game-card');for(var t=0;t<e.length;t++){var o=e[t];var n=o.querySelector('.card-title');if(n&&n.textContent){var a=allGames[currentGameIndexes[t]];if(a&&a.linkUrl&&gameDurationCache[a.linkUrl]>0){var i=o.querySelector('.total-duration');var s=formatDurationSeconds(gameDurationCache[a.linkUrl]);if(s){if(i){i.textContent='Total Runtime: '+s}else{var l=o.querySelector('.card-poster');if(l){var r=document.createElement('div');r.className='total-duration';r.textContent='Total Runtime: '+s;l.appendChild(r)}}}}}}}
-        function parseDuration(e){if(!e)return'';var t=e.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(!t)return'';var o=parseInt(t[1]||0),n=parseInt(t[2]||0),a=parseInt(t[3]||0);if(o>0)return o+':'+String(n).padStart(2,'0')+':'+String(a).padStart(2,'0');return n+':'+String(a).padStart(2,'0')}
-        function getTotalDuration(e){if(!e.linkUrl||e.linkUrl==='N/A')return'';var t=gameDurationCache[e.linkUrl]||getDurationSeconds(e.linkUrl);return formatDurationSeconds(t)}
-        function hasNewVideo(e){if(!e.linkUrl||e.linkUrl==='N/A')return false;var t=gameVideoCache[e.linkUrl];if(!t||t==='loading')return false;var o=new Date();o.setDate(o.getDate()-30);for(var n=0;n<t.length;n++){if(t[n].publishedAt){var a=new Date(t[n].publishedAt);if(a>=o)return true}}return false}
-        function isVideoNew(e){if(!e)return false;var t=new Date(e);var o=new Date();o.setDate(o.getDate()-30);return t>=o}
-        function getBadge(e){var t=getDisplayStatus(e);if(t==='Finished'&&isRecent(e.dateFinished))return'<div class="recent-badge">Recently Finished</div>';if(t==='Unfinished'&&hasNewVideo(e))return'<div class="recent-badge new-video">New Video</div>';return''}
-        function parseDate(e){if(!e)return null;var t=e.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(t)return new Date(t[3],t[2]-1,t[1]);var o=new Date(e);return isNaN(o.getTime())?null:o}
-        function getYear(e){var t=parseDate(e);return t?t.getFullYear():null}
-        function isRecent(e){if(!e)return false;var t=parseDate(e);if(!t)return false;var o=new Date();o.setDate(o.getDate()-30);return t>=o}
-        function sortGames(e,t){var o=e.slice();if(t==='az'){return o.sort(function(e,t){return e.game.localeCompare(t.game)})}if(t==='za'){return o.sort(function(e,t){return t.game.localeCompare(e.game)})}if(t==='duration-long'||t==='duration-short'){var n=[];var a=[];o.forEach(function(e){var o=gameDurationCache[e.linkUrl]||getDurationSeconds(e.linkUrl);if(o>0){n.push(e)}else{a.push(e)}});n.sort(function(e,n){var a=gameDurationCache[e.linkUrl]||getDurationSeconds(e.linkUrl),i=gameDurationCache[n.linkUrl]||getDurationSeconds(n.linkUrl);return t==='duration-long'?i-a:a-i});return n.concat(a)}var i=[];var s=[];o.forEach(function(e){var o=null;if(t.indexOf('started')>-1){o=e.dateStarted}else if(t.indexOf('finished')>-1){o=e.dateFinished}else if(t.indexOf('rating')>-1){o=e.rating||0}if((t.indexOf('started')>-1||t.indexOf('finished')>-1)&&!o){s.push(e)}else if(t.indexOf('rating')>-1&&(!e.rating||e.rating===0)){s.push(e)}else{i.push(e)}});if(t==='recent-started'){i.sort(function(e,t){var o=parseDate(e.dateStarted),n=parseDate(t.dateStarted);return n-o})}else if(t==='oldest-started'){i.sort(function(e,t){var o=parseDate(e.dateStarted),n=parseDate(t.dateStarted);return o-n})}else if(t==='recent-finished'){i.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return n-o})}else if(t==='oldest-finished'){i.sort(function(e,t){var o=parseDate(e.dateFinished),n=parseDate(t.dateFinished);return o-n})}else if(t==='rating-high'){i.sort(function(e,t){return(t.rating||0)-(e.rating||0)})}else if(t==='rating-low'){i.sort(function(e,t){return(e.rating||0)-(t.rating||0)})}return i.concat(s)}
-        function getDisplayStatus(e){return e.isFinished==='Finished'?'Finished':(hasValue(e.dateStarted)?'Unfinished':'Backlog')}
-        function filterGames(e,t,o){var n=e;if(t==='Finished'){n=n.filter(function(e){return e.isFinished==='Finished'})}else if(t==='Unfinished'){n=n.filter(function(e){return e.isFinished!=='Finished'&&hasValue(e.dateStarted)})}else if(t==='Backlog'){n=n.filter(function(e){return e.isFinished!=='Finished'&&!hasValue(e.dateStarted)})}o.trim()&&(o=o.toLowerCase().trim(),n=n.filter(function(e){return e.game.toLowerCase().indexOf(o)>-1}));return n}
-        function hasValue(e){return null!==e&&void 0!==e&&e.toString().trim().length>0}
-        function getPosterUrl(e){if(!e||e==='0'||e==='N/A')return null;return posterBase+e+'.jpg'}
-        function getRatingDisplay(e,t){return e&&e>0?e+'/10':null}
-        function getRatingLabel(e){var t=e.rating||0;if(t===0)return'Unrated';if(t>=9)return'9-10';if(t>=7)return'7-8';if(t>=5)return'5-6';if(t>=1)return'1-4';return'Unrated'}
-        function getDateForSort(e,t){if(t.indexOf('started')>-1)return e.dateStarted;if(t.indexOf('finished')>-1)return e.dateFinished;return null}
-        function renderStats(){var e=allGames.length,t=0,o=0,n=0;allGames.forEach(function(e){var a=getDisplayStatus(e);if(a==='Finished')t++;else if(a==='Unfinished')o++;else if(a==='Backlog')n++});var a=allGames.filter(function(e){return e.rating&&e.rating>0});var i=a.length>0?(a.reduce(function(e,t){return e+(t.rating||0)},0)/a.length).toFixed(1):'N/A';document.getElementById('statsBar').innerHTML='<div class="stat-item" data-filter="all"><div class="stat-value">'+e+'</div><div class="stat-label">Total</div></div><div class="stat-item" data-filter="Finished"><div class="stat-value">'+t+'</div><div class="stat-label">Finished</div></div><div class="stat-item" data-filter="Unfinished"><div class="stat-value">'+o+'</div><div class="stat-label">Unfinished</div></div><div class="stat-item" data-filter="Backlog"><div class="stat-value">'+n+'</div><div class="stat-label">Backlog</div></div><div class="stat-item" data-filter=""><div class="stat-value">'+i+'</div><div class="stat-label">Avg Rating</div></div>';document.querySelectorAll('.stat-item[data-filter]').forEach(function(e){if(e.dataset.filter){e.addEventListener('click',function(){document.getElementById('statusFilter').value=this.dataset.filter;renderGames();updateStatActive();updateURL()})}});updateStatActive()}
-        function updateStatActive(){var e=document.getElementById('statusFilter').value;document.querySelectorAll('.stat-item[data-filter]').forEach(function(t){t.classList.toggle('active',t.dataset.filter===e)})}
-        var currentGameIndexes=[];
-        function renderGames(){var e=document.getElementById('gamesGrid'),t=document.getElementById('statusFilter').value,o=document.getElementById('searchInput').value,n=sortGames(allGames,currentSort),a=filterGames(n,t,o);updateResultCount(a.length);currentGameIndexes=[];if(!a.length){e.innerHTML='<div class="no-results">No games match.</div>';return}var i=null;var s=currentSort.indexOf('started')>-1||currentSort.indexOf('finished')>-1;var l=currentSort.indexOf('rating')>-1;var r=false;var d='';var p=Math.min(8,a.length);for(var u=0;u<a.length;u++){var h=a[u];currentGameIndexes.push(allGames.indexOf(h));var c=null;if(s){var m=getDateForSort(h,currentSort);if(!m){if(!r){d+='<div class="year-divider">Unfinished</div>';r=true;i=null}c=null}else{c=getYear(m)}}else if(l){var g=h.rating||0;if(g===0){if(!r){d+='<div class="year-divider">Unrated</div>';r=true;i=null}c=null}else{c=getRatingLabel(h)}}else{c=null}if(c&&c!==i){i=c;d+='<div class="year-divider">'+c+'</div>'}var v=getPosterUrl(h.poster),f=getRatingDisplay(h.rating,h.ratingDisplay),y=f?f:'N/A';var b=getDisplayStatus(h);var S=b==='Finished'?'finished':(b==='Unfinished'?'unfinished':'backlog');var cardClass=b==='Finished'?'finished-card':(b==='Unfinished'?'unfinished-card':'backlog-card');var w=b.toUpperCase();var E=escapeHtml(h.game),k=escapeHtml(h.game.charAt(0));var T=getBadge(h);var D=getTotalDuration(h);var N=D?'<div class="total-duration">Total Runtime: '+D+'</div>':'';var C=h.notes&&h.notes.trim()?'<span class="notes-prefix">ⓘ</span>':'';var L=u<p?'':' loading="lazy"';var A=v?'<img src="'+v+'" alt="'+E+'"'+L+(u===0?' fetchpriority="high"':'')+'>':'<div class="poster-fallback">'+k+'</div>';d+='<div class="game-card '+cardClass+'" data-idx="'+u+'"><div class="card-body"><div class="card-title">'+E+'</div></div><div class="card-poster">'+T+N+A+'<div class="card-rating"><span>'+y+'</span></div></div><div class="card-status-new '+S+'">'+C+w+'</div></div>'}e.innerHTML=d;document.querySelectorAll('.game-card').forEach(function(e){e.addEventListener('click',function(){var t=parseInt(this.getAttribute('data-idx'));openGameName=allGames[currentGameIndexes[t]].game;openPopup(t);updateURL()})});document.querySelectorAll('.card-poster img').forEach(function(e){e.addEventListener('error',function(){var t=this.parentNode;var o=t.querySelector('.recent-badge')?t.querySelector('.recent-badge').outerHTML:'';var n=t.querySelector('.total-duration')?t.querySelector('.total-duration').outerHTML:'';var a=t.querySelector('.card-rating')?t.querySelector('.card-rating').outerHTML:'';var i=t.parentNode.parentNode.querySelector('.card-title').textContent.charAt(0);t.innerHTML=o+n+'<div class="poster-fallback">'+i+'</div>'+a})});if(openGameName){setTimeout(function(){for(var e=0;e<currentGameIndexes.length;e++){var t=allGames[currentGameIndexes[e]];if(t&&t.game.toLowerCase()===openGameName.toLowerCase()){openPopup(e);return}}},300)}}
-        function openPopup(e){var t=allGames[currentGameIndexes[e]];var o=document.getElementById('popupOverlay'),n=document.getElementById('popupInner');if(!t){return}var a=getRatingDisplay(t.rating,t.ratingDisplay)?'Rating: '+getRatingDisplay(t.rating,t.ratingDisplay):'Rating: N/A';var i=hasValue(t.dateStarted)?t.dateStarted:'TBD';var s=hasValue(t.dateFinished)?t.dateFinished:'TBD';var l=hasValue(t.linkUrl)&&t.linkUrl!=='N/A';var r=t.linkText||'Watch';var d=t.parts||0;var p='<div class="loading-container"><div class="loading-spinner"></div><p class="loading-text">Loading parts...</p></div>';var u='';if(t.notes&&t.notes.trim()){u='<div class="popup-notes"><strong>Notes:</strong> '+escapeHtml(t.notes)+'</div>'}n.innerHTML='<button class="popup-close-top" onclick="closePopup()">×</button><div class="popup-scroll"><h2>'+escapeHtml(t.game)+'</h2><div class="popup-meta"><span>Status: '+getDisplayStatus(t)+'</span><span>'+a+'</span><span>Started: '+i+'</span><span>Finished: '+s+'</span></div>'+u+(d>1?'<div class="popup-parts-count">'+d+' Parts</div>':'')+p+'</div><button class="popup-close-bottom" onclick="closePopup()">close</button>';o.classList.add('active');if(l){fetch('https://grimcyanide-github-io.vercel.app/api/youtube-parts?url='+encodeURIComponent(t.linkUrl)+'&t='+Date.now()).then(function(e){return e.json()}).then(function(e){var o='';var a='parts-grid';if(e.parts&&e.parts.length>0){if(e.parts.length===1){a+=' single'}else if(e.parts.length===2){a+=' double'}o='<div class="'+a+'">';e.parts.forEach(function(e){var t=isVideoNew(e.publishedAt)?'<div class="part-new-badge">NEW</div>':'';var n=parseDuration(e.duration);var a=n?'<div class="part-duration">'+n+'</div>':'';o+='<a href="'+e.url+'" target="_blank" class="part-card">'+t+'<div class="part-thumb"><img src="'+e.thumbnail+'" alt="'+escapeHtml(e.title)+'" loading="lazy">'+a+'</div><div class="part-info"><div class="part-title">'+escapeHtml(e.title)+'</div></div></a>'});o+='</div>'}else{o='<a href="'+escapeHtml(t.linkUrl)+'" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:1.1em">▶ Watch on YouTube</a>'}var i=n.querySelector('.popup-scroll');var s=i.querySelector('.loading-container');if(s){var l=document.createElement('div');l.innerHTML=o;var r=l.firstElementChild;if(r){s.parentNode.replaceChild(r,s)}else{s.outerHTML=o}}}).catch(function(){var e=n.querySelector('.popup-scroll .loading-container');if(e)e.outerHTML='<span style="color:var(--red);font-style:italic">Failed to load parts</span>'})}else{var e=n.querySelector('.popup-scroll .loading-container');if(e)e.outerHTML='<span style="color:var(--red);font-style:italic">No link available</span>'}}
-        function closePopup(){document.getElementById('popupOverlay').classList.remove('active');openGameName=null;updateURL()}
-        function escapeHtml(e){var t=document.createElement('div');return t.textContent=e,t.innerHTML}
-        function updateResultCount(e){var t=document.getElementById('resultCount');allGames.length&&(void 0!==e?t.textContent=e+' of '+allGames.length+' games':t.textContent=allGames.length+' games')}
-        document.getElementById('popupOverlay').addEventListener('click',function(e){e.target===this&&closePopup()});
-        document.addEventListener('keydown',function(e){e.key==='Escape'&&closePopup()});
-        document.getElementById('statusFilter').addEventListener('change',function(){renderGames();updateStatActive();updateURL()});
-        document.getElementById('sortSelect').addEventListener('change',function(){currentSort=this.value;renderGames();updateURL()});
-        var searchTimeout;document.getElementById('searchInput').addEventListener('input',function(){clearTimeout(searchTimeout),searchTimeout=setTimeout(function(){renderGames();updateURL()},400)});
+
+        dom.surpriseBtn.addEventListener('click', function () {
+            var pool = allGames.filter(function (g) {
+                var s = getDisplayStatus(g);
+                return s === 'Finished' || s === 'Unfinished';
+            });
+            if (!pool.length) return;
+            var randomGame = pool[Math.floor(Math.random() * pool.length)];
+            openGameName = randomGame.game;
+            renderPopup(randomGame);
+            updateURL();
+        });
+        dom.popupOverlay.addEventListener('click', function (e) {
+            if (e.target === dom.popupOverlay) closePopup();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closePopup();
+        });
+        dom.statusFilter.addEventListener('change', function () {
+            renderGames();
+            updateStatActive();
+            updateURL();
+        });
+        dom.sortSelect.addEventListener('change', function () {
+            currentSort = dom.sortSelect.value;
+            renderGames();
+            updateURL();
+        });
+        var searchDebounce;
+        dom.searchInput.addEventListener('input', function () {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(function () { renderGames(); updateURL(); }, 400);
+        });
+
         loadGamesData();
+    })();
     </script>
 </body>
 </html>
