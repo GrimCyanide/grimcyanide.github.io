@@ -85,6 +85,7 @@
         .key-badge.recent{background:rgba(0,0,0,0.7);color:#fff}
         .key-badge.newvid{background:rgba(45,212,191,0.8);color:#000}
         .key-badge.notes{background:transparent;color:var(--blue);font-size:1.1em;padding:0;letter-spacing:0}
+        body.list-mode .key-bar{display:none}
         .stats-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:20px}
         .stat-item{background:var(--surface);border:1px solid var(--border);border-radius:0;padding:10px 16px;text-align:center;min-width:90px;cursor:pointer;transition:border-color 0.2s}
         .stat-item:hover{border-color:var(--accent)}
@@ -108,6 +109,10 @@
         .sort-group select option,.sort-group optgroup{background:var(--surface);color:var(--text)}
         .sort-group optgroup{font-weight:700;color:var(--muted);font-style:normal}
         .surprise-btn{white-space:nowrap}
+        .view-mode-toggle{display:flex;gap:4px}
+        .view-mode-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;cursor:pointer;font-family:var(--font);font-size:0.78em;font-weight:500;border-radius:4px;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px}
+        .view-mode-btn:hover{border-color:var(--accent);color:var(--text)}
+        .view-mode-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
         .view-toggle-desktop{display:flex;align-items:center;gap:8px}
         .view-toggle-mobile{display:none;align-items:center;gap:4px}
         .view-toggle-label{font-size:0.68em;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:500;white-space:nowrap}
@@ -157,6 +162,43 @@
         .footer{text-align:center;color:var(--muted);font-size:0.78em;padding-top:20px;border-top:1px solid var(--border);margin-top:40px}
         .footer a{color:var(--muted);text-decoration:none}
         .footer a:hover{color:var(--accent)}
+        .games-grid.list-mode{display:block;max-width:1700px;margin:0 auto;width:100%}
+        .list-header{display:flex;gap:20px;align-items:center;padding:14px 18px;border-bottom:2px solid var(--border);font-size:0.78em;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);font-weight:600;font-family:var(--mono)}
+        .list-header > div{cursor:pointer;user-select:none;transition:color 0.15s;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .list-header > div:hover{color:var(--text)}
+        .list-header > div.active{color:var(--accent)}
+        .list-header > div .sort-arrow{margin-left:5px;font-size:0.9em;opacity:0.5}
+        .list-header > div.active .sort-arrow{opacity:1}
+        .lh-poster{width:50px;flex-shrink:0}
+        .lh-id{flex:0.8 1 60px;min-width:60px;text-align:center}
+        .lh-title{flex:6 1 250px;min-width:250px;text-align:left}
+        .lh-rating{flex:1.2 1 70px;min-width:70px;text-align:center}
+        .lh-start{flex:1.6 1 90px;min-width:90px;text-align:center}
+        .lh-end{flex:1.6 1 90px;min-width:90px;text-align:center}
+        .lh-status{flex:2 1 110px;min-width:110px;text-align:center}
+        .lh-notes{flex:0.8 1 45px;min-width:45px;text-align:center}
+        .lh-duration{flex:1.2 1 80px;min-width:80px;text-align:right}
+        .list-row{display:flex;gap:20px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;font-size:0.95em}
+        .list-row:hover{background:var(--surface-alt)}
+        .list-row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+        .lr-poster{width:50px;flex-shrink:0;aspect-ratio:2/3;background:var(--surface-alt);overflow:hidden;position:relative}
+        .lr-poster img{width:100%;height:100%;object-fit:cover;display:block}
+        .lr-poster .poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.3em;font-weight:700;color:var(--accent);background:linear-gradient(135deg,var(--surface-alt),var(--accent-soft))}
+        .lr-id{flex:0.8 1 60px;min-width:60px;text-align:center;font-family:var(--mono);font-size:0.92em;color:var(--muted)}
+        .lr-title{flex:6 1 250px;min-width:250px;font-size:1.1em;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-align:left}
+        .lr-rating{flex:1.2 1 70px;min-width:70px;text-align:center;font-family:var(--mono);font-size:1em;font-weight:700;color:var(--text)}
+        .lr-rating.rating-high{color:var(--green)}
+        .lr-rating.rating-mid{color:var(--amber)}
+        .lr-rating.rating-low{color:var(--red)}
+        .lr-start,.lr-end{flex:1.6 1 90px;min-width:90px;text-align:center;font-family:var(--mono);font-size:0.82em;color:var(--muted)}
+        .lr-status{flex:2 1 110px;min-width:110px;text-align:center;font-family:var(--mono);font-size:0.82em;font-weight:700;letter-spacing:0.3px}
+        .lr-status.finished{color:var(--green)}
+        .lr-status.unfinished{color:var(--red)}
+        .lr-status.backlog{color:var(--blue)}
+        .lr-notes{flex:0.8 1 45px;min-width:45px;text-align:center;font-size:1.1em;font-weight:700}
+        .lr-notes.has-notes{color:var(--blue)}
+        .lr-notes.no-notes{color:var(--border)}
+        .lr-duration{flex:1.2 1 80px;min-width:80px;text-align:right;font-family:var(--mono);font-size:0.9em;color:var(--text)}
         .popup-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:center;padding:20px}
         .popup-overlay.active{display:flex}
         .popup-inner{background:var(--surface);border:1px solid var(--border);border-radius:0;padding:28px;max-width:1100px;width:95%;max-height:90vh;display:flex;flex-direction:column;position:relative}
@@ -196,7 +238,7 @@
         .loading-text{font-size:0.85em;margin:0}
         @keyframes vods-spin{to{transform:rotate(360deg)}}
         @media(max-width:860px){.container{padding:16px 0 32px}.card-rating{height:10%}.parts-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}.parts-grid.single{grid-template-columns:minmax(180px,1fr)}.parts-grid.double{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:600px){.container{width:100%;padding:12px 4px 24px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.card-rating{height:11%}.card-rating span{font-size:0.78em;letter-spacing:0}.card-status-new{font-size:0.975em;height:1.5em;padding:0 0.4em}.card-body{height:2.4em;padding:0}.card-title{font-size:0.8em;padding:0 0.32em}.recent-badge{font-size:0.55em!important;padding:1.2% 2.5%!important;top:1.5%!important;left:1.5%!important}.total-duration{font-size:0.5em!important;padding:1% 2%!important;bottom:14%!important;right:1%!important;max-width:95%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.parts-grid{grid-template-columns:1fr}.parts-grid.single{grid-template-columns:1fr}.parts-grid.double{grid-template-columns:1fr}.popup-inner{padding:16px}}
+        @media(max-width:600px){.container{width:100%;padding:12px 4px 24px}.view-toggle-desktop{display:none}.view-toggle-mobile{display:flex}.view-mode-toggle{display:none}.filters-section{flex-direction:column;align-items:stretch}.filter-group select,.filter-group input{width:100%;max-width:none}.search-input{max-width:none!important}.sort-group select{width:100%}.nav-bar{padding:8px 12px}.nav-link{padding:5px 10px;font-size:0.72em}.card-rating{height:11%}.card-rating span{font-size:0.78em;letter-spacing:0}.card-status-new{font-size:0.975em;height:1.5em;padding:0 0.4em}.card-body{height:2.4em;padding:0}.card-title{font-size:0.8em;padding:0 0.32em}.recent-badge{font-size:0.55em!important;padding:1.2% 2.5%!important;top:1.5%!important;left:1.5%!important}.total-duration{font-size:0.5em!important;padding:1% 2%!important;bottom:14%!important;right:1%!important;max-width:95%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.parts-grid{grid-template-columns:1fr}.parts-grid.single{grid-template-columns:1fr}.parts-grid.double{grid-template-columns:1fr}.popup-inner{padding:16px}}
     </style>
 </head>
 <body>
@@ -215,9 +257,13 @@
         <div class="filters-section">
             <div class="filter-group"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">All</option><option value="Finished">Finished</option><option value="Unfinished">Unfinished</option><option value="Backlog">Backlog</option></select></div>
             <div class="filter-group"><label for="searchInput">Search</label><input type="text" id="searchInput" class="search-input" placeholder="Filter games..."></div>
-            <div class="sort-group"><label for="sortSelect">Sort</label><select id="sortSelect"><optgroup label="Name"><option value="az">Name A-Z</option><option value="za">Name Z-A</option></optgroup><optgroup label="Date Started"><option value="recent-started">Recently Started</option><option value="oldest-started">Oldest Started</option></optgroup><optgroup label="Date Finished"><option value="recent-finished">Recently Finished</option><option value="oldest-finished">Oldest Finished</option></optgroup><optgroup label="Rating"><option value="rating-high">Rating High-Low</option><option value="rating-low">Rating Low-High</option></optgroup><optgroup label="Duration"><option value="duration-long">Longest</option><option value="duration-short">Shortest</option></optgroup></select></div>
+            <div class="sort-group" id="sortGroup"><label for="sortSelect">Sort</label><select id="sortSelect"><optgroup label="Name"><option value="az">Name A-Z</option><option value="za">Name Z-A</option></optgroup><optgroup label="Date Started"><option value="recent-started">Recently Started</option><option value="oldest-started">Oldest Started</option></optgroup><optgroup label="Date Finished"><option value="recent-finished">Recently Finished</option><option value="oldest-finished">Oldest Finished</option></optgroup><optgroup label="Rating"><option value="rating-high">Rating High-Low</option><option value="rating-low">Rating Low-High</option></optgroup><optgroup label="Duration"><option value="duration-long">Longest</option><option value="duration-short">Shortest</option></optgroup></select></div>
             <button class="view-btn surprise-btn" id="surpriseBtn" type="button">🎲 Surprise Me</button>
-            <div class="view-toggle-desktop">
+            <div class="view-mode-toggle">
+                <button class="view-mode-btn active" id="viewModeGrid" type="button">Grid</button>
+                <button class="view-mode-btn" id="viewModeList" type="button">List</button>
+            </div>
+            <div class="view-toggle-desktop" id="gridSizeControls">
                 <span class="view-toggle-label">Grid Size</span>
                 <input type="range" class="column-slider" id="columnSlider" min="2" max="12" value="6" oninput="setColumns(this.value)" aria-label="Number of columns">
                 <span class="view-toggle-label" id="columnLabel">6</span>
@@ -243,12 +289,15 @@
         var POSTER_BASE = 'https://data.grimcyanide.com/posters/';
         var VIDEO_CACHE_KEY = 'vodsVideoCache';
         var COLUMNS_KEY = 'vodsCols';
+        var VIEW_KEY = 'vodsView';
         var VIDEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
         var RECENT_WINDOW_DAYS = 30;
+        var MOBILE_BREAKPOINT = 600;
 
         var allGames = [];
         var currentSort = 'az';
         var currentColumns = 6;
+        var currentView = 'grid';
         var openGameName = null;
         var videoPartsCache = {};
         var durationCache = {};
@@ -261,12 +310,16 @@
             statusFilter: document.getElementById('statusFilter'),
             searchInput: document.getElementById('searchInput'),
             sortSelect: document.getElementById('sortSelect'),
+            sortGroup: document.getElementById('sortGroup'),
             resultCount: document.getElementById('resultCount'),
             statsBar: document.getElementById('statsBar'),
             columnSlider: document.getElementById('columnSlider'),
             columnLabel: document.getElementById('columnLabel'),
+            gridSizeControls: document.getElementById('gridSizeControls'),
             viewDefaultBtn: document.getElementById('viewDefault'),
             viewCompactBtn: document.getElementById('viewCompact'),
+            viewModeGrid: document.getElementById('viewModeGrid'),
+            viewModeList: document.getElementById('viewModeList'),
             popupOverlay: document.getElementById('popupOverlay'),
             popupInner: document.getElementById('popupInner'),
             surpriseBtn: document.getElementById('surpriseBtn')
@@ -277,12 +330,17 @@
         var savedSearch = params.get('search');
         if (params.get('sort')) currentSort = params.get('sort');
         if (params.get('cols')) currentColumns = parseInt(params.get('cols'), 10);
+        if (params.get('view')) currentView = params.get('view');
         openGameName = params.get('game') ? decodeURIComponent(params.get('game')) : null;
 
         var savedCols = localStorage.getItem(COLUMNS_KEY);
         if (!params.get('cols') && savedCols) currentColumns = parseInt(savedCols, 10);
         if (!currentColumns || isNaN(currentColumns)) currentColumns = 6;
         currentColumns = Math.min(12, Math.max(2, currentColumns));
+
+        var savedView = localStorage.getItem(VIEW_KEY);
+        if (!params.get('view') && savedView) currentView = savedView;
+        if (window.innerWidth <= MOBILE_BREAKPOINT) currentView = 'grid';
 
         function updateURL() {
             var p = new URLSearchParams();
@@ -292,6 +350,7 @@
             if (search) p.set('search', search);
             if (currentSort !== 'az') p.set('sort', currentSort);
             if (currentColumns !== 6) p.set('cols', currentColumns);
+            if (currentView !== 'grid') p.set('view', currentView);
             if (openGameName) p.set('game', openGameName);
             var query = p.toString();
             history.replaceState(null, '', window.location.pathname + (query ? '?' + query : ''));
@@ -384,6 +443,24 @@
             return 'rating-low';
         }
 
+        function getNumericId(game) {
+            var p = game.poster;
+            if (!p || p === 'N/A' || p === '0') return Infinity;
+            var n = parseInt(p, 10);
+            return isNaN(n) ? Infinity : n;
+        }
+
+        function getStatusOrder(game) {
+            var s = getDisplayStatus(game);
+            if (s === 'Finished') return 0;
+            if (s === 'Unfinished') return 1;
+            return 2;
+        }
+
+        function getNotesOrder(game) {
+            return (game.notes && game.notes.trim()) ? 0 : 1;
+        }
+
         function computeDurationSeconds(linkUrl) {
             var parts = videoPartsCache[linkUrl];
             if (!parts || parts === 'loading' || !parts.length) return 0;
@@ -441,6 +518,10 @@
             if (!entries) return;
             var seconds = getDurationSeconds(linkUrl);
             entries.forEach(function (entry) {
+                if (entry.durationCell) {
+                    entry.durationCell.textContent = seconds > 0 ? formatSeconds(seconds) : '';
+                    return;
+                }
                 var el = entry.poster.querySelector('.total-duration');
                 if (seconds > 0) {
                     var text = 'Total Runtime: ' + formatSeconds(seconds);
@@ -491,6 +572,27 @@
 
             if (sortKey === 'az') return list.sort(function (a, b) { return a.game.localeCompare(b.game); });
             if (sortKey === 'za') return list.sort(function (a, b) { return b.game.localeCompare(a.game); });
+
+            if (sortKey === 'id-asc') return list.sort(function (a, b) { return getNumericId(a) - getNumericId(b); });
+            if (sortKey === 'id-desc') return list.sort(function (a, b) { return getNumericId(b) - getNumericId(a); });
+
+            if (sortKey === 'status-asc') return list.sort(function (a, b) {
+                var diff = getStatusOrder(a) - getStatusOrder(b);
+                return diff !== 0 ? diff : a.game.localeCompare(b.game);
+            });
+            if (sortKey === 'status-desc') return list.sort(function (a, b) {
+                var diff = getStatusOrder(b) - getStatusOrder(a);
+                return diff !== 0 ? diff : a.game.localeCompare(b.game);
+            });
+
+            if (sortKey === 'notes-asc') return list.sort(function (a, b) {
+                var diff = getNotesOrder(a) - getNotesOrder(b);
+                return diff !== 0 ? diff : a.game.localeCompare(b.game);
+            });
+            if (sortKey === 'notes-desc') return list.sort(function (a, b) {
+                var diff = getNotesOrder(b) - getNotesOrder(a);
+                return diff !== 0 ? diff : a.game.localeCompare(b.game);
+            });
 
             if (sortKey === 'duration-long' || sortKey === 'duration-short') {
                 var withDuration = [], withoutDuration = [];
@@ -584,6 +686,7 @@
 
         function renderSkeletons(count) {
             count = count || 24;
+            dom.grid.className = 'games-grid';
             var fragment = document.createDocumentFragment();
             for (var i = 0; i < count; i++) {
                 var card = document.createElement('div');
@@ -596,7 +699,7 @@
             dom.grid.appendChild(fragment);
         }
 
-        function makeYearDivider(label) {
+        function makeDivider(label) {
             var div = document.createElement('div');
             div.className = 'year-divider';
             div.textContent = label;
@@ -714,6 +817,182 @@
             return card;
         }
 
+        var LIST_HEADERS = [
+            { key: 'id', label: 'ID', primary: 'id-asc', secondary: 'id-desc', cls: 'lh-id' },
+            { key: 'title', label: 'Title', primary: 'az', secondary: 'za', cls: 'lh-title' },
+            { key: 'rating', label: 'Rating', primary: 'rating-high', secondary: 'rating-low', cls: 'lh-rating' },
+            { key: 'start', label: 'Start', primary: 'recent-started', secondary: 'oldest-started', cls: 'lh-start' },
+            { key: 'end', label: 'Finish', primary: 'recent-finished', secondary: 'oldest-finished', cls: 'lh-end' },
+            { key: 'status', label: 'Status', primary: 'status-asc', secondary: 'status-desc', cls: 'lh-status' },
+            { key: 'notes', label: 'Notes', primary: 'notes-asc', secondary: 'notes-desc', cls: 'lh-notes' },
+            { key: 'duration', label: 'Runtime', primary: 'duration-long', secondary: 'duration-short', cls: 'lh-duration' }
+        ];
+
+        function getSortColumn(sortKey) {
+            for (var i = 0; i < LIST_HEADERS.length; i++) {
+                if (LIST_HEADERS[i].primary === sortKey || LIST_HEADERS[i].secondary === sortKey) return LIST_HEADERS[i].key;
+            }
+            return null;
+        }
+
+        function getSortDirection(sortKey) {
+            for (var i = 0; i < LIST_HEADERS.length; i++) {
+                if (LIST_HEADERS[i].primary === sortKey) return 'asc';
+                if (LIST_HEADERS[i].secondary === sortKey) return 'desc';
+            }
+            return null;
+        }
+
+        function buildListHeader() {
+            var activeCol = getSortColumn(currentSort);
+            var activeDir = getSortDirection(currentSort);
+            var header = document.createElement('div');
+            header.className = 'list-header';
+            header.innerHTML = '<div class="lh-poster"></div>';
+            LIST_HEADERS.forEach(function (h) {
+                var cell = document.createElement('div');
+                cell.className = h.cls;
+                if (h.key === activeCol) cell.classList.add('active');
+                cell.innerHTML = escapeHtml(h.label) +
+                    (h.key === activeCol ? '<span class="sort-arrow">' + (activeDir === 'asc' ? '\u25b2' : '\u25bc') + '</span>' : '');
+                cell.addEventListener('click', function () {
+                    if (getSortColumn(currentSort) === h.key) {
+                        currentSort = (currentSort === h.primary) ? h.secondary : h.primary;
+                    } else {
+                        currentSort = h.primary;
+                    }
+                    dom.sortSelect.value = currentSort;
+                    renderGames();
+                    updateURL();
+                });
+                header.appendChild(cell);
+            });
+            return header;
+        }
+
+        function createListRow(game, index, lazyQueue) {
+            var status = getDisplayStatus(game);
+            var statusClass = status.toLowerCase();
+
+            var row = document.createElement('div');
+            row.className = 'list-row';
+            row.tabIndex = 0;
+            row.setAttribute('role', 'button');
+            row.setAttribute('aria-label', 'View details for ' + game.game);
+
+            var poster = document.createElement('div');
+            poster.className = 'lr-poster';
+            var posterUrl = getPosterUrl(game.poster);
+            if (posterUrl) {
+                var img = document.createElement('img');
+                img.src = posterUrl;
+                img.alt = '';
+                img.loading = index < 8 ? 'eager' : 'lazy';
+                img.addEventListener('error', function () {
+                    var fb = document.createElement('div');
+                    fb.className = 'poster-fallback';
+                    fb.textContent = game.game.charAt(0);
+                    img.replaceWith(fb);
+                });
+                poster.appendChild(img);
+            } else {
+                var fb = document.createElement('div');
+                fb.className = 'poster-fallback';
+                fb.textContent = game.game.charAt(0);
+                poster.appendChild(fb);
+            }
+            row.appendChild(poster);
+
+            var idCell = document.createElement('div');
+            idCell.className = 'lr-id';
+            idCell.textContent = hasValue(game.poster) && game.poster !== 'N/A' ? game.poster : '\u2014';
+            row.appendChild(idCell);
+
+            var titleCell = document.createElement('div');
+            titleCell.className = 'lr-title';
+            titleCell.textContent = game.game;
+            row.appendChild(titleCell);
+
+            var ratingCell = document.createElement('div');
+            ratingCell.className = 'lr-rating';
+            var ratingClass = getRatingClass(game.rating);
+            if (ratingClass) ratingCell.classList.add(ratingClass);
+            ratingCell.textContent = getRatingDisplay(game);
+            row.appendChild(ratingCell);
+
+            var startCell = document.createElement('div');
+            startCell.className = 'lr-start';
+            startCell.textContent = hasValue(game.dateStarted) ? game.dateStarted : '\u2014';
+            row.appendChild(startCell);
+
+            var endCell = document.createElement('div');
+            endCell.className = 'lr-end';
+            endCell.textContent = hasValue(game.dateFinished) ? game.dateFinished : '\u2014';
+            row.appendChild(endCell);
+
+            var statusCell = document.createElement('div');
+            statusCell.className = 'lr-status ' + statusClass;
+            statusCell.textContent = status.toUpperCase();
+            row.appendChild(statusCell);
+
+            var notesCell = document.createElement('div');
+            var hasNotes = game.notes && game.notes.trim();
+            notesCell.className = 'lr-notes ' + (hasNotes ? 'has-notes' : 'no-notes');
+            notesCell.textContent = hasNotes ? '\u2714' : '\u2716';
+            row.appendChild(notesCell);
+
+            var durationCell = document.createElement('div');
+            durationCell.className = 'lr-duration';
+            var seconds = getDurationSeconds(game.linkUrl);
+            durationCell.textContent = seconds > 0 ? formatSeconds(seconds) : '';
+            row.appendChild(durationCell);
+
+            row.addEventListener('click', function () { openGameByIndex(index); });
+            row.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openGameByIndex(index);
+                }
+            });
+
+            if (hasValue(game.linkUrl) && game.linkUrl !== 'N/A') {
+                (cardsByLinkUrl[game.linkUrl] = cardsByLinkUrl[game.linkUrl] || []).push({ row: row, durationCell: durationCell });
+                var cached = videoPartsCache[game.linkUrl];
+                var needsFetch = !cached || cached === 'loading' || (Array.isArray(cached) && cached.length === 0);
+                if (needsFetch && lazyObserver) {
+                    row.dataset.linkUrl = game.linkUrl;
+                    lazyQueue.push(row);
+                }
+            }
+
+            return row;
+        }
+
+        function applyViewMode() {
+            var isList = currentView === 'list';
+            document.body.classList.toggle('list-mode', isList);
+            dom.grid.className = 'games-grid' + (isList ? ' list-mode' : '');
+            dom.viewModeGrid.classList.toggle('active', !isList);
+            dom.viewModeList.classList.toggle('active', isList);
+            dom.gridSizeControls.style.display = isList ? 'none' : '';
+            dom.sortGroup.style.display = isList ? 'none' : '';
+        }
+
+        function setView(view) {
+            if (window.innerWidth <= MOBILE_BREAKPOINT) return;
+            currentView = view;
+            localStorage.setItem(VIEW_KEY, view);
+            if (view === 'list') {
+                if (getSortColumn(currentSort) === null) currentSort = 'az';
+            } else {
+                if (getSortColumn(currentSort) !== null) currentSort = 'az';
+            }
+            dom.sortSelect.value = currentSort;
+            applyViewMode();
+            renderGames();
+            updateURL();
+        }
+
         function renderGames() {
             var status = dom.statusFilter.value;
             var search = dom.searchInput.value;
@@ -730,8 +1009,12 @@
                 return;
             }
 
+            var isList = currentView === 'list';
             var fragment = document.createDocumentFragment();
             var lazyQueue = [];
+
+            if (isList) fragment.appendChild(buildListHeader());
+
             var usesDateGrouping = currentSort.indexOf('started') > -1 || currentSort.indexOf('finished') > -1;
             var usesRatingGrouping = currentSort.indexOf('rating') > -1;
             var lastGroupLabel = null;
@@ -743,7 +1026,7 @@
                     var dateValue = currentSort.indexOf('started') > -1 ? game.dateStarted : game.dateFinished;
                     if (!dateValue) {
                         if (!unassignedGroupShown) {
-                            fragment.appendChild(makeYearDivider('Unfinished'));
+                            fragment.appendChild(makeDivider('Unfinished'));
                             unassignedGroupShown = true;
                             lastGroupLabel = null;
                         }
@@ -753,7 +1036,7 @@
                 } else if (usesRatingGrouping) {
                     if (!game.rating) {
                         if (!unassignedGroupShown) {
-                            fragment.appendChild(makeYearDivider('Unrated'));
+                            fragment.appendChild(makeDivider('Unrated'));
                             unassignedGroupShown = true;
                             lastGroupLabel = null;
                         }
@@ -764,15 +1047,15 @@
 
                 if (groupLabel && groupLabel !== lastGroupLabel) {
                     lastGroupLabel = groupLabel;
-                    fragment.appendChild(makeYearDivider(groupLabel));
+                    fragment.appendChild(makeDivider(groupLabel));
                 }
 
-                fragment.appendChild(createGameCard(game, i, lazyQueue));
+                fragment.appendChild(isList ? createListRow(game, i, lazyQueue) : createGameCard(game, i, lazyQueue));
             });
 
             dom.grid.innerHTML = '';
             dom.grid.appendChild(fragment);
-            lazyQueue.forEach(function (card) { lazyObserver.observe(card); });
+            lazyQueue.forEach(function (el) { lazyObserver.observe(el); });
 
             if (openGameName) {
                 var targetIndex = -1;
@@ -951,7 +1234,7 @@
         }
 
         function computeCardWidth(cols) {
-            var isMobile = window.innerWidth <= 600;
+            var isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
             if (isMobile) return cols === 2 ? 'calc(50% - 8px)' : 'calc(33.333% - 8px)';
             return Math.max(120, Math.round(1760 / cols)) + 'px';
         }
@@ -1022,6 +1305,7 @@
                     renderStats();
                     restoreFilters();
                     loadCachedVideoData();
+                    applyViewMode();
                     renderGames();
                     injectStructuredData();
                 })
@@ -1040,7 +1324,10 @@
         dom.viewDefaultBtn.classList.toggle('active', currentColumns === 2);
         dom.viewCompactBtn.classList.toggle('active', currentColumns === 3);
         updateCardSizes();
+        applyViewMode();
 
+        dom.viewModeGrid.addEventListener('click', function () { setView('grid'); });
+        dom.viewModeList.addEventListener('click', function () { setView('list'); });
         dom.surpriseBtn.addEventListener('click', function () {
             var pool = allGames.filter(function (g) {
                 var s = getDisplayStatus(g);
