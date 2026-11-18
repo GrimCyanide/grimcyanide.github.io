@@ -5,40 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlyFans</title>
     <meta property="og:site_name" content="GRIM_CYANIDE">
-    <meta property="og:title" content="OnlyFans">
-    <meta property="og:description" content="Just a video.">
-    <meta property="og:image" content="https://grimcyanide.com/OnlyFans/poster.jpg">
-    <meta property="og:image:width" content="1280">
-    <meta property="og:image:height" content="720">
-    <meta property="og:video" content="https://grimcyanide.com/OnlyFans/video.mp4">
-    <meta property="og:video:type" content="video/mp4">
-    <meta property="og:video:width" content="1280">
-    <meta property="og:video:height" content="720">
-    <meta property="og:url" content="https://grimcyanide.com/OnlyFans">
-    <meta property="og:type" content="video.other">
-    <meta name="theme-color" content="#e85d75">
-    <meta name="twitter:card" content="player">
-    <meta name="twitter:title" content="OnlyFans">
-    <meta name="twitter:description" content="Just a video.">
-    <meta name="twitter:image" content="https://grimcyanide.com/OnlyFans/poster.jpg">
+    <meta property="og:title" content="Grim_Cyanide OnlyFans">
+    <meta property="og:description" content="Nice try.">
+    <meta property="og:image" content="https://grimcyanide.com/onlyfans/onlyfans.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:url" content="https://grimcyanide.com/onlyfans">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#00aff0">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Grim_Cyanide OnlyFans">
+    <meta name="twitter:description" content="Nice try.">
+    <meta name="twitter:image" content="https://grimcyanide.com/onlyfans/onlyfans.png">
     <script id="discord:component-embed" type="application/json">
     {
       "component": {
         "type": 17,
-        "accent_color": 15228277,
+        "accent_color": 45040,
         "components": [
           {
-            "type": 10,
-            "content": "# **OnlyFans**\nI am SO lonely."
+            "type": 9,
+            "components": [
+              {
+                "type": 10,
+                "content": "# **Grim_Cyanide OnlyFans**\nNice try."
+              }
+            ],
+            "accessory": {
+              "type": 11,
+              "media": { "url": "https://grimcyanide.com/onlyfans/onlyfans.png" },
+              "description": "OnlyFans logo"
+            }
           },
           {
             "type": 14,
             "spacing": 1
           },
           {
-            "type": 12,
-            "items": [
-              { "media": { "url": "https://grimcyanide.com/OnlyFans/video.mp4" } }
+            "type": 1,
+            "components": [
+              {
+                "type": 2,
+                "style": 5,
+                "url": "https://grimcyanide.com/onlyfans",
+                "label": "OnlyFans"
+              }
             ]
           }
         ]
@@ -46,21 +57,15 @@
     }
     </script>
     <style>
-        *{margin:0;padding:0}
-        html,body{width:100%;height:100%;background:#000;overflow:hidden}
-        video{width:100%;height:100%;object-fit:contain;display:block}
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%}
+        body{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:16px;overflow:hidden;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+        h1{color:#fff;font-size:clamp(1.6rem,5vw,3rem);font-weight:700;letter-spacing:0.02em;text-align:center}
+        img{display:block;max-width:92vw;max-height:75vh;width:auto;height:auto}
     </style>
 </head>
 <body>
-    <video id="v" controls autoplay muted playsinline>
-        <source src="video.mp4" type="video/mp4">
-    </video>
-    <script>
-        var v=document.getElementById('v');
-        v.muted=true;
-        v.volume=0.25;
-        v.play().catch(function(){});
-        v.addEventListener('playing',function(){v.muted=false;v.volume=0.25});
-    </script>
+    <h1>Nice Try</h1>
+    <img src="gif.gif" alt="Nice try">
 </body>
 </html>
